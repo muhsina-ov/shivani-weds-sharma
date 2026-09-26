@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Shivani & Prajjual — Royal Wedding Invitation | Devalaya Resort, Gwalior</title>
+  
+  <!-- Primary SEO Meta Tags -->
+  <meta name="title" content="Shivani & Prajjual — Royal Wedding Invitation | Devalaya Resort, Gwalior">
+  <meta name="description" content="Celebrate the royal wedding of Shivani & Prajjual on 19th & 20th November 2026 at Devalaya Resort, Gwalior. Explore Haldi, Lagun, Sangeet, Barat, Pheras and Grand Reception.">
+  <meta name="keywords" content="Shivani weds Prajjual, Devalaya Resort Gwalior, digital wedding invitation, luxury wedding invite, animated wedding invitation, royal wedding card">
+  <meta name="author" content="Shivani & Prajjual">
+  <meta name="theme-color" content="#0a0a0f">
+
+  <!-- Open Graph / Facebook / WhatsApp -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.invitestory.in/">
+  <meta property="og:title" content="Shivani & Prajjual — Wedding Celebration | Devalaya Resort, Gwalior">
+  <meta property="og:description" content="Celebrate the wedding festivities of Shivani & Prajjual on 19th & 20th November 2026 at Devalaya Resort, Gwalior. Opening ceremony, Haldi, Sangeet, Pheras & Reception.">
+  <meta property="og:image" content="/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="675">
+  <meta property="og:image:alt" content="Shivani & Prajjual Wedding Invitation Preview">
+  <meta property="og:site_name" content="Shivani & Prajjual Wedding">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://www.invitestory.in/">
+  <meta name="twitter:title" content="Shivani & Prajjual — Wedding Celebration | Devalaya Resort, Gwalior">
+  <meta name="twitter:description" content="Celebrate the wedding festivities of Shivani & Prajjual on 19th & 20th November 2026 at Devalaya Resort, Gwalior.">
+  <meta name="twitter:image" content="/og-image.jpg">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Critical Asset Preloading for Instant Render -->
+  <link rel="preload" href="./assets/doors/1.avif" as="image" type="image/avif" fetchpriority="high">
+  <link rel="preload" href="./assets/doors/1.mp4" as="video" type="video/mp4">
+
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <!-- Ambient Desktop Background -->
+  <div class="ambient-backdrop" id="ambientBackdrop"></div>
+
+  <!-- Background YouTube Music Player Container -->
+  <div id="youtubePlayerContainer" class="youtube-player-container"></div>
+
+  <!-- Top Floating Controls -->
+  <header class="top-controls">
+    <div class="brand-tag">
+      <span class="sparkle">✦</span> InviteStory
+    </div>
+    <div class="action-pills">
+      <button id="doorSelectBtn" class="glass-pill-btn" title="Choose Door Style">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16M9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4"/></svg>
+        <span>Door Style</span>
+      </button>
+      <button id="editDetailsBtn" class="glass-pill-btn" title="Edit Invitation Details">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        <span>Customize</span>
+      </button>
+      <button id="audioToggleBtn" class="glass-pill-btn icon-only" title="Toggle Sound">
+        <svg id="audioIconOn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        <svg id="audioIconOff" class="hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main 9:16 Vertical Invitation Container -->
+  <main class="invitation-wrapper">
+    <div class="invitation-card-container" id="invitationContainer">
+      
+      <!-- Video & Image Layers (Pure Architecture, NO text overlaid on video) -->
+      <div class="media-stage" id="mediaStage">
+        <!-- High-res Static Poster Image for instant load -->
+        <img id="doorPoster" src="/assets/doors/1.avif" alt="Architectural Door Cover" class="door-media poster-image active" fetchpriority="high" decoding="async">
+        
+        <!-- Video Layer for physical opening animation -->
+        <video id="doorVideo" class="door-media video-player" playsinline webkit-playsinline preload="auto" muted>
+          <source id="videoSource" src="/assets/doors/1.mp4" type="video/mp4">
+        </video>
+        
+        <!-- Freeze Frame Canvas for 100% static hold at video completion -->
+        <canvas id="staticFrameCanvas" class="door-media static-canvas"></canvas>
+
+        <!-- Ambient Dust / Light Particle Overlay -->
+        <div class="light-dust-particles" id="dustParticles"></div>
+
+        <!-- 3D Depth Floating Sky Lanterns Overlay -->
+        <div class="floating-lanterns-container" id="lanternsContainer"></div>
+
+        <!-- Tap-To-Open Callout (Disappears immediately on click/tap) -->
+        <div class="tap-to-open-overlay" id="tapOverlay">
+          <div class="keyhole-pulse">
+            <div class="ring-pulse"></div>
+            <div class="keyhole-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="10" r="3"/><path d="M12 13v5M9.5 21h5"/></svg>
+            </div>
+          </div>
+          <span class="tap-text">TAP TO OPEN</span>
+          <span class="sub-tap-text">An Invitation Awaits</span>
+        </div>
+      </div>
+
+      <!-- Wedding Content Overlay (Reveals AFTER door opens and freezes) -->
+      <div class="invitation-overlay hidden" id="invitationOverlay">
+        
+        <!-- Atmosphere Particle & Effects Layer -->
+        <canvas id="atmosphereCanvas" class="atmosphere-canvas"></canvas>
+
+        <!-- Celebration Confetti Particle Layer -->
+        <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
+
+        <div class="content-scrollable" id="contentScrollable">
+          
+          <!-- Invocation / Header Symbol -->
+          <div class="invitation-header animate-element" style="--delay: 0.1s;">
+            <div class="header-calligraphy" id="displayBismillah">|| Shree Ganeshay Namah ||</div>
+            <div class="header-divider">
+              <span class="line"></span>
+              <span class="diamond">◆</span>
+              <span class="line"></span>
+            </div>
+          </div>
+
+          <!-- Families & Greeting -->
+          <p class="greeting-text animate-element" style="--delay: 0.2s;" id="displayGreeting">
+            TOGETHER WITH THEIR FAMILIES
+          </p>
+
+          <!-- Groom & Bride Names -->
+          <div class="couple-names-block animate-element" style="--delay: 0.35s;">
+            <h1 class="groom-name" id="displayGroom">Prajjual</h1>
+            <div class="ampersand-wrapper">
+              <span class="ampersand">&</span>
+            </div>
+            <h1 class="bride-name" id="displayBride">Shivani</h1>
+          </div>
+
+          <!-- Announcement -->
+          <p class="invitation-tagline animate-element" style="--delay: 0.5s;" id="displayTagline">
+            REQUEST THE HONOR OF YOUR PRESENCE AT THE CELEBRATION OF THEIR WEDDING
+          </p>
+
+          <div class="gold-separator animate-element" style="--delay: 0.6s;"></div>
+
+          <!-- Interactive Scratch-to-Reveal Date Card -->
+          <div class="scratch-card-wrapper animate-element" style="--delay: 0.7s;">
+            <div class="scratch-card-container" id="scratchContainer">
+              <!-- Underneath Date Card -->
+              <div class="date-time-card" id="dateTimeCard">
+                <div class="date-day" id="displayDay">WEDNESDAY & THURSDAY</div>
+                <div class="date-main">
+                  <span class="date-month" id="displayMonth">NOVEMBER</span>
+                  <span class="date-num" id="displayDateNum">19 - 20</span>
+                  <span class="date-year" id="displayYear">2026</span>
+                </div>
+                <div class="date-time" id="displayTime">10:00 AM ONWARDS</div>
+              </div>
+              
+              <!-- Gold Scratch Foil Canvas -->
+              <canvas id="scratchCanvas" class="scratch-canvas"></canvas>
+              
+              <!-- Scratch Hint Badge -->
+              <div class="scratch-hint-badge" id="scratchHint">
+                <span class="sparkle-icon">✨</span>
+                <span>Scratch foil to reveal wedding dates</span>
+              </div>
+            </div>
+
+            <button id="quickRevealBtn" class="quick-reveal-btn">
+              <span>Quick Reveal Dates ✨</span>
+            </button>
+          </div>
+
+          <!-- Live Countdown Row -->
+          <div class="countdown-section animate-element" style="--delay: 0.8s;">
+            <div class="countdown-heading">COUNTDOWN TO CELEBRATIONS</div>
+            <div class="countdown-grid" id="countdownGrid">
+              <div class="countdown-pill">
+                <span class="countdown-num" id="cdDays">00</span>
+                <span class="countdown-unit">DAYS</span>
+              </div>
+              <div class="countdown-pill">
+                <span class="countdown-num" id="cdHours">00</span>
+                <span class="countdown-unit">HOURS</span>
+              </div>
+              <div class="countdown-pill">
+                <span class="countdown-num" id="cdMins">00</span>
+                <span class="countdown-unit">MINS</span>
+              </div>
+              <div class="countdown-pill">
+                <span class="countdown-num" id="cdSecs">00</span>
+                <span class="countdown-unit">SECS</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ceremony Switcher Horizontal Tabs -->
+          <div class="ceremony-nav-tabs animate-element" id="ceremonyTabs" style="--delay: 0.85s;">
+            <button class="ceremony-tab-btn active" data-tab="overview">
+              <span class="tab-icon">🏰</span>
+              <span class="tab-label">Overview</span>
+            </button>
+            <button class="ceremony-tab-btn" data-tab="haldi">
+              <span class="tab-icon">💛</span>
+              <span class="tab-label">Haldi</span>
+            </button>
+            <button class="ceremony-tab-btn" data-tab="lagun">
+              <span class="tab-icon">🧡</span>
+              <span class="tab-label">Lagun</span>
+            </button>
+            <button class="ceremony-tab-btn" data-tab="sangeet">
+              <span class="tab-icon">💃</span>
+              <span class="tab-label">Sangeet</span>
+            </button>
+            <button class="ceremony-tab-btn" data-tab="barat">
+              <span class="tab-icon">🎺</span>
+              <span class="tab-label">Barat</span>
+            </button>
+            <button class="ceremony-tab-btn" data-tab="pheras">
+              <span class="tab-icon">🌸</span>
+              <span class="tab-label">Pheras</span>
+            </button>
+            <button class="ceremony-tab-btn" data-tab="reception">
+              <span class="tab-icon">🥂</span>
+              <span class="tab-label">Reception</span>
+            </button>
+          </div>
+
+          <!-- ================= TAB PANES CONTAINER ================= -->
+          <div class="tab-panes-wrapper">
+
+            <!-- TAB 1: OVERVIEW PANE -->
+            <div class="tab-pane active" id="pane-overview">
+              <!-- Venue & Location Block -->
+              <div class="venue-block animate-element" style="--delay: 0.9s;">
+                <div class="venue-badge-pill">
+                  <span class="venue-icon">🏰</span>
+                  <span>WEDDING VENUE</span>
+                </div>
+                <h3 class="venue-name" id="displayVenue">Devalaya Resort</h3>
+                <p class="venue-location" id="displayLocation">Jhansi Road, Sithouli, Gwalior, Madhya Pradesh</p>
+                <a href="https://www.google.com/maps/search/?api=1&query=Devalaya+Resort+Jhansi+Road+Gwalior" target="_blank" rel="noopener noreferrer" class="venue-direct-map-link">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>Open in Google Maps ↗</span>
+                </a>
+              </div>
+
+              <!-- Complete 2-Day Event Itinerary -->
+              <div class="itinerary-section animate-element" style="--delay: 1.0s;">
+                <div class="section-title">WEDDING ITINERARY</div>
+                
+                <!-- Day 1 Header -->
+                <div class="itinerary-day-divider">
+                  <div class="day-badge">DAY 1 • WEDNESDAY, 19TH NOVEMBER</div>
+                </div>
+
+                <div class="timeline-wrapper">
+                  <!-- 1. Haldi -->
+                  <div class="timeline-item interactive-event-card" data-target-tab="haldi">
+                    <div class="timeline-time">10:00 AM</div>
+                    <div class="timeline-dot gold">💛</div>
+                    <div class="timeline-content">
+                      <div class="timeline-header-row">
+                        <h4>Haldi Ceremony</h4>
+                        <span class="event-badge yellow">Auspicious Turmeric</span>
+                      </div>
+                      <p>Morning ritual of turmeric blessings, joy, music & fragrant blossoms</p>
+                      <button class="event-jump-btn" data-target-tab="haldi">
+                        <span>Experience Haldi Page</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- 2. Lagun -->
+                  <div class="timeline-item interactive-event-card" data-target-tab="lagun">
+                    <div class="timeline-time">3:00 PM</div>
+                    <div class="timeline-dot saffron">🧡</div>
+                    <div class="timeline-content">
+                      <div class="timeline-header-row">
+                        <h4>Lagun Ceremony</h4>
+                        <span class="event-badge saffron">3:00 – 4:00 PM</span>
+                      </div>
+                      <p>Sacred Shagun & Tilak ritual uniting families with divine blessings</p>
+                      <button class="event-jump-btn" data-target-tab="lagun">
+                        <span>View Lagun Details</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- 3. Engagement & Sangeet -->
+                  <div class="timeline-item interactive-event-card" data-target-tab="sangeet">
+                    <div class="timeline-time">7:00 PM</div>
+                    <div class="timeline-dot rose">💃</div>
+                    <div class="timeline-content">
+                      <div class="timeline-header-row">
+                        <h4>Engagement & Sangeet</h4>
+                        <span class="event-badge rose">7:00 PM Onwards</span>
+                      </div>
+                      <p>Ring exchange, music beats, joyful family dances & celebrations</p>
+                      <button class="event-jump-btn" data-target-tab="sangeet">
+                        <span>Experience Sangeet Page</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Day 2 Header -->
+                <div class="itinerary-day-divider">
+                  <div class="day-badge">DAY 2 • THURSDAY, 20TH NOVEMBER</div>
+                </div>
+
+                <div class="timeline-wrapper">
+                  <!-- 4. Barat -->
+                  <div class="timeline-item interactive-event-card" data-target-tab="barat">
+                    <div class="timeline-time">2:00 PM</div>
+                    <div class="timeline-dot royal">🎺</div>
+                    <div class="timeline-content">
+                      <div class="timeline-header-row">
+                        <h4>Barat Procession</h4>
+                        <span class="event-badge royal">2:00 PM Onwards</span>
+                      </div>
+                      <p>High-energy Dhol beats, celebration procession & royal groom welcome</p>
+                      <button class="event-jump-btn" data-target-tab="barat">
+                        <span>View Barat Details</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- 5. Pheras -->
+                  <div class="timeline-item interactive-event-card" data-target-tab="pheras">
+                    <div class="timeline-time">4:00 PM</div>
+                    <div class="timeline-dot holy">🌸</div>
+                    <div class="timeline-content">
+                      <div class="timeline-header-row">
+                        <h4>Sacred Pheras</h4>
+                        <span class="event-badge holy">4:00 PM Onwards</span>
+                      </div>
+                      <p>Seven sacred vows around the holy Agni fire & eternal matrimonial rituals</p>
+                      <button class="event-jump-btn" data-target-tab="pheras">
+                        <span>Experience Pheras Page</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- 6. Reception -->
+                  <div class="timeline-item interactive-event-card" data-target-tab="reception">
+                    <div class="timeline-time">7:00 PM</div>
+                    <div class="timeline-dot reception">🥂</div>
+                    <div class="timeline-content">
+                      <div class="timeline-header-row">
+                        <h4>Grand Reception</h4>
+                        <span class="event-badge reception">7:00 PM Onwards</span>
+                      </div>
+                      <p>Royal evening dinner, blessings, toasts & grand celebrations with newlyweds</p>
+                      <button class="event-jump-btn" data-target-tab="reception">
+                        <span>Experience Reception Page</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Verse / Quote Section -->
+              <div class="quote-section animate-element" style="--delay: 1.1s;">
+                <p class="story-quote">
+                  “Two souls, one destiny — surrounded by love, sacred rituals, and the blessings of loved ones.”
+                </p>
+                <span class="story-ref">— Shivani & Prajjual</span>
+              </div>
+
+              <!-- Action Buttons Grid -->
+              <div class="action-buttons-grid animate-element" style="--delay: 1.2s;">
+                <button class="primary-gold-btn" id="addToCalendarBtn">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  <span>Add to Calendar</span>
+                </button>
+
+                <button class="secondary-glass-btn" id="openMapBtn">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>Venue Location</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- TAB 2: HALDI PAGE (Flowers & Garlands in flow from top to bottom) -->
+            <div class="tab-pane hidden ceremony-page-card" id="pane-haldi">
+              <!-- Hanging Floral Garland Swag (Toran) SVG -->
+              <div class="garland-header-decor">
+                <svg class="garland-svg" viewBox="0 0 400 70" preserveAspectRatio="none">
+                  <defs>
+                    <radialGradient id="marigoldGrad" cx="50%" cy="50%" r="50%">
+                      <stop offset="0%" stop-color="#FFDD55"/>
+                      <stop offset="70%" stop-color="#FFA000"/>
+                      <stop offset="100%" stop-color="#E65100"/>
+                    </radialGradient>
+                  </defs>
+                  <path d="M0,8 Q100,50 200,8 Q300,50 400,8" fill="none" stroke="#FFB300" stroke-width="3" stroke-dasharray="6,4"/>
+                  <!-- Garland Marigold Beads -->
+                  <circle cx="20" cy="14" r="7" fill="url(#marigoldGrad)"/>
+                  <circle cx="50" cy="27" r="8" fill="url(#marigoldGrad)"/>
+                  <circle cx="80" cy="35" r="9" fill="url(#marigoldGrad)"/>
+                  <circle cx="110" cy="38" r="9" fill="url(#marigoldGrad)"/>
+                  <circle cx="140" cy="33" r="8" fill="url(#marigoldGrad)"/>
+                  <circle cx="170" cy="22" r="8" fill="url(#marigoldGrad)"/>
+                  <circle cx="200" cy="10" r="10" fill="url(#marigoldGrad)"/>
+                  <circle cx="230" cy="22" r="8" fill="url(#marigoldGrad)"/>
+                  <circle cx="260" cy="33" r="8" fill="url(#marigoldGrad)"/>
+                  <circle cx="290" cy="38" r="9" fill="url(#marigoldGrad)"/>
+                  <circle cx="320" cy="35" r="9" fill="url(#marigoldGrad)"/>
+                  <circle cx="350" cy="27" r="8" fill="url(#marigoldGrad)"/>
+                  <circle cx="380" cy="14" r="7" fill="url(#marigoldGrad)"/>
+                </svg>
+              </div>
+
+              <div class="ceremony-badge yellow">
+                <span>DAY 1 • WEDNESDAY, 19TH NOVEMBER 2026</span>
+              </div>
+              
+              <h2 class="ceremony-title gold-text">Shubh Haldi Ceremony</h2>
+              <div class="ceremony-time-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>10:00 AM Onwards</span>
+              </div>
+
+              <p class="ceremony-desc">
+                An auspicious and joyful morning immersed in the golden hues of turmeric, fragrant flower petals, soulful folk music, and vibrant family laughter to bless Shivani & Prajjual.
+              </p>
+
+              <div class="ceremony-feature-box haldi-box">
+                <div class="feature-item">
+                  <span class="feature-icon">🌼</span>
+                  <div class="feature-text">
+                    <strong>Theme & Dress Code</strong>
+                    <span>Sunshine Yellow, Ochre & Floral Indian Wear</span>
+                  </div>
+                </div>
+                <div class="feature-item">
+                  <span class="feature-icon">📍</span>
+                  <div class="feature-text">
+                    <strong>Venue</strong>
+                    <span>Devalaya Resort, Jhansi Road, Gwalior</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ceremony-actions">
+                <button class="primary-gold-btn ceremony-calendar-btn" data-event="Haldi" data-date="20261119T043000Z/20261119T093000Z">
+                  <span>Add Haldi to Calendar 📅</span>
+                </button>
+                <a href="https://www.google.com/maps/search/?api=1&query=Devalaya+Resort+Jhansi+Road+Gwalior" target="_blank" rel="noopener noreferrer" class="secondary-glass-btn">
+                  <span>Directions ↗</span>
+                </a>
+              </div>
+
+              <div class="ceremony-nav-footer">
+                <button class="text-link-btn" data-target-tab="overview">← Back to Overview</button>
+                <button class="nav-next-btn" data-target-tab="lagun">Next: Lagun Ceremony ➔</button>
+              </div>
+            </div>
+
+            <!-- TAB 3: LAGUN PAGE -->
+            <div class="tab-pane hidden ceremony-page-card" id="pane-lagun">
+              <div class="ceremony-badge saffron">
+                <span>DAY 1 • WEDNESDAY, 19TH NOVEMBER 2026</span>
+              </div>
+              
+              <h2 class="ceremony-title saffron-text">Auspicious Lagun Ceremony</h2>
+              <div class="ceremony-time-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>3:00 PM – 4:00 PM</span>
+              </div>
+
+              <p class="ceremony-desc">
+                The formal presentation of the auspicious wedding letter (Lagun Patrika) and holy Tilak rituals, sealed with the blessings of elders and solemn Vedic mantras.
+              </p>
+
+              <div class="ceremony-feature-box saffron-box">
+                <div class="feature-item">
+                  <span class="feature-icon">🪔</span>
+                  <div class="feature-text">
+                    <strong>Ceremony Rituals</strong>
+                    <span>Tilak, Shagun Exchange & Family Blessings</span>
+                  </div>
+                </div>
+                <div class="feature-item">
+                  <span class="feature-icon">✨</span>
+                  <div class="feature-text">
+                    <strong>Dress Code</strong>
+                    <span>Traditional Pastels & Graceful Ethnic</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ceremony-actions">
+                <button class="primary-gold-btn ceremony-calendar-btn" data-event="Lagun" data-date="20261119T093000Z/20261119T103000Z">
+                  <span>Add Lagun to Calendar 📅</span>
+                </button>
+                <a href="https://www.google.com/maps/search/?api=1&query=Devalaya+Resort+Jhansi+Road+Gwalior" target="_blank" rel="noopener noreferrer" class="secondary-glass-btn">
+                  <span>Directions ↗</span>
+                </a>
+              </div>
+
+              <div class="ceremony-nav-footer">
+                <button class="nav-prev-btn" data-target-tab="haldi">❮ Haldi</button>
+                <button class="text-link-btn" data-target-tab="overview">Overview</button>
+                <button class="nav-next-btn" data-target-tab="sangeet">Sangeet ❯</button>
+              </div>
+            </div>
+
+            <!-- TAB 4: ENGAGEMENT & SANGEET PAGE -->
+            <div class="tab-pane hidden ceremony-page-card" id="pane-sangeet">
+              <div class="ceremony-badge rose">
+                <span>DAY 1 • WEDNESDAY, 19TH NOVEMBER 2026</span>
+              </div>
+              
+              <h2 class="ceremony-title rose-text">Engagement & Sangeet Night</h2>
+              <div class="ceremony-time-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>7:00 PM Onwards</span>
+              </div>
+
+              <p class="ceremony-desc">
+                An electrifying evening of exchanging rings, romantic melodies, choreography showdowns, DJ beats, and spirited celebration on the dance floor!
+              </p>
+
+              <div class="ceremony-feature-box rose-box">
+                <div class="feature-item">
+                  <span class="feature-icon">💍</span>
+                  <div class="feature-text">
+                    <strong>Ceremony Highlights</strong>
+                    <span>Ring Exchange & Musical Extravaganza</span>
+                  </div>
+                </div>
+                <div class="feature-item">
+                  <span class="feature-icon">💃</span>
+                  <div class="feature-text">
+                    <strong>Dress Code</strong>
+                    <span>Glamorous Indo-Western, Sequins & Evening Chic</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ceremony-actions">
+                <button class="primary-gold-btn ceremony-calendar-btn" data-event="Engagement & Sangeet" data-date="20261119T133000Z/20261119T183000Z">
+                  <span>Add Sangeet to Calendar 📅</span>
+                </button>
+                <a href="https://www.google.com/maps/search/?api=1&query=Devalaya+Resort+Jhansi+Road+Gwalior" target="_blank" rel="noopener noreferrer" class="secondary-glass-btn">
+                  <span>Directions ↗</span>
+                </a>
+              </div>
+
+              <div class="ceremony-nav-footer">
+                <button class="nav-prev-btn" data-target-tab="lagun">❮ Lagun</button>
+                <button class="text-link-btn" data-target-tab="overview">Overview</button>
+                <button class="nav-next-btn" data-target-tab="barat">Barat ❯</button>
+              </div>
+            </div>
+
+            <!-- TAB 5: BARAT PAGE -->
+            <div class="tab-pane hidden ceremony-page-card" id="pane-barat">
+              <div class="ceremony-badge royal">
+                <span>DAY 2 • THURSDAY, 20TH NOVEMBER 2026</span>
+              </div>
+              
+              <h2 class="ceremony-title royal-text">Grand Barat Procession</h2>
+              <div class="ceremony-time-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>2:00 PM Onwards</span>
+              </div>
+
+              <p class="ceremony-desc">
+                High-energy brass bands and live Dhol beats ushering the groom in royal splendor, followed by the grand Milni welcome ceremony at Devalaya Resort.
+              </p>
+
+              <div class="ceremony-feature-box royal-box">
+                <div class="feature-item">
+                  <span class="feature-icon">🎺</span>
+                  <div class="feature-text">
+                    <strong>Procession & Welcome</strong>
+                    <span>Royal Dhol, Ghodi & Grand Milni</span>
+                  </div>
+                </div>
+                <div class="feature-item">
+                  <span class="feature-icon">👑</span>
+                  <div class="feature-text">
+                    <strong>Dress Code</strong>
+                    <span>Regal Sherwanis, Kurtas & Colorful Safas</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ceremony-actions">
+                <button class="primary-gold-btn ceremony-calendar-btn" data-event="Barat" data-date="20261120T083000Z/20261120T103000Z">
+                  <span>Add Barat to Calendar 📅</span>
+                </button>
+                <a href="https://www.google.com/maps/search/?api=1&query=Devalaya+Resort+Jhansi+Road+Gwalior" target="_blank" rel="noopener noreferrer" class="secondary-glass-btn">
+                  <span>Directions ↗</span>
+                </a>
+              </div>
+
+              <div class="ceremony-nav-footer">
+                <button class="nav-prev-btn" data-target-tab="sangeet">❮ Sangeet</button>
+                <button class="text-link-btn" data-target-tab="overview">Overview</button>
+                <button class="nav-next-btn" data-target-tab="pheras">Pheras ❯</button>
+              </div>
+            </div>
+
+            <!-- TAB 6: PHERAS PAGE (Holy Fire Embers, Rose Petals Shower & Sacred Shlokas) -->
+            <div class="tab-pane hidden ceremony-page-card" id="pane-pheras">
+              <div class="ceremony-badge holy">
+                <span>DAY 2 • THURSDAY, 20TH NOVEMBER 2026</span>
+              </div>
+
+              <!-- Divine Sanskrit Shloka -->
+              <div class="shloka-banner">
+                <span class="shloka-symbol">ॐ</span>
+                <p class="shloka-text">
+                  मंगलम् भगवान विष्णुः मंगलम् गरुडध्वजः ।<br>
+                  मंगलम् पुण्डरीकाक्षः मङ्गलाय तनो हरिः ॥
+                </p>
+              </div>
+              
+              <h2 class="ceremony-title holy-text">Sacred Pheras & Vivah Sanskar</h2>
+              <div class="ceremony-time-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>4:00 PM Onwards</span>
+              </div>
+
+              <p class="ceremony-desc">
+                Seven eternal vows around the sacred Agni fire, Kanyadaan, Mangalsutra, and Sindoor rituals binding Shivani & Prajjual in sacred companionship for lifetimes.
+              </p>
+
+              <div class="ceremony-feature-box holy-box">
+                <div class="feature-item">
+                  <span class="feature-icon">🔥</span>
+                  <div class="feature-text">
+                    <strong>Sacred Rituals</strong>
+                    <span>Saat Phere, Saptapadi, Kanyadaan & Varmala</span>
+                  </div>
+                </div>
+                <div class="feature-item">
+                  <span class="feature-icon">🌹</span>
+                  <div class="feature-text">
+                    <strong>Dress Code</strong>
+                    <span>Regal Indian Wedding Wear & Traditional Silks</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ceremony-actions">
+                <button class="primary-gold-btn ceremony-calendar-btn" data-event="Sacred Pheras" data-date="20261120T103000Z/20261120T133000Z">
+                  <span>Add Pheras to Calendar 📅</span>
+                </button>
+                <a href="https://www.google.com/maps/search/?api=1&query=Devalaya+Resort+Jhansi+Road+Gwalior" target="_blank" rel="noopener noreferrer" class="secondary-glass-btn">
+                  <span>Directions ↗</span>
+                </a>
+              </div>
+
+              <div class="ceremony-nav-footer">
+                <button class="nav-prev-btn" data-target-tab="barat">❮ Barat</button>
+                <button class="text-link-btn" data-target-tab="overview">Overview</button>
+                <button class="nav-next-btn" data-target-tab="reception">Reception ❯</button>
+              </div>
+            </div>
+
+            <!-- TAB 7: RECEPTION PAGE (Balloons & Shimmer Lights in Motion) -->
+            <div class="tab-pane hidden ceremony-page-card" id="pane-reception">
+              <div class="ceremony-badge reception">
+                <span>DAY 2 • THURSDAY, 20TH NOVEMBER 2026</span>
+              </div>
+              
+              <h2 class="ceremony-title reception-text">Grand Reception & Royal Feast</h2>
+              <div class="ceremony-time-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>7:00 PM Onwards</span>
+              </div>
+
+              <p class="ceremony-desc">
+                A glamorous evening beneath shimmering starlight and celebratory toasts to welcome the newly married couple, accompanied by a lavish royal banquet dinner.
+              </p>
+
+              <div class="ceremony-feature-box reception-box">
+                <div class="feature-item">
+                  <span class="feature-icon">🎈</span>
+                  <div class="feature-text">
+                    <strong>Evening Atmosphere</strong>
+                    <span>Balloons, Shimmer Lights, Music & Gourmet Dining</span>
+                  </div>
+                </div>
+                <div class="feature-item">
+                  <span class="feature-icon">✨</span>
+                  <div class="feature-text">
+                    <strong>Dress Code</strong>
+                    <span>Black Tie, Tuxedos, Evening Gowns & Formal Regal</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ceremony-actions">
+                <button class="primary-gold-btn ceremony-calendar-btn" data-event="Grand Reception" data-date="20261120T133000Z/20261120T183000Z">
+                  <span>Add Reception to Calendar 📅</span>
+                </button>
+                <a href="https://www.google.com/maps/search/?api=1&query=Devalaya+Resort+Jhansi+Road+Gwalior" target="_blank" rel="noopener noreferrer" class="secondary-glass-btn">
+                  <span>Directions ↗</span>
+                </a>
+              </div>
+
+              <div class="ceremony-nav-footer">
+                <button class="nav-prev-btn" data-target-tab="pheras">❮ Pheras</button>
+                <button class="text-link-btn" data-target-tab="overview">Overview</button>
+                <button class="nav-next-btn" data-target-tab="haldi">First: Haldi ➔</button>
+              </div>
+            </div>
+
+          </div>
+          <!-- ================= END TAB PANES ================= -->
+
+          <!-- Replay Footer -->
+          <div class="invitation-footer animate-element" style="--delay: 1.25s;">
+            <button id="replayBtn" class="text-link-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+              Replay Opening Ceremony
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Door Selection Modal / Drawer -->
+  <div class="modal-backdrop hidden" id="doorModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Select Door Style</h2>
+        <button class="close-modal-btn" id="closeDoorModal">&times;</button>
+      </div>
+      <div class="door-options-grid">
+        <div class="door-option-card active" data-door="1">
+          <div class="door-thumb">
+            <img src="/assets/doors/1.webp" alt="Door 1 - Emerald Arch">
+          </div>
+          <div class="door-info">
+            <span class="door-title">Emerald Arch</span>
+            <span class="door-desc">Botanical bougainvillea arch & classic sage tone</span>
+          </div>
+        </div>
+
+        <div class="door-option-card" data-door="2">
+          <div class="door-thumb">
+            <img src="/assets/doors/2.webp" alt="Door 2 - Royal Blue">
+          </div>
+          <div class="door-info">
+            <span class="door-title">Royal Mediterranean</span>
+            <span class="door-desc">Majestic royal blue door with floral surround</span>
+          </div>
+        </div>
+
+        <div class="door-option-card" data-door="3">
+          <div class="door-thumb">
+            <img src="/assets/doors/3.webp" alt="Door 3 - Moroccan Teal">
+          </div>
+          <div class="door-info">
+            <span class="door-title">Moroccan Emerald</span>
+            <span class="door-desc">Intricate arabesque arch with brass lantern</span>
+          </div>
+        </div>
+
+        <div class="door-option-card" data-door="4">
+          <div class="door-thumb">
+            <img src="/assets/doors/4.webp" alt="Door 4 - Gold Lattice">
+          </div>
+          <div class="door-info">
+            <span class="door-title">Gold Arabesque</span>
+            <span class="door-desc">Ornate geometric gold lattice & white arch</span>
+          </div>
+        </div>
+
+        <div class="door-option-card" data-door="6">
+          <div class="door-thumb">
+            <img src="/assets/doors/6.webp" alt="Door 6 - Blush Tree of Life">
+          </div>
+          <div class="door-info">
+            <span class="door-title">Blush Tree of Life</span>
+            <span class="door-desc">Sculptural carved tree motif & soft plaster</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Invitation Details Editor Drawer -->
+  <div class="modal-backdrop hidden" id="editorModal">
+    <div class="modal-card editor-card">
+      <div class="modal-header">
+        <h2>Customize Details</h2>
+        <button class="close-modal-btn" id="closeEditorModal">&times;</button>
+      </div>
+      <form id="editorForm" class="editor-form">
+        <div class="form-row dual">
+          <div class="form-group">
+            <label>Groom's Name</label>
+            <input type="text" id="inputGroom" value="Prajjual">
+          </div>
+          <div class="form-group">
+            <label>Bride's Name</label>
+            <input type="text" id="inputBride" value="Shivani">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Header Invocation / Symbol</label>
+          <input type="text" id="inputBismillah" value="|| Shree Ganeshay Namah ||">
+        </div>
+
+        <div class="form-group">
+          <label>Greeting Text</label>
+          <input type="text" id="inputGreeting" value="TOGETHER WITH THEIR FAMILIES">
+        </div>
+
+        <div class="form-row tri">
+          <div class="form-group">
+            <label>Date</label>
+            <input type="text" id="inputDateNum" value="19 - 20">
+          </div>
+          <div class="form-group">
+            <label>Month</label>
+            <input type="text" id="inputMonth" value="NOVEMBER">
+          </div>
+          <div class="form-group">
+            <label>Year</label>
+            <input type="text" id="inputYear" value="2026">
+          </div>
+        </div>
+
+        <div class="form-row dual">
+          <div class="form-group">
+            <label>Day of Week</label>
+            <input type="text" id="inputDay" value="WEDNESDAY & THURSDAY">
+          </div>
+          <div class="form-group">
+            <label>Time</label>
+            <input type="text" id="inputTime" value="10:00 AM ONWARDS">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Venue Name</label>
+          <input type="text" id="inputVenue" value="Devalaya Resort">
+        </div>
+
+        <div class="form-group">
+          <label>Venue Address</label>
+          <input type="text" id="inputLocation" value="Jhansi Road, Sithouli, Gwalior, Madhya Pradesh">
+        </div>
+
+        <div class="form-group">
+          <label>Dress Code</label>
+          <input type="text" id="inputDressCode" value="Royal Festive / Traditional">
+        </div>
+
+        <div class="form-group">
+          <label>Background Music (YouTube Song / Video URL)</label>
+          <input type="text" id="inputYoutubeUrl" placeholder="e.g. https://www.youtube.com/watch?v=..." value="">
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="primary-gold-btn">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+  <!-- Venue Location Map Modal -->
+  <div class="modal-backdrop hidden" id="mapModal">
+    <div class="modal-card map-card">
+      <div class="modal-header">
+        <h2>Venue Location</h2>
+        <button class="close-modal-btn" id="closeMapModal">&times;</button>
+      </div>
+      <div class="map-body">
+        <div class="location-details">
+          <h3 id="mapVenueTitle">Devalaya Resort, Gwalior</h3>
+          <p id="mapVenueAddress">Jhansi Road, Sithouli, Gwalior, Madhya Pradesh</p>
+        </div>
+        <div class="map-mockup">
+          <div class="map-grid-pattern"></div>
+          <div class="map-pin">
+            <div class="pin-pulse"></div>
+            <div class="pin-head">🏰</div>
+          </div>
+          <span class="map-label">Devalaya Resort</span>
+        </div>
+        <a id="modalMapExternalLink" href="https://www.google.com/maps/search/?api=1&query=Devalaya+Resort+Jhansi+Road+Gwalior" target="_blank" rel="noopener noreferrer" class="primary-gold-btn full-width text-center">
+          Open in Google Maps ↗
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Constant Floating Order & Explore Bar (Non-Intrusive) -->
+  <div id="floatingOrderBar" class="floating-order-bar">
+    <button id="floatingWidgetClose" class="widget-minimize-btn" title="Minimize order bar" aria-label="Minimize">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+
+    <div class="floating-widget-inner">
+      <div class="floating-widget-header">
+        <span class="pulse-indicator"></span>
+        <span class="widget-heading">Like this invitation?</span>
+        <span class="widget-price-badge">₹999</span>
+      </div>
+
+      <div class="floating-widget-actions">
+        <a href="https://api.whatsapp.com/send/?phone=918281583882&text=Hello%20InviteStory!%20%F0%9F%92%8C%20I%20just%20saw%20your%20cinematic%20wedding%20invitation%20demo%20(%E2%82%B9999)%20and%20loved%20it.%20Could%20you%20please%20share%20what%20details%20you%20need%20to%20customize%20this%20for%20us%3F%20%F0%9F%99%8F&type=phone_number&app_absent=0" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="cta-buy-now-btn">
+          <svg class="whatsapp-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+          </svg>
+          <span>Buy Now • ₹999</span>
+        </a>
+
+        <a href="https://www.invitestory.in" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="cta-more-designs-btn"
+           title="Explore all digital invitation designs">
+          <span>More Designs</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Minimized Floating Action Pill (shown when order bar is collapsed) -->
+  <button id="floatingWidgetTrigger" class="floating-widget-trigger hidden" title="Order digital wedding invitation" aria-label="Open Order Menu">
+    <span class="trigger-ping"></span>
+    <svg class="whatsapp-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+    </svg>
+    <span class="trigger-label">Buy Now • ₹999</span>
+  </button>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
