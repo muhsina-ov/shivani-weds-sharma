@@ -506,9 +506,13 @@ document.addEventListener('DOMContentLoaded', () => {
   tapOverlay.addEventListener('click', openDoorInvitation);
   replayBtn.addEventListener('click', resetDoorState);
 
-  // --- Door Modal Controls ---
-  doorSelectBtn.addEventListener('click', () => doorModal.classList.remove('hidden'));
-  closeDoorModal.addEventListener('click', () => doorModal.classList.add('hidden'));
+  // --- Optional Door & Editor Modal Controls (Guarded) ---
+  if (doorSelectBtn && doorModal) {
+    doorSelectBtn.addEventListener('click', () => doorModal.classList.remove('hidden'));
+  }
+  if (closeDoorModal && doorModal) {
+    closeDoorModal.addEventListener('click', () => doorModal.classList.add('hidden'));
+  }
   
   document.querySelectorAll('.door-option-card').forEach(card => {
     card.addEventListener('click', () => {
@@ -516,38 +520,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- Details Editor Controls ---
-  editDetailsBtn.addEventListener('click', () => editorModal.classList.remove('hidden'));
-  closeEditorModal.addEventListener('click', () => editorModal.classList.add('hidden'));
+  if (editDetailsBtn && editorModal) {
+    editDetailsBtn.addEventListener('click', () => editorModal.classList.remove('hidden'));
+  }
+  if (closeEditorModal && editorModal) {
+    closeEditorModal.addEventListener('click', () => editorModal.classList.add('hidden'));
+  }
 
-  editorForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    document.getElementById('displayGroom').innerText = document.getElementById('inputGroom').value;
-    document.getElementById('displayBride').innerText = document.getElementById('inputBride').value;
-    document.getElementById('displayBismillah').innerText = document.getElementById('inputBismillah').value;
-    document.getElementById('displayGreeting').innerText = document.getElementById('inputGreeting').value;
-    document.getElementById('displayDateNum').innerText = document.getElementById('inputDateNum').value;
-    document.getElementById('displayMonth').innerText = document.getElementById('inputMonth').value;
-    document.getElementById('displayYear').innerText = document.getElementById('inputYear').value;
-    document.getElementById('displayDay').innerText = document.getElementById('inputDay').value;
-    document.getElementById('displayTime').innerText = document.getElementById('inputTime').value;
-    document.getElementById('displayVenue').innerText = document.getElementById('inputVenue').value;
-    document.getElementById('displayLocation').innerText = document.getElementById('inputLocation').value;
-    document.getElementById('displayDressCode').innerText = document.getElementById('inputDressCode').value;
+  if (editorForm) {
+    editorForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const groomInput = document.getElementById('inputGroom');
+      const brideInput = document.getElementById('inputBride');
+      if (groomInput) document.getElementById('displayGroom').innerText = groomInput.value;
+      if (brideInput) document.getElementById('displayBride').innerText = brideInput.value;
 
-    // Update Map Modal text as well
-    document.getElementById('mapVenueTitle').innerText = document.getElementById('inputVenue').value;
-    document.getElementById('mapVenueAddress').innerText = document.getElementById('inputLocation').value;
-
-    // Load YouTube Background Music if URL provided
-    const ytUrlInput = document.getElementById('inputYoutubeUrl');
-    if (ytUrlInput && ytUrlInput.value) {
-      playYouTubeBackgroundMusic(ytUrlInput.value, true);
-    }
-
-    editorModal.classList.add('hidden');
-  });
+      editorModal.classList.add('hidden');
+    });
+  }
 
   // --- YouTube Background Music Player Engine ---
   let currentYoutubeVideoId = '';
@@ -617,7 +608,7 @@ document.addEventListener('DOMContentLoaded', () => {
   closeMapModal.addEventListener('click', () => mapModal.classList.add('hidden'));
 
   // Close modals when clicking backdrop
-  [doorModal, editorModal, mapModal].forEach(modal => {
+  [doorModal, editorModal, mapModal].filter(Boolean).forEach(modal => {
     modal.addEventListener('click', (e) => {
       if (e.target === modal) {
         modal.classList.add('hidden');
