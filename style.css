@@ -1639,92 +1639,7 @@ html, body {
   opacity: 0.9;
 }
 
-/* Horizontal Ceremony Switcher Tabs */
-.ceremony-nav-tabs {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  max-width: 360px;
-  overflow-x: auto;
-  padding: 6px 4px 10px 4px;
-  margin: 12px 0 16px 0;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-.ceremony-nav-tabs::-webkit-scrollbar {
-  display: none;
-}
-
-.ceremony-tab-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-  background: rgba(22, 22, 30, 0.7);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(229, 193, 88, 0.25);
-  border-radius: 20px;
-  padding: 6px 12px;
-  color: var(--color-text-muted);
-  font-family: var(--font-serif);
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-  white-space: nowrap;
-}
-
-.ceremony-tab-btn .tab-icon {
-  font-size: 0.85rem;
-}
-
-.ceremony-tab-btn:hover {
-  background: rgba(229, 193, 88, 0.15);
-  border-color: var(--color-gold);
-  color: var(--color-gold-light);
-  transform: translateY(-1px);
-}
-
-.ceremony-tab-btn.active {
-  background: var(--color-gold-gradient);
-  border-color: #FFF4D0;
-  color: #0A0A0C;
-  font-weight: 700;
-  box-shadow: 0 4px 14px rgba(229, 193, 88, 0.35);
-  transform: scale(1.03);
-}
-
-/* Tab Panes Container */
-.tab-panes-wrapper {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.tab-pane {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  animation: tabFadeIn 0.35s ease forwards;
-}
-
-.tab-pane.hidden {
-  display: none !important;
-}
-
-@keyframes tabFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+/* Single Continuous Scroll Itinerary Layout */
 
 /* Venue Direct Link */
 .venue-badge-pill {
@@ -1791,216 +1706,121 @@ html, body {
   font-weight: 600;
 }
 
-/* Interactive Event Cards inside Timeline */
-.interactive-event-card {
-  background: rgba(26, 26, 36, 0.45);
-  border: 1px solid rgba(229, 193, 88, 0.15);
-  border-radius: 12px;
-  padding: 10px 12px;
-  margin-bottom: 8px;
-  transition: all 0.25s ease;
-  cursor: pointer;
+/* Event Badges */
+.event-badge {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  letter-spacing: 0.6px;
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
-.interactive-event-card:hover {
-  background: rgba(35, 35, 50, 0.65);
-  border-color: rgba(229, 193, 88, 0.4);
-  transform: translateX(2px);
+.event-badge.yellow { background: rgba(255, 193, 7, 0.18); border: 1px solid rgba(255, 193, 7, 0.45); color: #FFE082; }
+.event-badge.saffron { background: rgba(255, 112, 67, 0.18); border: 1px solid rgba(255, 112, 67, 0.45); color: #FFAB91; }
+.event-badge.rose { background: rgba(236, 64, 122, 0.18); border: 1px solid rgba(236, 64, 122, 0.45); color: #F48FB1; }
+.event-badge.royal { background: rgba(171, 71, 188, 0.18); border: 1px solid rgba(171, 71, 188, 0.45); color: #CE93D8; }
+.event-badge.holy { background: rgba(239, 83, 80, 0.18); border: 1px solid rgba(239, 83, 80, 0.45); color: #EF9A9A; }
+.event-badge.reception { background: rgba(255, 238, 88, 0.18); border: 1px solid rgba(255, 238, 88, 0.45); color: #FFF59D; }
+
+/* Timeline Cards for Unified Continuous Itinerary */
+.timeline-card {
+  background: rgba(22, 22, 30, 0.65);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(229, 193, 88, 0.2);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.28s ease;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
 }
 
-.timeline-header-row {
+.timeline-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  border-radius: 4px 0 0 4px;
+}
+
+.timeline-card.haldi-card::before { background: linear-gradient(180deg, #FFD54F, #FF8F00); }
+.timeline-card.lagun-card::before { background: linear-gradient(180deg, #FFAB91, #E64A19); }
+.timeline-card.sangeet-card::before { background: linear-gradient(180deg, #F48FB1, #C2185B); }
+.timeline-card.barat-card::before { background: linear-gradient(180deg, #CE93D8, #7B1FA2); }
+.timeline-card.pheras-card::before { background: linear-gradient(180deg, #EF9A9A, #C62828); }
+.timeline-card.reception-card::before { background: linear-gradient(180deg, #FFF59D, #F57F17); }
+
+.timeline-card:hover {
+  background: rgba(30, 30, 42, 0.85);
+  border-color: rgba(229, 193, 88, 0.45);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+}
+
+.timeline-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  margin-bottom: 3px;
-}
-
-.timeline-dot.gold { color: #FFCA28; }
-.timeline-dot.saffron { color: #FF7043; }
-.timeline-dot.rose { color: #EC407A; }
-.timeline-dot.royal { color: #BA68C8; }
-.timeline-dot.holy { color: #EF5350; }
-.timeline-dot.reception { color: #FFF176; }
-
-.event-badge {
-  font-family: var(--font-sans);
-  font-size: 0.6rem;
-  letter-spacing: 0.5px;
-  padding: 2px 7px;
-  border-radius: 8px;
-  font-weight: 600;
-}
-
-.event-badge.yellow { background: rgba(255, 193, 7, 0.2); color: #FFD54F; }
-.event-badge.saffron { background: rgba(255, 112, 67, 0.2); color: #FFAB91; }
-.event-badge.rose { background: rgba(236, 64, 122, 0.2); color: #F48FB1; }
-.event-badge.royal { background: rgba(171, 71, 188, 0.2); color: #CE93D8; }
-.event-badge.holy { background: rgba(239, 83, 80, 0.2); color: #EF9A9A; }
-.event-badge.reception { background: rgba(255, 238, 88, 0.2); color: #FFF59D; }
-
-.event-jump-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 6px;
-  background: transparent;
-  border: none;
-  font-family: var(--font-sans);
-  font-size: 0.68rem;
-  color: var(--color-gold);
-  cursor: pointer;
-  padding: 0;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: color 0.2s ease;
-}
-
-.event-jump-btn:hover {
-  color: var(--color-gold-light);
-}
-
-/* Dedicated Ceremony Page Card Layout */
-.ceremony-page-card {
-  width: 100%;
-  max-width: 340px;
-  background: rgba(18, 18, 24, 0.6);
-  backdrop-filter: blur(14px);
-  border: 1px solid var(--color-glass-border);
-  border-radius: 20px;
-  padding: 22px 18px;
-  margin-bottom: 20px;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Hanging Garland (Toran) Header Decor */
-.garland-header-decor {
-  width: 100%;
-  margin: -10px 0 10px 0;
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.garland-svg {
-  width: 100%;
-  height: 48px;
-  filter: drop-shadow(0 4px 6px rgba(230, 81, 0, 0.4));
-  animation: garlandSway 4s ease-in-out infinite alternate;
-  transform-origin: top center;
-}
-
-@keyframes garlandSway {
-  0% { transform: rotate(-1.5deg); }
-  100% { transform: rotate(1.5deg); }
-}
-
-.ceremony-badge {
-  display: inline-block;
-  font-family: var(--font-serif);
-  font-size: 0.65rem;
-  letter-spacing: 1.5px;
-  border-radius: 12px;
-  padding: 4px 12px;
-  margin-bottom: 8px;
-  text-transform: uppercase;
-  font-weight: 600;
-}
-
-.ceremony-badge.yellow { background: rgba(255, 179, 0, 0.2); border: 1px solid rgba(255, 179, 0, 0.5); color: #FFE082; }
-.ceremony-badge.saffron { background: rgba(255, 112, 67, 0.2); border: 1px solid rgba(255, 112, 67, 0.5); color: #FFAB91; }
-.ceremony-badge.rose { background: rgba(236, 64, 122, 0.2); border: 1px solid rgba(236, 64, 122, 0.5); color: #F48FB1; }
-.ceremony-badge.royal { background: rgba(171, 71, 188, 0.2); border: 1px solid rgba(171, 71, 188, 0.5); color: #CE93D8; }
-.ceremony-badge.holy { background: rgba(239, 83, 80, 0.2); border: 1px solid rgba(239, 83, 80, 0.5); color: #EF9A9A; }
-.ceremony-badge.reception { background: rgba(255, 238, 88, 0.2); border: 1px solid rgba(255, 238, 88, 0.5); color: #FFF59D; }
-
-.ceremony-title {
-  font-family: var(--font-heading);
-  font-size: 1.45rem;
   margin-bottom: 6px;
-  line-height: 1.25;
 }
 
-.gold-text { color: var(--color-gold-light); }
-.saffron-text { color: #FFAB91; }
-.rose-text { color: #F48FB1; }
-.royal-text { color: #E1BEE7; }
-.holy-text { color: #FFCDD2; }
-.reception-text { color: #FFF9C4; }
-
-.ceremony-time-pill {
+.timeline-time-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
-  padding: 4px 12px;
-  font-family: var(--font-sans);
-  font-size: 0.72rem;
-  color: var(--color-text-bright);
-  font-weight: 600;
-  margin-bottom: 12px;
 }
 
-.ceremony-desc {
-  font-family: var(--font-body);
+.timeline-icon {
   font-size: 0.95rem;
-  line-height: 1.45;
-  color: var(--color-text-muted);
-  margin-bottom: 16px;
-  padding: 0 4px;
 }
 
-/* Feature Boxes */
-.ceremony-feature-box {
-  width: 100%;
-  border-radius: 12px;
-  padding: 12px 14px;
-  margin-bottom: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  text-align: left;
-}
-
-.haldi-box { background: rgba(255, 179, 0, 0.08); border: 1px solid rgba(255, 179, 0, 0.25); }
-.saffron-box { background: rgba(255, 112, 67, 0.08); border: 1px solid rgba(255, 112, 67, 0.25); }
-.rose-box { background: rgba(236, 64, 122, 0.08); border: 1px solid rgba(236, 64, 122, 0.25); }
-.royal-box { background: rgba(171, 71, 188, 0.08); border: 1px solid rgba(171, 71, 188, 0.25); }
-.holy-box { background: rgba(239, 83, 80, 0.08); border: 1px solid rgba(239, 83, 80, 0.25); }
-.reception-box { background: rgba(229, 193, 88, 0.08); border: 1px solid rgba(229, 193, 88, 0.25); }
-
-.feature-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-
-.feature-icon {
-  font-size: 1rem;
-  margin-top: 1px;
-}
-
-.feature-text {
-  display: flex;
-  flex-direction: column;
-}
-
-.feature-text strong {
+.time-text {
   font-family: var(--font-sans);
   font-size: 0.68rem;
-  letter-spacing: 0.5px;
-  color: var(--color-gold-light);
-  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: var(--color-gold);
 }
 
-.feature-text span {
+.ceremony-heading {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  color: var(--color-text-bright);
+  letter-spacing: 0.5px;
+  margin-bottom: 5px;
+}
+
+.ceremony-summary {
   font-family: var(--font-body);
   font-size: 0.85rem;
+  line-height: 1.4;
   color: var(--color-text-muted);
+  margin-bottom: 8px;
+}
+
+.ceremony-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 3px 8px;
+  font-family: var(--font-sans);
+  font-size: 0.66rem;
+  color: var(--color-gold-light);
+  letter-spacing: 0.3px;
+}
+
+.ceremony-tag .tag-icon {
+  font-size: 0.8rem;
 }
 
 /* Divine Sanskrit Shloka Banner */
@@ -2027,49 +1847,6 @@ html, body {
   color: #FFF9C4;
   font-weight: 500;
   letter-spacing: 0.5px;
-}
-
-.ceremony-actions {
-  display: flex;
-  gap: 10px;
-  width: 100%;
-  margin-bottom: 16px;
-}
-
-.ceremony-actions button,
-.ceremony-actions a {
-  flex: 1;
-  font-size: 0.75rem;
-  padding: 10px 8px;
-  text-align: center;
-  justify-content: center;
-}
-
-.ceremony-nav-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding-top: 10px;
-  border-top: 1px solid rgba(229, 193, 88, 0.15);
-}
-
-.nav-prev-btn, .nav-next-btn {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(229, 193, 88, 0.25);
-  border-radius: 14px;
-  padding: 4px 10px;
-  color: var(--color-gold);
-  font-family: var(--font-sans);
-  font-size: 0.68rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.nav-prev-btn:hover, .nav-next-btn:hover {
-  background: rgba(229, 193, 88, 0.18);
-  border-color: var(--color-gold-light);
-  color: var(--color-text-bright);
 }
 
 /* Mobile Viewport Responsiveness */
