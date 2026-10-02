@@ -539,6 +539,16 @@ html, body {
   transform: translateY(0);
 }
 
+.invitation-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 6px;
+}
+
 .arabic-bismillah, .header-calligraphy {
   font-family: var(--font-serif);
   font-size: 1.15rem;
@@ -547,25 +557,41 @@ html, body {
   color: var(--color-gold);
   line-height: 1.3;
   text-shadow: 0 0 15px rgba(229, 193, 88, 0.4);
+  text-align: center;
+  width: 100%;
 }
 
 .header-divider {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
-  margin: 12px 0 18px;
-  width: 140px;
+  margin: 10px auto 16px auto;
+  width: 170px;
+  max-width: 80%;
 }
 
-.header-divider .line {
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+.header-divider .line,
+.header-divider .gold-line {
+  flex: 1 1 0;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, #FFD54F 40%, #E5C158 80%, #D4A338);
+  box-shadow: 0 0 6px rgba(229, 193, 88, 0.5);
+  border-radius: 2px;
 }
 
-.header-divider .diamond {
-  font-size: 0.5rem;
-  color: var(--color-gold);
+.header-divider .gold-line.right {
+  background: linear-gradient(270deg, transparent, #FFD54F 40%, #E5C158 80%, #D4A338);
+}
+
+.header-divider .diamond,
+.header-divider .gold-diamond {
+  flex: 0 0 auto;
+  font-size: 0.75rem;
+  color: #FFE082;
+  text-shadow: 0 0 8px rgba(229, 193, 88, 0.8);
+  line-height: 1;
+  padding: 0 2px;
 }
 
 .greeting-text {
@@ -1643,108 +1669,92 @@ html, body {
    CEREMONY PAGES, EVENT TABS & ATMOSPHERE EFFECTS
    ========================================================================== */
 
-/* Horizontal Ceremony Switcher Tabs */
-.ceremony-nav-tabs {
+/* Scroll Down Guide */
+.scroll-down-hint {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  width: 100%;
-  max-width: 360px;
-  overflow-x: auto;
-  padding: 6px 4px 10px 4px;
-  margin: 12px 0 16px 0;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-.ceremony-nav-tabs::-webkit-scrollbar {
-  display: none;
-}
-
-.ceremony-tab-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-  background: rgba(22, 22, 30, 0.7);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(229, 193, 88, 0.25);
-  border-radius: 20px;
-  padding: 6px 12px;
-  color: var(--color-text-muted);
-  font-family: var(--font-serif);
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-  white-space: nowrap;
-}
-
-.ceremony-tab-btn .tab-icon {
-  font-size: 0.85rem;
-}
-
-.ceremony-tab-btn:hover {
-  background: rgba(229, 193, 88, 0.15);
-  border-color: var(--color-gold);
+  justify-content: center;
+  gap: 4px;
+  margin: 10px auto 18px auto;
   color: var(--color-gold-light);
-  transform: translateY(-1px);
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.9;
 }
 
-.ceremony-tab-btn.active {
-  background: var(--color-gold-gradient);
-  border-color: #FFF4D0;
-  color: #0A0A0C;
-  font-weight: 700;
-  box-shadow: 0 4px 14px rgba(229, 193, 88, 0.35);
-  transform: scale(1.03);
+.scroll-hint-text {
+  font-weight: 500;
+  text-shadow: 0 0 10px rgba(229, 193, 88, 0.35);
 }
 
-/* Tab Panes Container */
+.scroll-chevron {
+  font-size: 1rem;
+  color: var(--color-gold);
+  animation: bounceHint 2s infinite ease-in-out;
+}
+
+@keyframes bounceHint {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(5px); opacity: 1; }
+}
+
+/* Ceremonies Continuous Scroll Container */
+.ceremonies-scroll-container,
 .tab-panes-wrapper {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 16px;
+  margin: 0 auto;
 }
 
-.tab-pane {
-  width: 100%;
+/* Royal Ceremony Card Divider */
+.ceremony-scroll-divider {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  animation: tabFadeIn 0.35s ease forwards;
+  justify-content: center;
+  gap: 14px;
+  width: 220px;
+  max-width: 80%;
+  margin: 6px auto 14px auto;
+  opacity: 0.95;
 }
 
-.tab-pane.hidden {
-  display: none !important;
+.scroll-divider-line {
+  flex: 1 1 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(229, 193, 88, 0.7), transparent);
 }
 
-@keyframes tabFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.scroll-divider-icon {
+  font-size: 0.95rem;
+  color: var(--color-gold-light);
+  filter: drop-shadow(0 0 6px rgba(229, 193, 88, 0.7));
+  line-height: 1;
 }
 
 /* Dedicated Ceremony Page Card Layout */
 .ceremony-page-card {
   width: 100%;
-  max-width: 340px;
-  background: rgba(18, 18, 24, 0.65);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  max-width: 360px;
+  margin: 0 auto 10px auto;
+  background: rgba(18, 18, 24, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--color-glass-border);
-  border-radius: 20px;
-  padding: 20px 18px;
-  margin-bottom: 20px;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+  border-radius: 22px;
+  padding: 22px 18px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55), 0 0 1px rgba(229, 193, 88, 0.2) inset;
   position: relative;
   overflow: hidden;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Simple, Elegant Card Header Ornaments (NO garlands, NO balloons) */

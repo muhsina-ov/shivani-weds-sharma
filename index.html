@@ -48,7 +48,11 @@
   <!-- Ambient Desktop Background -->
   <div class="ambient-backdrop" id="ambientBackdrop"></div>
 
-  <!-- Background YouTube Music Player Container -->
+  <!-- Background Wedding Music Audio Element -->
+  <audio id="weddingBgAudio" loop preload="auto" playsinline>
+    <source src="./assets/audio/bg-music.mp3" type="audio/mpeg">
+    <source src="/assets/audio/bg-music.mp3" type="audio/mpeg">
+  </audio>
   <div id="youtubePlayerContainer" class="youtube-player-container"></div>
 
   <!-- Top Floating Controls -->
@@ -112,9 +116,9 @@
           <div class="invitation-header animate-element" style="--delay: 0.1s;">
             <div class="header-calligraphy" id="displayBismillah">|| Shree Ganeshay Namah ||</div>
             <div class="header-divider">
-              <span class="line"></span>
-              <span class="diamond">◆</span>
-              <span class="line"></span>
+              <span class="gold-line left"></span>
+              <span class="gold-diamond">✦</span>
+              <span class="gold-line right"></span>
             </div>
           </div>
 
@@ -139,35 +143,17 @@
 
           <div class="gold-separator animate-element" style="--delay: 0.6s;"></div>
 
-          <!-- Ceremony Switcher Horizontal Tabs (Haldi -> Sangeet -> Wedding -> Venue -> RSVP) -->
-          <nav class="ceremony-nav-tabs animate-element" id="ceremonyTabs" style="--delay: 0.65s;" aria-label="Wedding Pages">
-            <button class="ceremony-tab-btn active" data-tab="haldi" id="tabBtnHaldi">
-              <span class="tab-icon">💛</span>
-              <span class="tab-label">Haldi</span>
-            </button>
-            <button class="ceremony-tab-btn" data-tab="sangeet" id="tabBtnSangeet">
-              <span class="tab-icon">💃</span>
-              <span class="tab-label">Sangeet</span>
-            </button>
-            <button class="ceremony-tab-btn" data-tab="wedding" id="tabBtnWedding">
-              <span class="tab-icon">🌸</span>
-              <span class="tab-label">Wedding</span>
-            </button>
-            <button class="ceremony-tab-btn" data-tab="venue" id="tabBtnVenue">
-              <span class="tab-icon">🏰</span>
-              <span class="tab-label">Venue</span>
-            </button>
-            <button class="ceremony-tab-btn" data-tab="rsvp" id="tabBtnRsvp">
-              <span class="tab-icon">💌</span>
-              <span class="tab-label">RSVP</span>
-            </button>
-          </nav>
+          <!-- Continuous Vertical Scroll Guide -->
+          <div class="scroll-down-hint animate-element" style="--delay: 0.65s;">
+            <span class="scroll-hint-text">Celebration Ceremonies</span>
+            <div class="scroll-chevron">↓</div>
+          </div>
 
-          <!-- ================= TAB PANES CONTAINER ================= -->
-          <div class="tab-panes-wrapper animate-element" id="tabPanesWrapper" style="--delay: 0.75s;">
+          <!-- ================= CEREMONIES CONTINUOUS SCROLL CONTAINER ================= -->
+          <div class="ceremonies-scroll-container animate-element" id="ceremoniesScrollContainer" style="--delay: 0.75s;">
 
             <!-- PAGE 1: HALDI PAGE -->
-            <div class="tab-pane active ceremony-page-card" id="pane-haldi">
+            <section class="ceremony-page-card" id="section-haldi">
               <!-- Simple, elegant royal header ornament (NO garlands, NO balloons) -->
               <div class="card-ornament haldi-ornament">
                 <svg class="ornament-svg" viewBox="0 0 240 24" fill="none">
@@ -232,15 +218,17 @@
                   <span>Get Directions ↗</span>
                 </a>
               </div>
+            </section>
 
-              <div class="ceremony-nav-footer">
-                <span class="step-indicator">Page 1 of 5</span>
-                <button class="nav-next-btn" data-target-tab="sangeet">Next: Sangeet Night ❯</button>
-              </div>
+            <!-- Royal Section Divider -->
+            <div class="ceremony-scroll-divider">
+              <span class="scroll-divider-line"></span>
+              <span class="scroll-divider-icon">💛</span>
+              <span class="scroll-divider-line"></span>
             </div>
 
             <!-- PAGE 2: SANGEET PAGE -->
-            <div class="tab-pane hidden ceremony-page-card" id="pane-sangeet">
+            <section class="ceremony-page-card" id="section-sangeet">
               <!-- Classy evening starlight ornament (NO garlands, NO balloons) -->
               <div class="card-ornament sangeet-ornament">
                 <svg class="ornament-svg" viewBox="0 0 240 24" fill="none">
@@ -305,16 +293,17 @@
                   <span>Get Directions ↗</span>
                 </a>
               </div>
+            </section>
 
-              <div class="ceremony-nav-footer">
-                <button class="nav-prev-btn" data-target-tab="haldi">❮ Haldi</button>
-                <span class="step-indicator">Page 2 of 5</span>
-                <button class="nav-next-btn" data-target-tab="wedding">Next: Wedding ❯</button>
-              </div>
+            <!-- Royal Section Divider -->
+            <div class="ceremony-scroll-divider">
+              <span class="scroll-divider-line"></span>
+              <span class="scroll-divider-icon">🌸</span>
+              <span class="scroll-divider-line"></span>
             </div>
 
-            <!-- PAGE 3: WEDDING PAGE (Pheras 4:00 PM & Reception 7:00 PM on same page) -->
-            <div class="tab-pane hidden ceremony-page-card" id="pane-wedding">
+            <!-- PAGE 3: WEDDING PAGE (Pheras 4:00 PM & Reception 7:00 PM) -->
+            <section class="ceremony-page-card" id="section-wedding">
               <div class="ceremony-badge holy">
                 <span>DAY 2 • THURSDAY, 20TH NOVEMBER 2026</span>
               </div>
@@ -386,16 +375,17 @@
                   <span>Get Directions ↗</span>
                 </a>
               </div>
+            </section>
 
-              <div class="ceremony-nav-footer">
-                <button class="nav-prev-btn" data-target-tab="sangeet">❮ Sangeet</button>
-                <span class="step-indicator">Page 3 of 5</span>
-                <button class="nav-next-btn" data-target-tab="venue">Next: Venue ❯</button>
-              </div>
+            <!-- Royal Section Divider -->
+            <div class="ceremony-scroll-divider">
+              <span class="scroll-divider-line"></span>
+              <span class="scroll-divider-icon">🏰</span>
+              <span class="scroll-divider-line"></span>
             </div>
 
             <!-- PAGE 4: VENUE PAGE -->
-            <div class="tab-pane hidden ceremony-page-card" id="pane-venue">
+            <section class="ceremony-page-card" id="section-venue">
               <div class="ceremony-badge royal">
                 <span>CELEBRATION DESTINATION</span>
               </div>
@@ -456,16 +446,17 @@
                   <span>Open in Google Maps / Get Directions ↗</span>
                 </a>
               </div>
+            </section>
 
-              <div class="ceremony-nav-footer">
-                <button class="nav-prev-btn" data-target-tab="wedding">❮ Wedding</button>
-                <span class="step-indicator">Page 4 of 5</span>
-                <button class="nav-next-btn" data-target-tab="rsvp">Next: RSVP ❯</button>
-              </div>
+            <!-- Royal Section Divider -->
+            <div class="ceremony-scroll-divider">
+              <span class="scroll-divider-line"></span>
+              <span class="scroll-divider-icon">💌</span>
+              <span class="scroll-divider-line"></span>
             </div>
 
             <!-- PAGE 5: RSVP PAGE -->
-            <div class="tab-pane hidden ceremony-page-card" id="pane-rsvp">
+            <section class="ceremony-page-card" id="section-rsvp">
               <div class="ceremony-badge yellow">
                 <span>CONFIRM ATTENDANCE</span>
               </div>
@@ -555,16 +546,10 @@
                 </div>
 
               </div>
-
-              <div class="ceremony-nav-footer">
-                <button class="nav-prev-btn" data-target-tab="venue">❮ Venue</button>
-                <span class="step-indicator">Page 5 of 5</span>
-                <button class="nav-next-btn" data-target-tab="haldi">First: Haldi ↺</button>
-              </div>
-            </div>
+            </section>
 
           </div>
-          <!-- ================= END TAB PANES ================= -->
+          <!-- ================= END CEREMONIES SCROLL CONTAINER ================= -->
 
           <!-- Replay Footer -->
           <div class="invitation-footer animate-element" style="--delay: 0.85s;">

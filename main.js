@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const audioToggleBtn = document.getElementById('audioToggleBtn');
   const audioIconOn = document.getElementById('audioIconOn');
   const audioIconOff = document.getElementById('audioIconOff');
+  const weddingBgAudio = document.getElementById('weddingBgAudio');
   const replayBtn = document.getElementById('replayBtn');
   
   // Modals
@@ -396,6 +397,30 @@ document.addEventListener('DOMContentLoaded', () => {
     isPlaying = true;
     initAudioContext();
 
+    // 0. Play Royal Wedding Background Music
+    if (weddingBgAudio) {
+      weddingBgAudio.currentTime = 0;
+      weddingBgAudio.volume = 0.85;
+      weddingBgAudio.muted = isAudioMuted;
+      const audioPromise = weddingBgAudio.play();
+      if (audioPromise !== undefined) {
+        audioPromise.then(() => {
+          console.log('Wedding background music playing smoothly');
+        }).catch(err => {
+          console.warn('Audio auto-play prevented by browser policy, unlocking on next user tap:', err);
+          const unlockAudio = () => {
+            if (!isAudioMuted && weddingBgAudio.paused) {
+              weddingBgAudio.play().catch(() => {});
+            }
+            document.removeEventListener('click', unlockAudio);
+            document.removeEventListener('touchstart', unlockAudio);
+          };
+          document.addEventListener('click', unlockAudio, { once: true });
+          document.addEventListener('touchstart', unlockAudio, { once: true });
+        });
+      }
+    }
+
     // Trigger YouTube background music if URL input is filled
     const ytUrlInput = document.getElementById('inputYoutubeUrl');
     if (ytUrlInput && ytUrlInput.value) {
@@ -466,6 +491,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const lanternsContainer = document.getElementById('lanternsContainer');
     if (lanternsContainer) lanternsContainer.classList.remove('revealed');
+
+    if (weddingBgAudio) {
+      weddingBgAudio.pause();
+      weddingBgAudio.currentTime = 0;
+    }
 
     setTimeout(() => {
       invitationOverlay.classList.add('hidden');
@@ -591,6 +621,13 @@ document.addEventListener('DOMContentLoaded', () => {
     isAudioMuted = !isAudioMuted;
     video.muted = isAudioMuted;
     
+    if (weddingBgAudio) {
+      weddingBgAudio.muted = isAudioMuted;
+      if (!isAudioMuted && weddingBgAudio.paused) {
+        weddingBgAudio.play().catch(() => {});
+      }
+    }
+
     toggleYouTubeAudioMute(isAudioMuted);
 
     if (isAudioMuted) {
@@ -618,96 +655,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Add to Google Calendar (Main Wedding Celebration) ---
   // ==========================================================================
-  // CEREMONY NAVIGATION ENGINE (Haldi -> Sangeet -> Wedding -> Venue -> RSVP)
+  // CONTINUOUS SCROLL ATMOSPHERE OBSERVER
   // ==========================================================================
-  const ceremonyTabs = ['haldi', 'sangeet', 'wedding', 'venue', 'rsvp'];
-  let currentCeremonyTab = 'haldi';
+  const ceremonySections = [
+    { id: 'section-haldi', mode: 'haldi' },
+    { id: 'section-sangeet', mode: 'sangeet' },
+    { id: 'section-wedding', mode: 'wedding' },
+    { id: 'section-venue', mode: 'wedding' },
+    { id: 'section-rsvp', mode: 'wedding' }
+  ];
 
-  function switchCeremonyTab(tabId) {
-    if (!ceremonyTabs.includes(tabId)) return;
-    currentCeremonyTab = tabId;
-
-    // 1. Update tab buttons
-    document.querySelectorAll('.ceremony-tab-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.tab === tabId);
-    });
-
-    // 2. Update tab panes
-    document.querySelectorAll('.tab-pane').forEach(pane => {
-      if (pane.id === `pane-${tabId}`) {
-        pane.classList.remove('hidden');
-        pane.classList.add('active');
-      } else {
-        pane.classList.add('hidden');
-        pane.classList.remove('active');
-      }
-    });
-
-    // 3. Smooth scroll to top of content
-    const scrollContainer = document.getElementById('contentScrollable');
-    if (scrollContainer) {
-      scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // 4. Scroll active tab button into center of view
-    const activeTabBtn = document.querySelector(`.ceremony-tab-btn[data-tab="${tabId}"]`);
-    if (activeTabBtn) {
-      activeTabBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    }
-
-    // 5. Update atmosphere particles
-    switchAtmosphereMode(tabId);
-  }
-
-  // Click on Ceremony Tab Buttons
-  document.querySelectorAll('.ceremony-tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      switchCeremonyTab(btn.dataset.tab);
-    });
-  });
-
-  // Click on Next / Prev navigation buttons
-  document.querySelectorAll('[data-target-tab]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const targetTab = btn.dataset.targetTab;
-      if (targetTab) {
-        switchCeremonyTab(targetTab);
-      }
-    });
-  });
-
-  // Touch Swipe Gesture Navigation (Left = Next, Right = Prev)
-  const tabWrapper = document.getElementById('tabPanesWrapper');
-  if (tabWrapper) {
-    let touchStartX = 0;
-    let touchStartY = 0;
-
-    tabWrapper.addEventListener('touchstart', (e) => {
-      if (e.touches && e.touches[0]) {
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
-      }
-    }, { passive: true });
-
-    tabWrapper.addEventListener('touchend', (e) => {
-      if (e.changedTouches && e.changedTouches[0]) {
-        const deltaX = e.changedTouches[0].clientX - touchStartX;
-        const deltaY = e.changedTouches[0].clientY - touchStartY;
-
-        // Ensure horizontal swipe is dominant and above threshold
-        if (Math.abs(deltaX) > 55 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
-          const currentIndex = ceremonyTabs.indexOf(currentCeremonyTab);
-          if (deltaX < 0 && currentIndex < ceremonyTabs.length - 1) {
-            // Swiped left -> Next page
-            switchCeremonyTab(ceremonyTabs[currentIndex + 1]);
-          } else if (deltaX > 0 && currentIndex > 0) {
-            // Swiped right -> Previous page
-            switchCeremonyTab(ceremonyTabs[currentIndex - 1]);
+  if ('IntersectionObserver' in window && contentScrollable) {
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.35) {
+          const match = ceremonySections.find(s => s.id === entry.target.id);
+          if (match) {
+            switchAtmosphereMode(match.mode);
           }
         }
-      }
-    }, { passive: true });
+      });
+    }, {
+      root: contentScrollable,
+      threshold: [0.35, 0.6]
+    });
+
+    ceremonySections.forEach(s => {
+      const el = document.getElementById(s.id);
+      if (el) sectionObserver.observe(el);
+    });
   }
 
   // ==========================================================================
