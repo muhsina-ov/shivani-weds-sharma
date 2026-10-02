@@ -139,225 +139,435 @@
 
           <div class="gold-separator animate-element" style="--delay: 0.6s;"></div>
 
-          <!-- Interactive Scratch-to-Reveal Date Card -->
-          <div class="scratch-card-wrapper animate-element" style="--delay: 0.7s;">
-            <div class="scratch-card-container" id="scratchContainer">
-              <!-- Underneath Date Card -->
-              <div class="date-time-card" id="dateTimeCard">
-                <div class="date-day" id="displayDay">WEDNESDAY & THURSDAY</div>
-                <div class="date-main">
-                  <span class="date-month" id="displayMonth">NOVEMBER</span>
-                  <span class="date-num" id="displayDateNum">19 - 20</span>
-                  <span class="date-year" id="displayYear">2026</span>
-                </div>
-                <div class="date-time" id="displayTime">10:00 AM ONWARDS</div>
+          <!-- Ceremony Switcher Horizontal Tabs (Haldi -> Sangeet -> Wedding -> Venue -> RSVP) -->
+          <nav class="ceremony-nav-tabs animate-element" id="ceremonyTabs" style="--delay: 0.65s;" aria-label="Wedding Pages">
+            <button class="ceremony-tab-btn active" data-tab="haldi" id="tabBtnHaldi">
+              <span class="tab-icon">💛</span>
+              <span class="tab-label">Haldi</span>
+            </button>
+            <button class="ceremony-tab-btn" data-tab="sangeet" id="tabBtnSangeet">
+              <span class="tab-icon">💃</span>
+              <span class="tab-label">Sangeet</span>
+            </button>
+            <button class="ceremony-tab-btn" data-tab="wedding" id="tabBtnWedding">
+              <span class="tab-icon">🌸</span>
+              <span class="tab-label">Wedding</span>
+            </button>
+            <button class="ceremony-tab-btn" data-tab="venue" id="tabBtnVenue">
+              <span class="tab-icon">🏰</span>
+              <span class="tab-label">Venue</span>
+            </button>
+            <button class="ceremony-tab-btn" data-tab="rsvp" id="tabBtnRsvp">
+              <span class="tab-icon">💌</span>
+              <span class="tab-label">RSVP</span>
+            </button>
+          </nav>
+
+          <!-- ================= TAB PANES CONTAINER ================= -->
+          <div class="tab-panes-wrapper animate-element" id="tabPanesWrapper" style="--delay: 0.75s;">
+
+            <!-- PAGE 1: HALDI PAGE -->
+            <div class="tab-pane active ceremony-page-card" id="pane-haldi">
+              <!-- Simple, elegant royal header ornament (NO garlands, NO balloons) -->
+              <div class="card-ornament haldi-ornament">
+                <svg class="ornament-svg" viewBox="0 0 240 24" fill="none">
+                  <line x1="20" y1="12" x2="85" y2="12" stroke="url(#goldLineGradHaldi)" stroke-width="1.2" stroke-linecap="round"/>
+                  <circle cx="95" cy="12" r="2.5" fill="#E5C158"/>
+                  <polygon points="120,4 126,12 120,20 114,12" fill="#FFD54F"/>
+                  <circle cx="120" cy="12" r="1.5" fill="#FFFFFF"/>
+                  <circle cx="145" cy="12" r="2.5" fill="#E5C158"/>
+                  <line x1="155" y1="12" x2="220" y2="12" stroke="url(#goldLineGradHaldi)" stroke-width="1.2" stroke-linecap="round"/>
+                  <defs>
+                    <linearGradient id="goldLineGradHaldi" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stop-color="#E5C158" stop-opacity="0.1"/>
+                      <stop offset="100%" stop-color="#E5C158" stop-opacity="0.9"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+
+              <div class="ceremony-badge yellow">
+                <span>DAY 1 • WEDNESDAY, 19TH NOVEMBER 2026</span>
               </div>
               
-              <!-- Gold Scratch Foil Canvas -->
-              <canvas id="scratchCanvas" class="scratch-canvas"></canvas>
+              <h2 class="ceremony-title gold-text">Shubh Haldi Ceremony</h2>
+              <div class="ceremony-time-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>10:00 AM Onwards</span>
+              </div>
+
+              <p class="ceremony-desc">
+                An auspicious and joyful morning immersed in the golden hues of turmeric blessings, vibrant music, fragrant flower petals, and warm family celebrations to bless Shivani & Prajjual.
+              </p>
+
+              <div class="ceremony-feature-box haldi-box">
+                <div class="feature-item">
+                  <span class="feature-icon">🌼</span>
+                  <div class="feature-text">
+                    <strong>Theme & Dress Code</strong>
+                    <span>Sunshine Yellow, Ochre & Floral Indian Wear</span>
+                  </div>
+                </div>
+                <div class="feature-item">
+                  <span class="feature-icon">✨</span>
+                  <div class="feature-text">
+                    <strong>Rituals & Highlights</strong>
+                    <span>Haldi Ubtan, Phoolon Ki Holi & Folk Music</span>
+                  </div>
+                </div>
+                <div class="feature-item">
+                  <span class="feature-icon">📍</span>
+                  <div class="feature-text">
+                    <strong>Venue</strong>
+                    <span>Devalaya Resort, Jhansi Road, Sithouli, Gwalior</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ceremony-actions">
+                <button class="primary-gold-btn ceremony-calendar-btn" data-event="Haldi Ceremony" data-date="20261119T043000Z/20261119T093000Z">
+                  <span>Add Haldi to Calendar 📅</span>
+                </button>
+                <a href="https://www.google.com/maps/search/?api=1&query=Devalaya+Resort+Jhansi+Road+Gwalior" target="_blank" rel="noopener noreferrer" class="secondary-glass-btn">
+                  <span>Get Directions ↗</span>
+                </a>
+              </div>
+
+              <div class="ceremony-nav-footer">
+                <span class="step-indicator">Page 1 of 5</span>
+                <button class="nav-next-btn" data-target-tab="sangeet">Next: Sangeet Night ❯</button>
+              </div>
+            </div>
+
+            <!-- PAGE 2: SANGEET PAGE -->
+            <div class="tab-pane hidden ceremony-page-card" id="pane-sangeet">
+              <!-- Classy evening starlight ornament (NO garlands, NO balloons) -->
+              <div class="card-ornament sangeet-ornament">
+                <svg class="ornament-svg" viewBox="0 0 240 24" fill="none">
+                  <line x1="20" y1="12" x2="85" y2="12" stroke="url(#sangeetLineGrad)" stroke-width="1.2" stroke-linecap="round"/>
+                  <circle cx="95" cy="12" r="2" fill="#F48FB1"/>
+                  <polygon points="120,3 124,12 120,21 116,12" fill="#FF80AB"/>
+                  <circle cx="120" cy="12" r="1.5" fill="#FFFFFF"/>
+                  <circle cx="145" cy="12" r="2" fill="#F48FB1"/>
+                  <line x1="155" y1="12" x2="220" y2="12" stroke="url(#sangeetLineGrad)" stroke-width="1.2" stroke-linecap="round"/>
+                  <defs>
+                    <linearGradient id="sangeetLineGrad" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stop-color="#F48FB1" stop-opacity="0.1"/>
+                      <stop offset="100%" stop-color="#FF80AB" stop-opacity="0.9"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+
+              <div class="ceremony-badge rose">
+                <span>DAY 1 • WEDNESDAY, 19TH NOVEMBER 2026</span>
+              </div>
               
-              <!-- Scratch Hint Badge -->
-              <div class="scratch-hint-badge" id="scratchHint">
-                <span class="sparkle-icon">✨</span>
-                <span>Scratch foil to reveal wedding dates</span>
+              <h2 class="ceremony-title rose-text">Engagement & Sangeet Night</h2>
+              <div class="ceremony-time-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>7:00 PM Onwards</span>
               </div>
-            </div>
 
-            <button id="quickRevealBtn" class="quick-reveal-btn">
-              <span>Quick Reveal Dates ✨</span>
-            </button>
-          </div>
+              <p class="ceremony-desc">
+                An electrifying evening of exchanging rings, romantic melodies, choreography showdowns, live DJ beats, and spirited celebration on the dance floor!
+              </p>
 
-          <!-- Live Countdown Row -->
-          <div class="countdown-section animate-element" style="--delay: 0.8s;">
-            <div class="countdown-heading">COUNTDOWN TO CELEBRATIONS</div>
-            <div class="countdown-grid" id="countdownGrid">
-              <div class="countdown-pill">
-                <span class="countdown-num" id="cdDays">00</span>
-                <span class="countdown-unit">DAYS</span>
-              </div>
-              <div class="countdown-pill">
-                <span class="countdown-num" id="cdHours">00</span>
-                <span class="countdown-unit">HOURS</span>
-              </div>
-              <div class="countdown-pill">
-                <span class="countdown-num" id="cdMins">00</span>
-                <span class="countdown-unit">MINS</span>
-              </div>
-              <div class="countdown-pill">
-                <span class="countdown-num" id="cdSecs">00</span>
-                <span class="countdown-unit">SECS</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Venue & Location Block -->
-          <div class="venue-block animate-element" style="--delay: 0.85s;">
-            <div class="venue-badge-pill">
-              <span class="venue-icon">🏰</span>
-              <span>WEDDING VENUE</span>
-            </div>
-            <h3 class="venue-name" id="displayVenue">Devalaya Resort</h3>
-            <p class="venue-location" id="displayLocation">Jhansi Road, Sithouli, Gwalior, Madhya Pradesh</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Devalaya+Resort+Jhansi+Road+Gwalior" target="_blank" rel="noopener noreferrer" class="venue-direct-map-link">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              <span>Open in Google Maps ↗</span>
-            </a>
-          </div>
-
-          <!-- Sacred Sanskrit Invocation Shloka Banner -->
-          <div class="shloka-banner animate-element" style="--delay: 0.9s;">
-            <span class="shloka-symbol">ॐ</span>
-            <p class="shloka-text">
-              मंगलम् भगवान विष्णुः मंगलम् गरुडध्वजः ।<br>
-              मंगलम् पुण्डरीकाक्षः मङ्गलाय तनो हरिः ॥
-            </p>
-          </div>
-
-          <!-- Complete 2-Day Wedding Event Itinerary (Single Continuous Timeline) -->
-          <div class="itinerary-section animate-element" style="--delay: 0.95s;">
-            <div class="section-title">WEDDING ITINERARY</div>
-            
-            <!-- Day 1 Header -->
-            <div class="itinerary-day-divider">
-              <div class="day-badge">DAY 1 • WEDNESDAY, 19TH NOVEMBER</div>
-            </div>
-
-            <div class="timeline-wrapper">
-              <!-- 1. Haldi -->
-              <div class="timeline-card haldi-card">
-                <div class="timeline-card-header">
-                  <div class="timeline-time-badge">
-                    <span class="timeline-icon">💛</span>
-                    <span class="time-text">10:00 AM ONWARDS</span>
+              <div class="ceremony-feature-box rose-box">
+                <div class="feature-item">
+                  <span class="feature-icon">💍</span>
+                  <div class="feature-text">
+                    <strong>Ceremony Highlights</strong>
+                    <span>Ring Exchange, Special Performances & DJ Party</span>
                   </div>
-                  <span class="event-badge yellow">Shubh Haldi</span>
                 </div>
-                <h4 class="ceremony-heading">Haldi Ceremony</h4>
-                <p class="ceremony-summary">Morning ritual of turmeric blessings, joy, music & fragrant blossoms to bless Shivani & Prajjual.</p>
-                <div class="ceremony-tag">
-                  <span class="tag-icon">🌼</span>
-                  <span>Sunshine Yellow & Floral Indian Wear</span>
+                <div class="feature-item">
+                  <span class="feature-icon">💃</span>
+                  <div class="feature-text">
+                    <strong>Dress Code</strong>
+                    <span>Glamorous Indo-Western, Sequins & Evening Chic</span>
+                  </div>
+                </div>
+                <div class="feature-item">
+                  <span class="feature-icon">📍</span>
+                  <div class="feature-text">
+                    <strong>Venue</strong>
+                    <span>Devalaya Resort, Jhansi Road, Sithouli, Gwalior</span>
+                  </div>
                 </div>
               </div>
 
-              <!-- 2. Lagun -->
-              <div class="timeline-card lagun-card">
-                <div class="timeline-card-header">
-                  <div class="timeline-time-badge">
-                    <span class="timeline-icon">🧡</span>
-                    <span class="time-text">3:00 PM – 4:00 PM</span>
-                  </div>
-                  <span class="event-badge saffron">Auspicious Shagun</span>
-                </div>
-                <h4 class="ceremony-heading">Lagun Ceremony</h4>
-                <p class="ceremony-summary">Sacred presentation of the wedding letter (Lagun Patrika) & Tilak rituals uniting families with Vedic blessings.</p>
-                <div class="ceremony-tag">
-                  <span class="tag-icon">🪔</span>
-                  <span>Traditional Pastels & Graceful Ethnic</span>
-                </div>
+              <div class="ceremony-actions">
+                <button class="primary-gold-btn ceremony-calendar-btn" data-event="Engagement & Sangeet" data-date="20261119T133000Z/20261119T183000Z">
+                  <span>Add Sangeet to Calendar 📅</span>
+                </button>
+                <a href="https://www.google.com/maps/search/?api=1&query=Devalaya+Resort+Jhansi+Road+Gwalior" target="_blank" rel="noopener noreferrer" class="secondary-glass-btn">
+                  <span>Get Directions ↗</span>
+                </a>
               </div>
 
-              <!-- 3. Engagement & Sangeet -->
-              <div class="timeline-card sangeet-card">
-                <div class="timeline-card-header">
-                  <div class="timeline-time-badge">
-                    <span class="timeline-icon">💃</span>
-                    <span class="time-text">7:00 PM ONWARDS</span>
-                  </div>
-                  <span class="event-badge rose">Sangeet Night</span>
-                </div>
-                <h4 class="ceremony-heading">Engagement & Sangeet</h4>
-                <p class="ceremony-summary">Ring exchange, romantic melodies, choreography performances, live DJ beats & celebration on the dance floor.</p>
-                <div class="ceremony-tag">
-                  <span class="tag-icon">✨</span>
-                  <span>Glamorous Indo-Western, Sequins & Evening Chic</span>
-                </div>
+              <div class="ceremony-nav-footer">
+                <button class="nav-prev-btn" data-target-tab="haldi">❮ Haldi</button>
+                <span class="step-indicator">Page 2 of 5</span>
+                <button class="nav-next-btn" data-target-tab="wedding">Next: Wedding ❯</button>
               </div>
             </div>
 
-            <!-- Day 2 Header -->
-            <div class="itinerary-day-divider">
-              <div class="day-badge">DAY 2 • THURSDAY, 20TH NOVEMBER</div>
+            <!-- PAGE 3: WEDDING PAGE (Pheras 4:00 PM & Reception 7:00 PM on same page) -->
+            <div class="tab-pane hidden ceremony-page-card" id="pane-wedding">
+              <div class="ceremony-badge holy">
+                <span>DAY 2 • THURSDAY, 20TH NOVEMBER 2026</span>
+              </div>
+
+              <!-- Sacred Sanskrit Shloka Banner -->
+              <div class="shloka-banner">
+                <span class="shloka-symbol">ॐ</span>
+                <p class="shloka-text">
+                  मंगलम् भगवान विष्णुः मंगलम् गरुडध्वजः ।<br>
+                  मंगलम् पुण्डरीकाक्षः मङ्गलाय तनो हरिः ॥
+                </p>
+              </div>
+              
+              <h2 class="ceremony-title holy-text">The Royal Wedding</h2>
+              <div class="ceremony-subtitle-text">Vivah Sanskar & Grand Reception</div>
+
+              <!-- Wedding Ceremonies Breakdown Container -->
+              <div class="wedding-ceremonies-dual">
+                
+                <!-- Ceremony 1: Pheras -->
+                <div class="wedding-sub-card pheras-sub-card">
+                  <div class="sub-card-header">
+                    <div class="sub-card-title-row">
+                      <span class="ceremony-emoji">🌸</span>
+                      <h3 class="sub-card-heading">Sacred Pheras</h3>
+                    </div>
+                    <span class="sub-time-pill">4:00 PM Onwards</span>
+                  </div>
+                  <p class="sub-card-desc">
+                    Seven sacred vows around the holy Agni fire, Kanyadaan & Varmala rituals binding Shivani & Prajjual in eternal matrimony.
+                  </p>
+                  <div class="sub-card-tag">
+                    <span class="tag-icon">🔥</span>
+                    <span>Regal Indian Wedding Wear & Traditional Silks</span>
+                  </div>
+                </div>
+
+                <!-- Ceremony 2: Reception -->
+                <div class="wedding-sub-card reception-sub-card">
+                  <div class="sub-card-header">
+                    <div class="sub-card-title-row">
+                      <span class="ceremony-emoji">🥂</span>
+                      <h3 class="sub-card-heading">Grand Reception</h3>
+                    </div>
+                    <span class="sub-time-pill">7:00 PM Onwards</span>
+                  </div>
+                  <p class="sub-card-desc">
+                    Celebratory toasts, music, felicitation, and a royal banquet feast under shimmering starlight to bless the newlyweds.
+                  </p>
+                  <div class="sub-card-tag">
+                    <span class="tag-icon">✨</span>
+                    <span>Black Tie, Tuxedos, Evening Gowns & Formal Regal</span>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Venue Inline Pill -->
+              <div class="venue-inline-pill">
+                <span class="venue-icon">🏰</span>
+                <span>Venue: Devalaya Resort, Jhansi Road, Gwalior</span>
+              </div>
+
+              <div class="ceremony-actions">
+                <button class="primary-gold-btn ceremony-calendar-btn" data-event="Wedding Celebration" data-date="20261120T103000Z/20261120T183000Z">
+                  <span>Add Wedding to Calendar 📅</span>
+                </button>
+                <a href="https://www.google.com/maps/search/?api=1&query=Devalaya+Resort+Jhansi+Road+Gwalior" target="_blank" rel="noopener noreferrer" class="secondary-glass-btn">
+                  <span>Get Directions ↗</span>
+                </a>
+              </div>
+
+              <div class="ceremony-nav-footer">
+                <button class="nav-prev-btn" data-target-tab="sangeet">❮ Sangeet</button>
+                <span class="step-indicator">Page 3 of 5</span>
+                <button class="nav-next-btn" data-target-tab="venue">Next: Venue ❯</button>
+              </div>
             </div>
 
-            <div class="timeline-wrapper">
-              <!-- 4. Barat -->
-              <div class="timeline-card barat-card">
-                <div class="timeline-card-header">
-                  <div class="timeline-time-badge">
-                    <span class="timeline-icon">🎺</span>
-                    <span class="time-text">2:00 PM ONWARDS</span>
+            <!-- PAGE 4: VENUE PAGE -->
+            <div class="tab-pane hidden ceremony-page-card" id="pane-venue">
+              <div class="ceremony-badge royal">
+                <span>CELEBRATION DESTINATION</span>
+              </div>
+              
+              <h2 class="ceremony-title gold-text">Wedding Venue</h2>
+              <div class="ceremony-time-pill">
+                <span class="venue-icon">🏰</span>
+                <span>Devalaya Resort, Gwalior</span>
+              </div>
+
+              <p class="ceremony-desc">
+                An enchanting palace-inspired destination with landscaped royal lawns and grand banquet halls, hosting all celebration ceremonies of Shivani & Prajjual.
+              </p>
+
+              <!-- Complete Location Card -->
+              <div class="venue-details-card">
+                <div class="venue-address-block">
+                  <div class="address-icon">📍</div>
+                  <div class="address-info">
+                    <strong>Complete Address</strong>
+                    <p>Devalaya Resort, Jhansi Road, Sithouli, Gwalior, Madhya Pradesh – 474001</p>
                   </div>
-                  <span class="event-badge royal">Royal Barat</span>
                 </div>
-                <h4 class="ceremony-heading">Barat Procession</h4>
-                <p class="ceremony-summary">High-energy Dhol beats, celebration procession & royal groom welcome followed by the grand Milni ceremony.</p>
-                <div class="ceremony-tag">
-                  <span class="tag-icon">👑</span>
-                  <span>Regal Sherwanis, Kurtas & Colorful Safas</span>
+
+                <!-- Interactive Visual Map Preview -->
+                <div class="map-interactive-preview">
+                  <div class="map-grid-layer"></div>
+                  <div class="map-pulse-marker">
+                    <div class="marker-pulse"></div>
+                    <div class="marker-center">🏰</div>
+                  </div>
+                  <div class="map-card-overlay-text">
+                    <span class="map-title-text">Devalaya Resort</span>
+                    <span class="map-sub-text">Sithouli, Jhansi Road, Gwalior</span>
+                  </div>
+                </div>
+
+                <div class="venue-perks-list">
+                  <div class="perk-item">
+                    <span>🚗</span>
+                    <span>Convenient highway connectivity (NH 44)</span>
+                  </div>
+                  <div class="perk-item">
+                    <span>🅿️</span>
+                    <span>Complimentary Valet & Ample Parking</span>
+                  </div>
+                  <div class="perk-item">
+                    <span>🚆</span>
+                    <span>15 Mins from Gwalior Railway Station</span>
+                  </div>
                 </div>
               </div>
 
-              <!-- 5. Pheras -->
-              <div class="timeline-card pheras-card">
-                <div class="timeline-card-header">
-                  <div class="timeline-time-badge">
-                    <span class="timeline-icon">🌸</span>
-                    <span class="time-text">4:00 PM ONWARDS</span>
-                  </div>
-                  <span class="event-badge holy">Vivah Sanskar</span>
-                </div>
-                <h4 class="ceremony-heading">Sacred Pheras</h4>
-                <p class="ceremony-summary">Seven sacred vows around the holy Agni fire, Kanyadaan & Varmala rituals binding the couple in eternal companionship.</p>
-                <div class="ceremony-tag">
-                  <span class="tag-icon">🔥</span>
-                  <span>Regal Indian Wedding Wear & Traditional Silks</span>
-                </div>
+              <!-- Prominent Clear Google Maps Button with Link -->
+              <div class="venue-primary-action">
+                <a href="https://www.google.com/maps/search/?api=1&query=Devalaya+Resort+Jhansi+Road+Gwalior" target="_blank" rel="noopener noreferrer" class="primary-gold-btn full-width get-directions-btn" id="directMapsBtn">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>Open in Google Maps / Get Directions ↗</span>
+                </a>
               </div>
 
-              <!-- 6. Reception -->
-              <div class="timeline-card reception-card">
-                <div class="timeline-card-header">
-                  <div class="timeline-time-badge">
-                    <span class="timeline-icon">🥂</span>
-                    <span class="time-text">7:00 PM ONWARDS</span>
-                  </div>
-                  <span class="event-badge reception">Royal Feast</span>
-                </div>
-                <h4 class="ceremony-heading">Grand Reception</h4>
-                <p class="ceremony-summary">Celebratory toasts, felicitation, music and a royal banquet dinner under shimmering starlight with newlyweds.</p>
-                <div class="ceremony-tag">
-                  <span class="tag-icon">🎈</span>
-                  <span>Black Tie, Tuxedos, Evening Gowns & Formal Regal</span>
-                </div>
+              <div class="ceremony-nav-footer">
+                <button class="nav-prev-btn" data-target-tab="wedding">❮ Wedding</button>
+                <span class="step-indicator">Page 4 of 5</span>
+                <button class="nav-next-btn" data-target-tab="rsvp">Next: RSVP ❯</button>
               </div>
             </div>
-          </div>
 
-          <!-- Verse / Quote Section -->
-          <div class="quote-section animate-element" style="--delay: 1.05s;">
-            <p class="story-quote">
-              “Two souls, one destiny — surrounded by love, sacred rituals, and the blessings of loved ones.”
-            </p>
-            <span class="story-ref">— Shivani & Prajjual</span>
-          </div>
+            <!-- PAGE 5: RSVP PAGE -->
+            <div class="tab-pane hidden ceremony-page-card" id="pane-rsvp">
+              <div class="ceremony-badge yellow">
+                <span>CONFIRM ATTENDANCE</span>
+              </div>
+              
+              <h2 class="ceremony-title gold-text">RSVP</h2>
+              <p class="rsvp-subtitle">
+                Your presence and warm blessings will make our wedding celebration truly complete!
+              </p>
 
-          <!-- Action Buttons Grid -->
-          <div class="action-buttons-grid animate-element" style="--delay: 1.15s;">
-            <button class="primary-gold-btn" id="addToCalendarBtn">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              <span>Add to Calendar</span>
-            </button>
+              <!-- RSVP Form Card -->
+              <div class="rsvp-form-container" id="rsvpFormContainer">
+                <form id="rsvpForm" class="rsvp-form">
+                  
+                  <div class="form-group">
+                    <label for="rsvpGuestName" class="form-label">Full Name *</label>
+                    <input type="text" id="rsvpGuestName" class="glass-input" placeholder="e.g. Ramesh & Family" required>
+                  </div>
 
-            <button class="secondary-glass-btn" id="openMapBtn">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              <span>Venue Location</span>
-            </button>
+                  <div class="form-group">
+                    <label class="form-label">Attending Ceremonies *</label>
+                    <div class="events-pill-selector">
+                      <label class="pill-checkbox">
+                        <input type="checkbox" name="rsvpCeremonies" value="All Celebrations" checked>
+                        <span>All Celebrations</span>
+                      </label>
+                      <label class="pill-checkbox">
+                        <input type="checkbox" name="rsvpCeremonies" value="Haldi (19 Nov)">
+                        <span>💛 Haldi</span>
+                      </label>
+                      <label class="pill-checkbox">
+                        <input type="checkbox" name="rsvpCeremonies" value="Sangeet (19 Nov)">
+                        <span>💃 Sangeet</span>
+                      </label>
+                      <label class="pill-checkbox">
+                        <input type="checkbox" name="rsvpCeremonies" value="Wedding & Reception (20 Nov)">
+                        <span>🌸 Wedding & Reception</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-row-dual">
+                    <div class="form-group flex-1">
+                      <label for="rsvpGuestCount" class="form-label">No. of Guests</label>
+                      <select id="rsvpGuestCount" class="glass-select">
+                        <option value="1 Guest">1 Guest</option>
+                        <option value="2 Guests" selected>2 Guests</option>
+                        <option value="3 Guests">3 Guests</option>
+                        <option value="4+ Guests">4+ Guests</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group flex-2">
+                      <label for="rsvpContact" class="form-label">Phone / WhatsApp</label>
+                      <input type="tel" id="rsvpContact" class="glass-input" placeholder="+91 98765 43210">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="rsvpNote" class="form-label">Wishes / Blessings (Optional)</label>
+                    <textarea id="rsvpNote" class="glass-textarea" rows="2" placeholder="Send your loving wishes to Shivani & Prajjual..."></textarea>
+                  </div>
+
+                  <div class="rsvp-action-stack">
+                    <button type="submit" class="primary-gold-btn full-width rsvp-submit-btn" id="confirmRsvpBtn">
+                      <span>Confirm Attendance ✨</span>
+                    </button>
+                    <button type="button" class="secondary-glass-btn full-width rsvp-whatsapp-btn" id="whatsappRsvpBtn">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.97.529 1.766.797 2.809.797 3.182 0 5.768-2.587 5.769-5.766.001-3.181-2.585-5.767-5.783-5.784zm10.019 5.768c-.001 5.545-4.512 10.056-10.05 10.056-1.768 0-3.444-.46-4.919-1.265l-5.081 1.332 1.356-4.954c-.88-1.52-1.344-3.268-1.344-5.169.001-5.545 4.512-10.056 10.05-10.056 5.538 0 10.038 4.511 10.038 10.056z"/></svg>
+                      <span>Confirm via WhatsApp 💬</span>
+                    </button>
+                  </div>
+
+                </form>
+
+                <!-- Confirmation Success State (Hidden initially) -->
+                <div class="rsvp-success-card hidden" id="rsvpSuccessCard">
+                  <div class="success-icon-wrap">
+                    <div class="success-ring"></div>
+                    <span class="success-check">✓</span>
+                  </div>
+                  <h3 class="success-title">RSVP Confirmed!</h3>
+                  <p class="success-msg" id="rsvpSuccessMessage">
+                    Thank you, <strong id="confirmedGuestName">Guest</strong>! We are thrilled to celebrate our royal wedding with you!
+                  </p>
+                  <div class="confirmed-summary-box" id="confirmedSummaryBox"></div>
+                  <button type="button" class="text-link-btn" id="editRsvpBtn">Edit Response ✎</button>
+                </div>
+
+              </div>
+
+              <div class="ceremony-nav-footer">
+                <button class="nav-prev-btn" data-target-tab="venue">❮ Venue</button>
+                <span class="step-indicator">Page 5 of 5</span>
+                <button class="nav-next-btn" data-target-tab="haldi">First: Haldi ↺</button>
+              </div>
+            </div>
+
           </div>
+          <!-- ================= END TAB PANES ================= -->
 
           <!-- Replay Footer -->
-          <div class="invitation-footer animate-element" style="--delay: 1.25s;">
+          <div class="invitation-footer animate-element" style="--delay: 0.85s;">
             <button id="replayBtn" class="text-link-btn">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
               Replay Opening Ceremony

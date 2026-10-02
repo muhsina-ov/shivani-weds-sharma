@@ -617,39 +617,224 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --- Add to Google Calendar (Main Wedding Celebration) ---
-  if (addToCalendarBtn) {
-    addToCalendarBtn.addEventListener('click', () => {
-      const groom = document.getElementById('displayGroom').innerText;
-      const bride = document.getElementById('displayBride').innerText;
-      const venue = document.getElementById('displayVenue').innerText;
-      const location = document.getElementById('displayLocation').innerText;
+  // ==========================================================================
+  // CEREMONY NAVIGATION ENGINE (Haldi -> Sangeet -> Wedding -> Venue -> RSVP)
+  // ==========================================================================
+  const ceremonyTabs = ['haldi', 'sangeet', 'wedding', 'venue', 'rsvp'];
+  let currentCeremonyTab = 'haldi';
 
-      const title = encodeURIComponent(`Wedding Celebration of ${bride} & ${groom}`);
-      const details = encodeURIComponent(`Join us to celebrate the royal wedding of ${bride} & ${groom} on 19th & 20th November 2026 at ${venue}, Gwalior.`);
+  function switchCeremonyTab(tabId) {
+    if (!ceremonyTabs.includes(tabId)) return;
+    currentCeremonyTab = tabId;
+
+    // 1. Update tab buttons
+    document.querySelectorAll('.ceremony-tab-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tab === tabId);
+    });
+
+    // 2. Update tab panes
+    document.querySelectorAll('.tab-pane').forEach(pane => {
+      if (pane.id === `pane-${tabId}`) {
+        pane.classList.remove('hidden');
+        pane.classList.add('active');
+      } else {
+        pane.classList.add('hidden');
+        pane.classList.remove('active');
+      }
+    });
+
+    // 3. Smooth scroll to top of content
+    const scrollContainer = document.getElementById('contentScrollable');
+    if (scrollContainer) {
+      scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 4. Scroll active tab button into center of view
+    const activeTabBtn = document.querySelector(`.ceremony-tab-btn[data-tab="${tabId}"]`);
+    if (activeTabBtn) {
+      activeTabBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+
+    // 5. Update atmosphere particles
+    switchAtmosphereMode(tabId);
+  }
+
+  // Click on Ceremony Tab Buttons
+  document.querySelectorAll('.ceremony-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      switchCeremonyTab(btn.dataset.tab);
+    });
+  });
+
+  // Click on Next / Prev navigation buttons
+  document.querySelectorAll('[data-target-tab]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const targetTab = btn.dataset.targetTab;
+      if (targetTab) {
+        switchCeremonyTab(targetTab);
+      }
+    });
+  });
+
+  // Touch Swipe Gesture Navigation (Left = Next, Right = Prev)
+  const tabWrapper = document.getElementById('tabPanesWrapper');
+  if (tabWrapper) {
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    tabWrapper.addEventListener('touchstart', (e) => {
+      if (e.touches && e.touches[0]) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    tabWrapper.addEventListener('touchend', (e) => {
+      if (e.changedTouches && e.changedTouches[0]) {
+        const deltaX = e.changedTouches[0].clientX - touchStartX;
+        const deltaY = e.changedTouches[0].clientY - touchStartY;
+
+        // Ensure horizontal swipe is dominant and above threshold
+        if (Math.abs(deltaX) > 55 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
+          const currentIndex = ceremonyTabs.indexOf(currentCeremonyTab);
+          if (deltaX < 0 && currentIndex < ceremonyTabs.length - 1) {
+            // Swiped left -> Next page
+            switchCeremonyTab(ceremonyTabs[currentIndex + 1]);
+          } else if (deltaX > 0 && currentIndex > 0) {
+            // Swiped right -> Previous page
+            switchCeremonyTab(ceremonyTabs[currentIndex - 1]);
+          }
+        }
+      }
+    }, { passive: true });
+  }
+
+  // ==========================================================================
+  // GOOGLE CALENDAR ADD BUTTONS
+  // ==========================================================================
+  document.querySelectorAll('.ceremony-calendar-btn, #addToCalendarBtn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const eventName = btn.dataset.event || 'Wedding Celebration';
+      const eventDates = btn.dataset.date || '20261119T043000Z/20261120T183000Z';
+      const venue = 'Devalaya Resort';
+      const location = 'Jhansi Road, Sithouli, Gwalior, Madhya Pradesh';
+
+      const title = encodeURIComponent(`${eventName} — Shivani & Prajjual Wedding`);
+      const details = encodeURIComponent(`We cordially invite you to celebrate the ${eventName} of Shivani & Prajjual at ${venue}, Gwalior.`);
       const loc = encodeURIComponent(`${venue}, ${location}`);
 
-      const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${loc}&dates=20261119T043000Z/20261120T183000Z`;
-
+      const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${loc}&dates=${eventDates}`;
       window.open(googleCalendarUrl, '_blank', 'noopener,noreferrer');
+    });
+  });
+
+  // ==========================================================================
+  // RSVP ENGINE WITH LOCALSTORAGE & WHATSAPP INTEGRATION
+  // ==========================================================================
+  const rsvpForm = document.getElementById('rsvpForm');
+  const rsvpSuccessCard = document.getElementById('rsvpSuccessCard');
+  const confirmedGuestName = document.getElementById('confirmedGuestName');
+  const confirmedSummaryBox = document.getElementById('confirmedSummaryBox');
+  const editRsvpBtn = document.getElementById('editRsvpBtn');
+  const whatsappRsvpBtn = document.getElementById('whatsappRsvpBtn');
+
+  function getRsvpFormData() {
+    const name = (document.getElementById('rsvpGuestName')?.value || '').trim();
+    const guestCount = document.getElementById('rsvpGuestCount')?.value || '2 Guests';
+    const contact = (document.getElementById('rsvpContact')?.value || '').trim();
+    const note = (document.getElementById('rsvpNote')?.value || '').trim();
+
+    const selectedEvents = [];
+    document.querySelectorAll('input[name="rsvpCeremonies"]:checked').forEach(cb => {
+      selectedEvents.push(cb.value);
+    });
+
+    return {
+      name: name || 'Guest',
+      events: selectedEvents.length > 0 ? selectedEvents.join(', ') : 'All Celebrations',
+      guests: guestCount,
+      contact: contact,
+      note: note,
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  function displayRsvpSuccess(data) {
+    if (!rsvpForm || !rsvpSuccessCard) return;
+    rsvpForm.classList.add('hidden');
+    rsvpSuccessCard.classList.remove('hidden');
+
+    if (confirmedGuestName) confirmedGuestName.textContent = data.name;
+    if (confirmedSummaryBox) {
+      confirmedSummaryBox.innerHTML = `
+        <div><strong>Attending:</strong> ${data.events}</div>
+        <div><strong>Guests:</strong> ${data.guests}</div>
+        ${data.contact ? `<div><strong>Phone:</strong> ${data.contact}</div>` : ''}
+      `;
+    }
+  }
+
+  // Restore previous RSVP if saved
+  try {
+    const savedRsvp = localStorage.getItem('shivani_prajjual_rsvp');
+    if (savedRsvp) {
+      const data = JSON.parse(savedRsvp);
+      displayRsvpSuccess(data);
+    }
+  } catch (err) {
+    console.warn('LocalStorage RSVP read error:', err);
+  }
+
+  if (rsvpForm) {
+    rsvpForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = getRsvpFormData();
+
+      try {
+        localStorage.setItem('shivani_prajjual_rsvp', JSON.stringify(data));
+      } catch (err) {
+        console.warn('LocalStorage RSVP save error:', err);
+      }
+
+      displayRsvpSuccess(data);
+      triggerConfetti();
     });
   }
 
-  // Single continuous scroll itinerary format - no separate tab switching required.
+  if (editRsvpBtn) {
+    editRsvpBtn.addEventListener('click', () => {
+      if (rsvpSuccessCard && rsvpForm) {
+        rsvpSuccessCard.classList.add('hidden');
+        rsvpForm.classList.remove('hidden');
+      }
+    });
+  }
+
+  if (whatsappRsvpBtn) {
+    whatsappRsvpBtn.addEventListener('click', () => {
+      const data = getRsvpFormData();
+      const message = `Namaste Shivani & Prajjual! ✨\n\nI am delighted to confirm my RSVP for your royal wedding celebrations!\n\n• Guest: ${data.name}\n• Attending: ${data.events}\n• Total Guests: ${data.guests}${data.contact ? `\n• Contact: ${data.contact}` : ''}${data.note ? `\n• Message: "${data.note}"` : ''}\n\nLooking forward to celebrating with you at Devalaya Resort, Gwalior! 💖`;
+      
+      const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+    });
+  }
 
   // ==========================================================================
   // DYNAMIC ATMOSPHERE CANVAS ENGINE
-  // Haldi: Flowing marigold flowers & petals from top to bottom
-  // Reception: Floating 3D balloons & shimmer lights in motion
-  // Pheras: Sacred Agni fire embers & rose petals with golden aura
+  // Haldi: Subtle warm golden glimmer motes (NO balloons, NO garlands)
+  // Sangeet: Elegant evening starlight twinkles & soft bokeh (NO balloons)
+  // Wedding: Sacred Agni fire embers & cascading rose petals
+  // Venue & RSVP: Delicate ambient golden stardust
   // ==========================================================================
   const atmosphereCanvas = document.getElementById('atmosphereCanvas');
   let atmosCtx = null;
-  let activeAtmosphere = 'overview';
+  let activeAtmosphere = 'haldi'; // Default first page is Haldi!
   let atmosAnimationId = null;
 
   // Particle Stores
-  let haldiItems = [];
-  let receptionBalloons = [];
+  let haldiSparkles = [];
   let shimmerLights = [];
   let pherasEmbers = [];
   let pherasPetals = [];
@@ -661,8 +846,8 @@ document.addEventListener('DOMContentLoaded', () => {
     resizeAtmosphereCanvas();
     window.addEventListener('resize', resizeAtmosphereCanvas);
 
-    setupHaldiParticles();
-    setupReceptionParticles();
+    setupHaldiSparkles();
+    setupSangeetLights();
     setupPherasParticles();
     setupAmbientParticles();
 
@@ -692,174 +877,111 @@ document.addEventListener('DOMContentLoaded', () => {
     atmosphereCanvas.displayHeight = height;
   }
 
-  // --- 1. Haldi Particles: Full Marigold Blossoms & Petals Flowing Top to Bottom ---
-  function setupHaldiParticles() {
-    haldiItems = [];
+  // --- 1. Haldi Particles: Gentle Warm Golden Candlelight Glimmers (Simple & Elegant) ---
+  function setupHaldiSparkles() {
+    haldiSparkles = [];
     const width = atmosphereCanvas.displayWidth || 360;
     const height = atmosphereCanvas.displayHeight || 640;
-    const flowerColors = [
-      { outer: '#FF8F00', mid: '#FFA000', core: '#FFD54F' }, // Vibrant Orange
-      { outer: '#FFA000', mid: '#FFB300', core: '#FFF59D' }, // Golden Yellow
-      { outer: '#E65100', mid: '#FF6F00', core: '#FFCA28' }, // Deep Saffron
-      { outer: '#FFB300', mid: '#FFC107', core: '#FFFFFF' }  // Sunlit Gold
-    ];
-    const petalColors = ['#FFB300', '#FFA000', '#FF8F00', '#FFD54F', '#FFF176'];
+    const goldTones = ['#FFD54F', '#FFE082', '#FFA000', '#FFCA28', '#FFF9C4'];
 
-    for (let i = 0; i < 45; i++) {
-      const isFlower = i % 2 === 0;
-      const palette = flowerColors[Math.floor(Math.random() * flowerColors.length)];
-
-      haldiItems.push({
-        type: isFlower ? 'flower' : 'petal',
+    for (let i = 0; i < 35; i++) {
+      haldiSparkles.push({
         x: Math.random() * width,
-        y: Math.random() * (height + 100) - 50,
-        radius: isFlower ? Math.random() * 8 + 8 : Math.random() * 4 + 3,
-        vy: Math.random() * 1.5 + 1.2, // Continuous downward flow from top to bottom
-        swayAmp: Math.random() * 20 + 8,
-        swaySpeed: Math.random() * 0.025 + 0.015,
-        swayPhase: Math.random() * Math.PI * 2,
-        rot: Math.random() * Math.PI * 2,
-        rotSpeed: (Math.random() - 0.5) * 0.04,
-        palette: palette,
-        color: petalColors[Math.floor(Math.random() * petalColors.length)],
-        opacity: Math.random() * 0.35 + 0.65
+        y: Math.random() * height,
+        r: Math.random() * 2.2 + 0.8,
+        vy: -(Math.random() * 0.45 + 0.25),
+        vx: (Math.random() - 0.5) * 0.35,
+        baseAlpha: Math.random() * 0.35 + 0.25,
+        alphaPulse: Math.random() * 0.03 + 0.015,
+        phase: Math.random() * Math.PI * 2,
+        color: goldTones[Math.floor(Math.random() * goldTones.length)]
       });
     }
   }
 
-  // --- 2. Reception Particles: 3D Metallic Balloons & Shimmering Lights in Motion ---
-  function setupReceptionParticles() {
-    receptionBalloons = [];
+  // --- 2. Sangeet Particles: Evening Starlight Twinkles & Soft Bokeh (Classy & Modern) ---
+  function setupSangeetLights() {
     shimmerLights = [];
     const width = atmosphereCanvas.displayWidth || 360;
     const height = atmosphereCanvas.displayHeight || 640;
 
-    const balloonTypes = [
-      { name: 'gold', grad: ['#FFF8E1', '#FFD54F', '#C79100', '#795548'] },
-      { name: 'pearl', grad: ['#FFFFFF', '#FFFDE7', '#D7CCC8', '#8D6E63'] },
-      { name: 'roseGold', grad: ['#FFEBEE', '#F48FB1', '#C2185B', '#880E4F'] },
-      { name: 'champagne', grad: ['#FFFDE7', '#FFE082', '#FFB300', '#BF360C'] }
-    ];
-
-    // Floating 3D Balloons
-    for (let i = 0; i < 18; i++) {
-      const bType = balloonTypes[i % balloonTypes.length];
-      receptionBalloons.push({
-        x: Math.random() * (width - 40) + 20,
-        y: height + Math.random() * (height * 0.8),
-        radius: Math.random() * 10 + 13,
-        vy: -(Math.random() * 0.9 + 0.7), // Floating upwards
-        swayAmp: Math.random() * 16 + 6,
-        swaySpeed: Math.random() * 0.02 + 0.01,
-        swayPhase: Math.random() * Math.PI * 2,
-        type: bType,
-        stringWave: Math.random() * Math.PI * 2,
-        stringWaveSpeed: Math.random() * 0.03 + 0.02,
-        opacity: Math.random() * 0.2 + 0.8
-      });
-    }
-
-    // Shimmering Lights & Twinkle Star Particles
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 36; i++) {
       shimmerLights.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        radius: Math.random() * 18 + 6,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        baseAlpha: Math.random() * 0.35 + 0.2,
+        radius: Math.random() * 12 + 4,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        baseAlpha: Math.random() * 0.3 + 0.2,
         alphaPulseSpeed: Math.random() * 0.03 + 0.015,
         alphaPhase: Math.random() * Math.PI * 2,
-        isStar: Math.random() > 0.4,
-        starSize: Math.random() * 5 + 3,
-        color: i % 2 === 0 ? '#FFE082' : '#FFFFFF'
+        isStar: Math.random() > 0.35,
+        starSize: Math.random() * 4 + 2.5,
+        color: i % 3 === 0 ? '#F48FB1' : (i % 2 === 0 ? '#FFE082' : '#FFFFFF')
       });
     }
   }
 
-  // --- 3. Pheras Particles: Sacred Agni Embers & Cascading Rose Petals ---
+  // --- 3. Wedding Particles: Sacred Fire Embers & Rose Petals ---
   function setupPherasParticles() {
     pherasEmbers = [];
     pherasPetals = [];
     const width = atmosphereCanvas.displayWidth || 360;
     const height = atmosphereCanvas.displayHeight || 640;
 
-    // Sacred Fire Embers Rising Upwards
     const emberColors = ['#FFD54F', '#FFA000', '#FF5722', '#FF7043', '#FFE082'];
-    for (let i = 0; i < 42; i++) {
+    for (let i = 0; i < 35; i++) {
       pherasEmbers.push({
         x: width * 0.5 + (Math.random() - 0.5) * (width * 0.85),
         y: height * 0.75 + Math.random() * (height * 0.35),
-        size: Math.random() * 3 + 1.2,
-        vy: -(Math.random() * 2.0 + 1.0),
-        vx: (Math.random() - 0.5) * 0.8,
-        jitter: Math.random() * 0.05 + 0.02,
+        size: Math.random() * 2.5 + 1.2,
+        vy: -(Math.random() * 1.8 + 0.9),
+        vx: (Math.random() - 0.5) * 0.7,
         color: emberColors[Math.floor(Math.random() * emberColors.length)],
-        opacity: Math.random() * 0.4 + 0.6,
+        opacity: Math.random() * 0.4 + 0.5,
         decay: Math.random() * 0.004 + 0.002
       });
     }
 
-    // Sacred Rose Petals Showering Downwards
     const roseColors = ['#C62828', '#D32F2F', '#E53935', '#AD1457', '#F06292'];
-    for (let i = 0; i < 24; i++) {
+    for (let i = 0; i < 18; i++) {
       pherasPetals.push({
         x: Math.random() * width,
         y: Math.random() * height - height * 0.5,
-        radius: Math.random() * 6 + 6,
-        vy: Math.random() * 1.3 + 0.9,
-        swayAmp: Math.random() * 22 + 8,
-        swaySpeed: Math.random() * 0.025 + 0.015,
+        radius: Math.random() * 5 + 4,
+        vy: Math.random() * 1.1 + 0.8,
+        swayAmp: Math.random() * 18 + 6,
+        swaySpeed: Math.random() * 0.02 + 0.012,
         swayPhase: Math.random() * Math.PI * 2,
         rot: Math.random() * Math.PI * 2,
         rotSpeed: (Math.random() - 0.5) * 0.03,
         color: roseColors[Math.floor(Math.random() * roseColors.length)],
-        opacity: Math.random() * 0.3 + 0.7
+        opacity: Math.random() * 0.3 + 0.6
       });
     }
   }
 
-  // --- Ambient Golden Dust Motes for Overview ---
+  // --- 4. Ambient Golden Dust Motes (Venue & RSVP) ---
   function setupAmbientParticles() {
     ambientMotes = [];
     const width = atmosphereCanvas.displayWidth || 360;
     const height = atmosphereCanvas.displayHeight || 640;
 
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 28; i++) {
       ambientMotes.push({
         x: Math.random() * width,
         y: Math.random() * height,
         r: Math.random() * 2 + 0.8,
-        vy: -(Math.random() * 0.4 + 0.2),
-        vx: (Math.random() - 0.5) * 0.3,
-        alpha: Math.random() * 0.4 + 0.3,
-        pulseSpeed: Math.random() * 0.03 + 0.01
+        vy: -(Math.random() * 0.35 + 0.15),
+        vx: (Math.random() - 0.5) * 0.25,
+        alpha: Math.random() * 0.35 + 0.25,
+        pulseSpeed: Math.random() * 0.025 + 0.01
       });
     }
   }
 
   function switchAtmosphereMode(mode) {
     activeAtmosphere = mode;
-    // Re-seed or boost particles on mode change
-    const width = atmosphereCanvas.displayWidth || 360;
-    const height = atmosphereCanvas.displayHeight || 640;
-
-    if (mode === 'haldi') {
-      haldiItems.forEach(item => {
-        if (item.y > height) item.y = -Math.random() * 100;
-      });
-    } else if (mode === 'reception') {
-      receptionBalloons.forEach(b => {
-        if (b.y < -50) b.y = height + Math.random() * 100;
-      });
-    } else if (mode === 'pheras') {
-      pherasEmbers.forEach(e => {
-        if (e.y < 0) e.y = height * 0.8 + Math.random() * 80;
-      });
-      pherasPetals.forEach(p => {
-        if (p.y > height) p.y = -Math.random() * 100;
-      });
-    }
   }
 
   // Main Atmosphere Render Loop
@@ -872,67 +994,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     frameCount++;
 
-    // 1. Render HALDI atmosphere (Flowers and Garlands in continuous flow from top to bottom)
+    // 1. Render HALDI atmosphere (Simple, elegant golden candlelight glimmer motes)
     if (activeAtmosphere === 'haldi') {
-      haldiItems.forEach(item => {
-        item.y += item.vy;
-        item.swayPhase += item.swaySpeed;
-        const currentX = item.x + Math.sin(item.swayPhase) * item.swayAmp;
-        item.rot += item.rotSpeed;
+      haldiSparkles.forEach(m => {
+        m.y += m.vy;
+        m.x += m.vx;
+        m.phase += m.alphaPulse;
 
-        if (item.y > height + 30) {
-          item.y = -25;
-          item.x = Math.random() * width;
-        }
+        if (m.y < -10) m.y = height + 10;
+        if (m.x < 0) m.x = width;
+        if (m.x > width) m.x = 0;
+
+        const currentAlpha = m.baseAlpha + Math.sin(m.phase) * 0.2;
+        if (currentAlpha <= 0) return;
 
         atmosCtx.save();
-        atmosCtx.translate(currentX, item.y);
-        atmosCtx.rotate(item.rot);
-        atmosCtx.globalAlpha = item.opacity;
-
-        if (item.type === 'flower') {
-          const r = item.radius;
-          // Outer petal layer
-          const petals = 12;
-          for (let p = 0; p < petals; p++) {
-            const angle = (p / petals) * Math.PI * 2;
-            const px = Math.cos(angle) * (r * 0.65);
-            const py = Math.sin(angle) * (r * 0.65);
-            atmosCtx.beginPath();
-            atmosCtx.arc(px, py, r * 0.45, 0, Math.PI * 2);
-            atmosCtx.fillStyle = item.palette.outer;
-            atmosCtx.fill();
-          }
-          // Mid petal layer
-          for (let p = 0; p < 8; p++) {
-            const angle = (p / 8) * Math.PI * 2 + 0.3;
-            const px = Math.cos(angle) * (r * 0.4);
-            const py = Math.sin(angle) * (r * 0.4);
-            atmosCtx.beginPath();
-            atmosCtx.arc(px, py, r * 0.35, 0, Math.PI * 2);
-            atmosCtx.fillStyle = item.palette.mid;
-            atmosCtx.fill();
-          }
-          // Blossom center core
-          atmosCtx.beginPath();
-          atmosCtx.arc(0, 0, r * 0.28, 0, Math.PI * 2);
-          atmosCtx.fillStyle = item.palette.core;
-          atmosCtx.fill();
-        } else {
-          // Petal
-          atmosCtx.beginPath();
-          atmosCtx.ellipse(0, 0, item.radius * 1.5, item.radius * 0.7, 0, 0, Math.PI * 2);
-          atmosCtx.fillStyle = item.color;
-          atmosCtx.fill();
-        }
-
+        atmosCtx.globalAlpha = Math.max(0.1, Math.min(currentAlpha, 0.75));
+        atmosCtx.fillStyle = m.color;
+        atmosCtx.beginPath();
+        atmosCtx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
+        atmosCtx.fill();
         atmosCtx.restore();
       });
     }
 
-    // 2. Render RECEPTION atmosphere (Balloons & Shimmer Lights in motion)
-    else if (activeAtmosphere === 'reception') {
-      // Draw Shimmering Bokeh Lights & Twinkles
+    // 2. Render SANGEET atmosphere (Classy evening starlight twinkles & soft bokeh)
+    else if (activeAtmosphere === 'sangeet') {
       shimmerLights.forEach(sl => {
         sl.x += sl.vx;
         sl.y += sl.vy;
@@ -947,7 +1034,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentAlpha <= 0) return;
 
         atmosCtx.save();
-        atmosCtx.globalAlpha = Math.max(0, Math.min(currentAlpha, 0.9));
+        atmosCtx.globalAlpha = Math.max(0, Math.min(currentAlpha, 0.85));
 
         if (sl.isStar) {
           // 4-point Diamond Twinkle Star
@@ -962,10 +1049,10 @@ document.addEventListener('DOMContentLoaded', () => {
           atmosCtx.quadraticCurveTo(0, 0, 0, -size);
           atmosCtx.fill();
         } else {
-          // Soft Bokeh Orb with radial fade
+          // Soft Bokeh Orb
           const grad = atmosCtx.createRadialGradient(sl.x, sl.y, 0, sl.x, sl.y, sl.radius);
-          grad.addColorStop(0, 'rgba(255, 244, 208, 0.7)');
-          grad.addColorStop(0.5, 'rgba(229, 193, 88, 0.25)');
+          grad.addColorStop(0, 'rgba(255, 244, 208, 0.6)');
+          grad.addColorStop(0.5, 'rgba(229, 193, 88, 0.2)');
           grad.addColorStop(1, 'rgba(229, 193, 88, 0)');
           atmosCtx.fillStyle = grad;
           atmosCtx.beginPath();
@@ -974,66 +1061,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         atmosCtx.restore();
       });
-
-      // Draw 3D Metallic Balloons Rising in Motion
-      receptionBalloons.forEach(b => {
-        b.y += b.vy;
-        b.swayPhase += b.swaySpeed;
-        b.stringWave += b.stringWaveSpeed;
-        const currentX = b.x + Math.sin(b.swayPhase) * b.swayAmp;
-
-        if (b.y < -70) {
-          b.y = height + 40;
-          b.x = Math.random() * (width - 40) + 20;
-        }
-
-        const r = b.radius;
-        atmosCtx.save();
-        atmosCtx.translate(currentX, b.y);
-        atmosCtx.globalAlpha = b.opacity;
-
-        // Balloon 3D Sphere Radial Gradient
-        const grad = atmosCtx.createRadialGradient(-r * 0.3, -r * 0.35, r * 0.08, 0, 0, r * 1.1);
-        grad.addColorStop(0, b.type.grad[0]);
-        grad.addColorStop(0.35, b.type.grad[1]);
-        grad.addColorStop(0.75, b.type.grad[2]);
-        grad.addColorStop(1, b.type.grad[3]);
-
-        // Draw Balloon Body (Egg/Oval Shape)
-        atmosCtx.beginPath();
-        atmosCtx.ellipse(0, 0, r * 0.88, r * 1.08, 0, 0, Math.PI * 2);
-        atmosCtx.fillStyle = grad;
-        atmosCtx.shadowColor = 'rgba(0, 0, 0, 0.35)';
-        atmosCtx.shadowBlur = 8;
-        atmosCtx.fill();
-
-        // Balloon Bottom Knot
-        atmosCtx.shadowBlur = 0;
-        atmosCtx.beginPath();
-        atmosCtx.moveTo(-2.5, r * 1.05);
-        atmosCtx.lineTo(2.5, r * 1.05);
-        atmosCtx.lineTo(0, r * 1.15);
-        atmosCtx.closePath();
-        atmosCtx.fillStyle = b.type.grad[2];
-        atmosCtx.fill();
-
-        // Curving Dangling String
-        const stringWaveOffset = Math.sin(b.stringWave) * 8;
-        atmosCtx.beginPath();
-        atmosCtx.moveTo(0, r * 1.15);
-        atmosCtx.quadraticCurveTo(stringWaveOffset, r * 1.15 + 18, -stringWaveOffset * 0.5, r * 1.15 + 38);
-        atmosCtx.strokeStyle = 'rgba(255, 244, 208, 0.45)';
-        atmosCtx.lineWidth = 1;
-        atmosCtx.stroke();
-
-        atmosCtx.restore();
-      });
     }
 
-    // 3. Render PHERAS atmosphere (Sacred Fire Embers & Holy Rose Petals)
-    else if (activeAtmosphere === 'pheras') {
+    // 3. Render WEDDING atmosphere (Sacred Fire Embers & Rose Petals)
+    else if (activeAtmosphere === 'wedding') {
       // Golden Sacred Aura Pulse in background
-      const auraPulse = 0.15 + Math.sin(frameCount * 0.03) * 0.06;
+      const auraPulse = 0.12 + Math.sin(frameCount * 0.03) * 0.05;
       atmosCtx.save();
       const auraGrad = atmosCtx.createRadialGradient(width * 0.5, height * 0.7, 10, width * 0.5, height * 0.7, width * 0.8);
       auraGrad.addColorStop(0, `rgba(255, 152, 0, ${auraPulse})`);
@@ -1046,19 +1079,19 @@ document.addEventListener('DOMContentLoaded', () => {
       // Rising Sacred Fire Embers
       pherasEmbers.forEach(e => {
         e.y += e.vy;
-        e.x += e.vx + (Math.random() - 0.5) * 0.8;
+        e.x += e.vx + (Math.random() - 0.5) * 0.6;
         e.opacity -= e.decay;
 
         if (e.y < 30 || e.opacity <= 0) {
           e.y = height * 0.75 + Math.random() * (height * 0.25);
           e.x = width * 0.5 + (Math.random() - 0.5) * (width * 0.8);
-          e.opacity = Math.random() * 0.4 + 0.6;
+          e.opacity = Math.random() * 0.4 + 0.5;
         }
 
         atmosCtx.save();
         atmosCtx.globalAlpha = Math.max(0, e.opacity);
         atmosCtx.shadowColor = '#FF9800';
-        atmosCtx.shadowBlur = 6;
+        atmosCtx.shadowBlur = 5;
         atmosCtx.fillStyle = e.color;
         atmosCtx.beginPath();
         atmosCtx.arc(e.x, e.y, e.size, 0, Math.PI * 2);
@@ -1086,14 +1119,14 @@ document.addEventListener('DOMContentLoaded', () => {
         atmosCtx.beginPath();
         atmosCtx.ellipse(0, 0, p.radius * 1.3, p.radius * 0.8, 0, 0, Math.PI * 2);
         atmosCtx.fillStyle = p.color;
-        atmosCtx.shadowColor = 'rgba(198, 40, 40, 0.4)';
-        atmosCtx.shadowBlur = 4;
+        atmosCtx.shadowColor = 'rgba(198, 40, 40, 0.35)';
+        atmosCtx.shadowBlur = 3;
         atmosCtx.fill();
         atmosCtx.restore();
       });
     }
 
-    // 4. Render Default OVERVIEW / CELEBRATION atmosphere (Ambient Gold Motes)
+    // 4. Render Default / VENUE / RSVP atmosphere (Ambient Golden Stardust)
     else {
       ambientMotes.forEach(m => {
         m.y += m.vy;
@@ -1105,7 +1138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (m.x > width) m.x = 0;
 
         atmosCtx.save();
-        atmosCtx.globalAlpha = Math.max(0.1, Math.min(m.alpha, 0.7));
+        atmosCtx.globalAlpha = Math.max(0.1, Math.min(m.alpha, 0.65));
         atmosCtx.fillStyle = '#FFD54F';
         atmosCtx.beginPath();
         atmosCtx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
