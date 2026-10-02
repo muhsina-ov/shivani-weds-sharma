@@ -502,7 +502,7 @@ html, body {
 .content-scrollable {
   flex: 1;
   overflow-y: auto;
-  padding: 40px 24px 40px;
+  padding: 0 20px 40px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -510,6 +510,29 @@ html, body {
   scrollbar-width: thin;
   scrollbar-color: var(--color-gold-dark) rgba(10, 10, 15, 0.4);
   -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Dedicated First Page Hero Cover */
+.hero-cover-page {
+  min-height: 100%;
+  min-height: calc(100vh - 40px);
+  min-height: calc(100dvh - 40px);
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 44px 10px 24px 10px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.hero-cover-page .scroll-down-hint {
+  margin-top: auto;
+  padding-top: 24px;
 }
 
 .content-scrollable::-webkit-scrollbar {
@@ -1682,7 +1705,15 @@ html, body {
   font-size: 0.78rem;
   letter-spacing: 2px;
   text-transform: uppercase;
-  opacity: 0.9;
+  opacity: 0.95;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.scroll-down-hint:hover {
+  transform: translateY(2px);
+  opacity: 1;
 }
 
 .scroll-hint-text {

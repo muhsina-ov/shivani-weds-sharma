@@ -762,6 +762,17 @@ document.addEventListener('DOMContentLoaded', () => {
     console.warn('LocalStorage RSVP read error:', err);
   }
 
+  // --- Smooth Scroll Down Trigger from First Page ---
+  const scrollDownTrigger = document.getElementById('scrollDownTrigger');
+  if (scrollDownTrigger && contentScrollable) {
+    scrollDownTrigger.addEventListener('click', () => {
+      const ceremoniesContainer = document.getElementById('ceremoniesScrollContainer');
+      if (ceremoniesContainer) {
+        ceremoniesContainer.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
+
   if (rsvpForm) {
     rsvpForm.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -775,6 +786,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       displayRsvpSuccess(data);
       triggerConfetti();
+
+      // Launch WhatsApp confirmation with pre-filled guest details
+      const message = `Namaste Shivani & Prajjual! ✨\n\nI am delighted to confirm my RSVP for your royal wedding celebrations!\n\n• Guest: ${data.name}\n• Attending: ${data.events}\n• Total Guests: ${data.guests}${data.contact ? `\n• Contact: ${data.contact}` : ''}${data.note ? `\n• Message: "${data.note}"` : ''}\n\nLooking forward to celebrating with you at Devalaya Resort, Gwalior! 💖`;
+      
+      const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
     });
   }
 
@@ -784,16 +801,6 @@ document.addEventListener('DOMContentLoaded', () => {
         rsvpSuccessCard.classList.add('hidden');
         rsvpForm.classList.remove('hidden');
       }
-    });
-  }
-
-  if (whatsappRsvpBtn) {
-    whatsappRsvpBtn.addEventListener('click', () => {
-      const data = getRsvpFormData();
-      const message = `Namaste Shivani & Prajjual! ✨\n\nI am delighted to confirm my RSVP for your royal wedding celebrations!\n\n• Guest: ${data.name}\n• Attending: ${data.events}\n• Total Guests: ${data.guests}${data.contact ? `\n• Contact: ${data.contact}` : ''}${data.note ? `\n• Message: "${data.note}"` : ''}\n\nLooking forward to celebrating with you at Devalaya Resort, Gwalior! 💖`;
-      
-      const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
-      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
     });
   }
 
