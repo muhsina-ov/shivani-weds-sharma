@@ -41,6 +41,7 @@
   <!-- Critical Asset Preloading for Instant Render -->
   <link rel="preload" href="./assets/doors/1.avif" as="image" type="image/avif" fetchpriority="high">
   <link rel="preload" href="./assets/doors/1.mp4" as="video" type="video/mp4">
+  <link rel="preload" href="/assets/images/couple-animated.png" as="image" type="image/png">
 
   <link rel="stylesheet" href="./style.css">
 </head>
@@ -143,10 +144,16 @@
               REQUEST THE HONOR OF YOUR PRESENCE AT THE CELEBRATION OF THEIR WEDDING
             </p>
 
-            <div class="gold-separator animate-element" style="--delay: 0.6s;"></div>
+            <div class="gold-separator animate-element" style="--delay: 0.55s;"></div>
+
+            <!-- Animated Couple Cutout Illustration -->
+            <div class="couple-illustration-container animate-element" style="--delay: 0.65s;">
+              <div class="couple-glow-aura"></div>
+              <img src="/assets/images/couple-animated.png" alt="Shivani & Prajjual" class="couple-illustration-img">
+            </div>
 
             <!-- Continuous Vertical Scroll Guide -->
-            <div class="scroll-down-hint animate-element" id="scrollDownTrigger" style="--delay: 0.65s;">
+            <div class="scroll-down-hint animate-element" id="scrollDownTrigger" style="--delay: 0.8s;">
               <span class="scroll-hint-text">Celebration Ceremonies</span>
               <div class="scroll-chevron">↓</div>
             </div>
