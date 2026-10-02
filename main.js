@@ -661,8 +661,8 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 'section-haldi', mode: 'haldi' },
     { id: 'section-sangeet', mode: 'sangeet' },
     { id: 'section-wedding', mode: 'wedding' },
-    { id: 'section-venue', mode: 'wedding' },
-    { id: 'section-rsvp', mode: 'wedding' }
+    { id: 'section-rsvp', mode: 'wedding' },
+    { id: 'section-venue', mode: 'wedding' }
   ];
 
   if ('IntersectionObserver' in window && contentScrollable) {
