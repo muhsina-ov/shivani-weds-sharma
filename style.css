@@ -719,7 +719,7 @@ html, body {
   width: 70px;
   height: 1.5px;
   background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
-  margin: 0 auto 22px;
+  margin: 0 auto 16px;
   opacity: 0.8;
   box-shadow: 0 0 8px rgba(229, 193, 88, 0.5);
 }
@@ -738,7 +738,7 @@ html, body {
 .scratch-card-wrapper {
   width: 100%;
   max-width: 340px;
-  margin-bottom: 22px;
+  margin: 0 auto 16px;
 }
 
 .scratch-card-container {
@@ -864,7 +864,7 @@ html, body {
 .countdown-section {
   width: 100%;
   max-width: 340px;
-  margin-bottom: 24px;
+  margin: 0 auto 20px;
 }
 
 .countdown-grid {

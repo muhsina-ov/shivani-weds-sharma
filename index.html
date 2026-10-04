@@ -145,8 +145,60 @@
 
             <div class="gold-separator animate-element" style="--delay: 0.6s;"></div>
 
+            <!-- Interactive Scratch-to-Reveal Date Card -->
+            <div class="scratch-card-wrapper animate-element" style="--delay: 0.65s;">
+              <div class="scratch-card-container" id="scratchContainer">
+                <!-- Underneath Date Card -->
+                <div class="date-time-card" id="dateTimeCard">
+                  <div class="date-day" id="displayDay">WEDNESDAY & THURSDAY</div>
+                  <div class="date-main">
+                    <span class="date-month" id="displayMonth">NOVEMBER</span>
+                    <span class="date-num" id="displayDateNum">19 - 20</span>
+                    <span class="date-year" id="displayYear">2026</span>
+                  </div>
+                  <div class="date-time" id="displayTime">10:00 AM ONWARDS</div>
+                </div>
+                
+                <!-- Gold Scratch Foil Canvas -->
+                <canvas id="scratchCanvas" class="scratch-canvas"></canvas>
+                
+                <!-- Scratch Hint Badge -->
+                <div class="scratch-hint-badge" id="scratchHint">
+                  <span class="sparkle-icon">✨</span>
+                  <span>Scratch foil to reveal wedding dates</span>
+                </div>
+              </div>
+
+              <button id="quickRevealBtn" class="quick-reveal-btn">
+                <span>Quick Reveal Dates ✨</span>
+              </button>
+            </div>
+
+            <!-- Live Countdown Row -->
+            <div class="countdown-section animate-element" style="--delay: 0.75s;">
+              <div class="countdown-heading">COUNTDOWN TO CELEBRATIONS</div>
+              <div class="countdown-grid" id="countdownGrid">
+                <div class="countdown-pill">
+                  <span class="countdown-num" id="cdDays">00</span>
+                  <span class="countdown-unit">DAYS</span>
+                </div>
+                <div class="countdown-pill">
+                  <span class="countdown-num" id="cdHours">00</span>
+                  <span class="countdown-unit">HOURS</span>
+                </div>
+                <div class="countdown-pill">
+                  <span class="countdown-num" id="cdMins">00</span>
+                  <span class="countdown-unit">MINS</span>
+                </div>
+                <div class="countdown-pill">
+                  <span class="countdown-num" id="cdSecs">00</span>
+                  <span class="countdown-unit">SECS</span>
+                </div>
+              </div>
+            </div>
+
             <!-- Continuous Vertical Scroll Guide -->
-            <div class="scroll-down-hint animate-element" id="scrollDownTrigger" style="--delay: 0.7s;">
+            <div class="scroll-down-hint animate-element" id="scrollDownTrigger" style="--delay: 0.85s;">
               <span class="scroll-hint-text">Celebration Ceremonies</span>
               <div class="scroll-chevron">↓</div>
             </div>

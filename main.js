@@ -199,8 +199,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     return {
-      x: clientX - rect.left,
-      y: clientY - rect.top
+      x: (clientX - rect.left) * (scratchCanvas.width / (rect.width || 1)),
+      y: (clientY - rect.top) * (scratchCanvas.height / (rect.height || 1))
     };
   }
 
