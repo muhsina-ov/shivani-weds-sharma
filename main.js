@@ -127,18 +127,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 150);
   }
 
-  // --- HTML5 Scratch Card Engine ---
+  // --- HTML5 Scratch Card Engine (Minimal Scratching Threshold) ---
   const scratchCanvas = document.getElementById('scratchCanvas');
   const scratchHint = document.getElementById('scratchHint');
   const quickRevealBtn = document.getElementById('quickRevealBtn');
   let scratchCtx = null;
   let isScratching = false;
   let hasScratchedCleared = false;
-  let dragCount = 0;
+  let lastCoords = null;
+  let accumulatedScratchDistance = 0;
 
   function initScratchCanvas() {
     if (!scratchCanvas) return;
-    scratchCtx = scratchCanvas.getContext('2d');
+    scratchCtx = scratchCanvas.getContext('2d', { willReadFrequently: true });
     
     const container = document.getElementById('scratchContainer');
     if (!container) return;
@@ -157,8 +158,8 @@ document.addEventListener('DOMContentLoaded', () => {
     scratchCtx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
     
     // Add shimmering gold foil texture speckles
-    scratchCtx.fillStyle = 'rgba(255, 255, 255, 0.35)';
-    for (let i = 0; i < 160; i++) {
+    scratchCtx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+    for (let i = 0; i < 180; i++) {
       const x = Math.random() * scratchCanvas.width;
       const y = Math.random() * scratchCanvas.height;
       const r = Math.random() * 2 + 0.5;
@@ -169,22 +170,48 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Add prompt text on foil
     scratchCtx.font = '600 12px Cormorant Garamond, serif';
-    scratchCtx.fillStyle = 'rgba(10, 10, 15, 0.75)';
+    scratchCtx.fillStyle = 'rgba(10, 10, 15, 0.8)';
     scratchCtx.textAlign = 'center';
-    scratchCtx.fillText('✦ SCRATCH TO UNLOCK DATE ✦', scratchCanvas.width / 2, scratchCanvas.height / 2 + 4);
+    scratchCtx.fillText('✦ GENTLY SCRATCH TO REVEAL DATE ✦', scratchCanvas.width / 2, scratchCanvas.height / 2 + 4);
   }
 
-  function scratchAt(x, y) {
+  function scratchStroke(startX, startY, endX, endY) {
+    if (!scratchCtx || hasScratchedCleared) return;
+    
+    scratchCtx.globalCompositeOperation = 'destination-out';
+    scratchCtx.lineWidth = 54;
+    scratchCtx.lineCap = 'round';
+    scratchCtx.lineJoin = 'round';
+
+    scratchCtx.beginPath();
+    scratchCtx.moveTo(startX, startY);
+    scratchCtx.lineTo(endX, endY);
+    scratchCtx.stroke();
+
+    const dx = endX - startX;
+    const dy = endY - startY;
+    accumulatedScratchDistance += Math.sqrt(dx * dx + dy * dy);
+
+    // Minimal scratching trigger: instant reveal after brief rub (100px swipe)
+    if (accumulatedScratchDistance > 100) {
+      revealDateFully();
+      return;
+    }
+
+    checkScratchPercentage();
+  }
+
+  function scratchPoint(x, y) {
     if (!scratchCtx || hasScratchedCleared) return;
     
     scratchCtx.globalCompositeOperation = 'destination-out';
     scratchCtx.beginPath();
-    scratchCtx.arc(x, y, 22, 0, Math.PI * 2);
+    scratchCtx.arc(x, y, 32, 0, Math.PI * 2);
     scratchCtx.fill();
     
-    dragCount++;
-    if (dragCount % 10 === 0) {
-      checkScratchPercentage();
+    accumulatedScratchDistance += 20;
+    if (accumulatedScratchDistance > 100) {
+      revealDateFully();
     }
   }
 
@@ -207,21 +234,29 @@ document.addEventListener('DOMContentLoaded', () => {
   function checkScratchPercentage() {
     if (hasScratchedCleared || !scratchCtx) return;
     
-    const imgData = scratchCtx.getImageData(0, 0, scratchCanvas.width, scratchCanvas.height);
-    const pixels = imgData.data;
-    let transparentCount = 0;
-    
-    for (let i = 3; i < pixels.length; i += 16) {
-      if (pixels[i] === 0) {
-        transparentCount++;
+    try {
+      const imgData = scratchCtx.getImageData(0, 0, scratchCanvas.width, scratchCanvas.height);
+      const pixels = imgData.data;
+      let transparentCount = 0;
+      
+      for (let i = 3; i < pixels.length; i += 24) {
+        if (pixels[i] === 0) {
+          transparentCount++;
+        }
       }
-    }
-    
-    const totalSampled = pixels.length / 16;
-    const ratio = transparentCount / totalSampled;
-    
-    if (ratio > 0.35) {
-      revealDateFully();
+      
+      const totalSampled = pixels.length / 24;
+      const ratio = transparentCount / totalSampled;
+      
+      // Minimal scratching threshold: only ~8% needed!
+      if (ratio > 0.08) {
+        revealDateFully();
+      }
+    } catch (e) {
+      // In case of any context error, fallback to distance
+      if (accumulatedScratchDistance > 80) {
+        revealDateFully();
+      }
     }
   }
 
@@ -229,7 +264,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (hasScratchedCleared) return;
     hasScratchedCleared = true;
     
-    if (scratchCanvas) scratchCanvas.classList.add('fade-out');
+    if (scratchCanvas) {
+      scratchCanvas.classList.add('fade-out');
+      setTimeout(() => {
+        scratchCanvas.style.display = 'none';
+      }, 500);
+    }
     if (scratchHint) scratchHint.style.opacity = '0';
     if (quickRevealBtn) quickRevealBtn.style.display = 'none';
     
@@ -239,23 +279,31 @@ document.addEventListener('DOMContentLoaded', () => {
   if (scratchCanvas) {
     ['mousedown', 'touchstart'].forEach(evt => {
       scratchCanvas.addEventListener(evt, (e) => {
+        if (hasScratchedCleared) return;
         isScratching = true;
         const coords = getScratchCoords(e);
-        scratchAt(coords.x, coords.y);
+        lastCoords = coords;
+        scratchPoint(coords.x, coords.y);
       }, { passive: true });
     });
 
     ['mousemove', 'touchmove'].forEach(evt => {
       scratchCanvas.addEventListener(evt, (e) => {
-        if (!isScratching) return;
+        if (!isScratching || hasScratchedCleared) return;
         const coords = getScratchCoords(e);
-        scratchAt(coords.x, coords.y);
+        if (lastCoords) {
+          scratchStroke(lastCoords.x, lastCoords.y, coords.x, coords.y);
+        } else {
+          scratchPoint(coords.x, coords.y);
+        }
+        lastCoords = coords;
       }, { passive: true });
     });
 
     ['mouseup', 'mouseleave', 'touchend'].forEach(evt => {
       scratchCanvas.addEventListener(evt, () => {
         isScratching = false;
+        lastCoords = null;
       });
     });
   }
@@ -687,33 +735,136 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // GOOGLE CALENDAR ADD BUTTONS
+  // UNIVERSAL CALENDAR INTEGRATION (GOOGLE CALENDAR + APPLE/OUTLOOK .ICS)
   // ==========================================================================
-  document.querySelectorAll('.ceremony-calendar-btn, #addToCalendarBtn').forEach(btn => {
-    btn.addEventListener('click', () => {
+  const calendarModal = document.getElementById('calendarModal');
+  const closeCalendarModal = document.getElementById('closeCalendarModal');
+  const calModalEventTitle = document.getElementById('calModalEventTitle');
+  const calModalEventDate = document.getElementById('calModalEventDate');
+  const calOptionGoogle = document.getElementById('calOptionGoogle');
+  const calOptionApple = document.getElementById('calOptionApple');
+
+  function downloadIcsFile(title, description, location, startDateIso, endDateIso) {
+    const formatDateToIcs = (isoStr) => {
+      const d = new Date(isoStr);
+      return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    };
+
+    const start = formatDateToIcs(startDateIso || '2026-11-19T10:00:00+05:30');
+    const end = formatDateToIcs(endDateIso || '2026-11-19T15:00:00+05:30');
+
+    const icsContent = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Shivani and Prajjual Royal Wedding//EN',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      `SUMMARY:${title}`,
+      `DESCRIPTION:${description}`,
+      `LOCATION:${location}`,
+      `DTSTART:${start}`,
+      `DTEND:${end}`,
+      'STATUS:CONFIRMED',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${title.replace(/[^a-zA-Z0-9]/g, '_')}.ics`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  }
+
+  document.querySelectorAll('.ceremony-calendar-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
       const eventName = btn.dataset.event || 'Wedding Celebration';
       const eventDates = btn.dataset.date || '20261119T043000Z/20261120T183000Z';
+      const startIso = btn.dataset.start || '2026-11-19T10:00:00+05:30';
+      const endIso = btn.dataset.end || '2026-11-19T15:00:00+05:30';
       const venue = 'Devalaya Resort';
       const location = 'Jhansi Road, Sithouli, Gwalior, Madhya Pradesh';
+      const fullTitle = `${eventName} — Shivani & Prajjual Wedding`;
+      const desc = btn.dataset.desc || `We warmly welcome you to celebrate the ${eventName} of Shivani & Prajjual at ${venue}, Gwalior.`;
 
-      const title = encodeURIComponent(`${eventName} — Shivani & Prajjual Wedding`);
-      const details = encodeURIComponent(`We cordially invite you to celebrate the ${eventName} of Shivani & Prajjual at ${venue}, Gwalior.`);
-      const loc = encodeURIComponent(`${venue}, ${location}`);
+      if (calModalEventTitle) calModalEventTitle.textContent = fullTitle;
+      if (calModalEventDate) {
+        if (eventName.includes('Haldi')) {
+          calModalEventDate.textContent = 'Wednesday, 19th Nov 2026 • 10:00 AM Onwards';
+        } else if (eventName.includes('Sangeet')) {
+          calModalEventDate.textContent = 'Wednesday, 19th Nov 2026 • 7:00 PM Onwards';
+        } else {
+          calModalEventDate.textContent = 'Thursday, 20th Nov 2026 • 4:00 PM (Pheras) & 7:00 PM (Reception)';
+        }
+      }
 
-      const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${loc}&dates=${eventDates}`;
-      window.open(googleCalendarUrl, '_blank', 'noopener,noreferrer');
+      // Configure Google Calendar Link (Opens cleanly in new tab, immune to popup blockers)
+      const titleEnc = encodeURIComponent(fullTitle);
+      const detailsEnc = encodeURIComponent(desc);
+      const locEnc = encodeURIComponent(`${venue}, ${location}`);
+      const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titleEnc}&details=${detailsEnc}&location=${locEnc}&dates=${eventDates}`;
+      
+      if (calOptionGoogle) {
+        calOptionGoogle.href = googleCalendarUrl;
+      }
+
+      // Configure Apple / Outlook .ics download
+      if (calOptionApple) {
+        calOptionApple.onclick = () => {
+          downloadIcsFile(fullTitle, desc, `${venue}, ${location}`, startIso, endIso);
+          if (calendarModal) calendarModal.classList.add('hidden');
+        };
+      }
+
+      if (calendarModal) calendarModal.classList.remove('hidden');
     });
   });
 
+  if (closeCalendarModal && calendarModal) {
+    closeCalendarModal.addEventListener('click', () => calendarModal.classList.add('hidden'));
+  }
+
+  if (calendarModal) {
+    calendarModal.addEventListener('click', (e) => {
+      if (e.target === calendarModal) {
+        calendarModal.classList.add('hidden');
+      }
+    });
+  }
+
   // ==========================================================================
-  // RSVP ENGINE WITH LOCALSTORAGE & WHATSAPP INTEGRATION
+  // RSVP ENGINE: HEADLESS GOOGLE FORMS + LOCALSTORAGE + WHATSAPP NOTIFICATION
   // ==========================================================================
+  // NOTE FOR HOST: When you have your Google Form link, paste it below.
+  // Responses will be submitted directly to your connected Google Sheet in real-time,
+  // while guests stay on the themed invitation website without being redirected!
+  const GOOGLE_FORM_CONFIG = {
+    // If you have a Google Form URL like: https://docs.google.com/forms/d/e/.../viewform
+    // replace /viewform with /formResponse:
+    formResponseUrl: '',
+    // Replace with entry IDs for each field (e.g. 'entry.12345678')
+    entries: {
+      name: 'entry.1000001',
+      events: 'entry.1000002',
+      guests: 'entry.1000003',
+      contact: 'entry.1000004',
+      wishes: 'entry.1000005'
+    }
+  };
+
   const rsvpForm = document.getElementById('rsvpForm');
   const rsvpSuccessCard = document.getElementById('rsvpSuccessCard');
   const confirmedGuestName = document.getElementById('confirmedGuestName');
   const confirmedSummaryBox = document.getElementById('confirmedSummaryBox');
   const editRsvpBtn = document.getElementById('editRsvpBtn');
-  const whatsappRsvpBtn = document.getElementById('whatsappRsvpBtn');
+  const shareWhatsappBtn = document.getElementById('shareWhatsappBtn');
+  let currentRsvpData = null;
 
   function getRsvpFormData() {
     const name = (document.getElementById('rsvpGuestName')?.value || '').trim();
@@ -736,7 +887,32 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
+  function submitHeadlessGoogleForm(data) {
+    if (!GOOGLE_FORM_CONFIG.formResponseUrl) return;
+
+    try {
+      const formData = new FormData();
+      formData.append(GOOGLE_FORM_CONFIG.entries.name, data.name);
+      formData.append(GOOGLE_FORM_CONFIG.entries.events, data.events);
+      formData.append(GOOGLE_FORM_CONFIG.entries.guests, data.guests);
+      formData.append(GOOGLE_FORM_CONFIG.entries.contact, data.contact);
+      formData.append(GOOGLE_FORM_CONFIG.entries.wishes, data.note);
+
+      // Submit via fetch no-cors (silent background submission)
+      fetch(GOOGLE_FORM_CONFIG.formResponseUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData
+      }).catch(err => {
+        console.warn('Background Google Form fetch submit notice:', err);
+      });
+    } catch (e) {
+      console.warn('Google Form headless submit exception:', e);
+    }
+  }
+
   function displayRsvpSuccess(data) {
+    currentRsvpData = data;
     if (!rsvpForm || !rsvpSuccessCard) return;
     rsvpForm.classList.add('hidden');
     rsvpSuccessCard.classList.remove('hidden');
@@ -747,6 +923,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div><strong>Attending:</strong> ${data.events}</div>
         <div><strong>Guests:</strong> ${data.guests}</div>
         ${data.contact ? `<div><strong>Phone:</strong> ${data.contact}</div>` : ''}
+        ${data.note ? `<div><strong>Blessing:</strong> "${data.note}"</div>` : ''}
       `;
     }
   }
@@ -778,18 +955,26 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const data = getRsvpFormData();
 
+      // 1. Submit to Google Form in the background (no redirection!)
+      submitHeadlessGoogleForm(data);
+
+      // 2. Save locally
       try {
         localStorage.setItem('shivani_prajjual_rsvp', JSON.stringify(data));
       } catch (err) {
         console.warn('LocalStorage RSVP save error:', err);
       }
 
+      // 3. Display Royal Confirmation Card immediately on site
       displayRsvpSuccess(data);
       triggerConfetti();
+    });
+  }
 
-      // Launch WhatsApp confirmation with pre-filled guest details
-      const message = `Namaste Shivani & Prajjual! ✨\n\nI am delighted to confirm my RSVP for your royal wedding celebrations!\n\n• Guest: ${data.name}\n• Attending: ${data.events}\n• Total Guests: ${data.guests}${data.contact ? `\n• Contact: ${data.contact}` : ''}${data.note ? `\n• Message: "${data.note}"` : ''}\n\nLooking forward to celebrating with you at Devalaya Resort, Gwalior! 💖`;
-      
+  if (shareWhatsappBtn) {
+    shareWhatsappBtn.addEventListener('click', () => {
+      const data = currentRsvpData || getRsvpFormData();
+      const message = `Namaste Shivani & Prajjual! ✨\n\nI have confirmed my RSVP for your royal wedding celebrations!\n\n• Guest: ${data.name}\n• Attending: ${data.events}\n• Total Guests: ${data.guests}${data.contact ? `\n• Phone: ${data.contact}` : ''}${data.note ? `\n• Blessings: "${data.note}"` : ''}\n\nLooking forward to celebrating with you at Devalaya Resort, Gwalior! 💖`;
       const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
     });

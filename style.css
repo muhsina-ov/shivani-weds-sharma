@@ -811,53 +811,109 @@ html, body {
   text-decoration: underline;
 }
 
-/* Date & Time Inner Card */
+/* Date & Time Inner Card (Responsive Royal Layout) */
 .date-time-card {
   background: transparent;
   border: none;
-  padding: 18px 20px;
+  padding: 16px 14px 14px;
   width: 100%;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.date-day-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 4px;
 }
 
 .date-day {
   font-family: var(--font-serif);
-  font-size: 0.72rem;
-  letter-spacing: 3px;
+  font-size: clamp(0.7rem, 2.4vw, 0.8rem);
+  letter-spacing: 2.5px;
   color: var(--color-gold);
-  margin-bottom: 6px;
+  text-transform: uppercase;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-.date-main {
+.day-star {
+  font-size: 0.6rem;
+  color: var(--color-gold-light);
+  opacity: 0.85;
+}
+
+.date-hero-display {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  margin: 4px 0;
+  justify-content: center;
+  margin: 2px 0 8px;
+  width: 100%;
+}
+
+.date-num-prominent {
+  font-family: var(--font-heading);
+  font-size: clamp(2.3rem, 8vw, 3.2rem);
+  line-height: 1.05;
+  font-weight: 700;
+  color: #FFF6D5;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFF4D0 45%, #E5C158 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 8px rgba(229, 193, 88, 0.45));
+  letter-spacing: 2px;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.date-month-year-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 4px;
 }
 
 .date-month, .date-year {
   font-family: var(--font-serif);
-  font-size: 0.95rem;
-  letter-spacing: 2px;
+  font-size: clamp(0.9rem, 3vw, 1.1rem);
+  letter-spacing: 3px;
   color: var(--color-text-bright);
-}
-
-.date-num {
-  font-family: var(--font-heading);
-  font-size: 2.2rem;
-  color: var(--color-gold-light);
-  line-height: 1;
-  font-weight: 700;
-}
-
-.date-time {
-  font-family: var(--font-sans);
-  font-size: 0.7rem;
-  letter-spacing: 2px;
-  color: var(--color-text-muted);
-  margin-top: 8px;
+  font-weight: 600;
   text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.date-separator {
+  color: var(--color-gold);
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.date-time-highlight {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(229, 193, 88, 0.12);
+  border: 1px solid rgba(229, 193, 88, 0.35);
+  box-shadow: 0 0 12px rgba(229, 193, 88, 0.12) inset;
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-family: var(--font-sans);
+  font-size: clamp(0.68rem, 2.2vw, 0.78rem);
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--color-gold-light);
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 /* --- Live Countdown Timer Section --- */
@@ -1818,18 +1874,20 @@ html, body {
   line-height: 1;
 }
 
-/* Dedicated Ceremony Page Card Layout */
+/* ==========================================================================
+   CEREMONY EVENT SECTIONS (UNIFIED CEREMONIAL THEME)
+   ========================================================================== */
 .ceremony-page-card {
   width: 100%;
   max-width: 360px;
   margin: 0 auto 10px auto;
-  background: rgba(18, 18, 24, 0.72);
+  background: rgba(18, 18, 24, 0.76);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--color-glass-border);
   border-radius: 22px;
   padding: 22px 18px;
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55), 0 0 1px rgba(229, 193, 88, 0.2) inset;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55), 0 0 1px rgba(229, 193, 88, 0.25) inset;
   position: relative;
   overflow: hidden;
   text-align: center;
@@ -1838,26 +1896,36 @@ html, body {
   align-items: center;
 }
 
-/* Simple, Elegant Card Header Ornaments (NO garlands, NO balloons) */
-.card-ornament {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: -4px 0 10px 0;
+/* Unified Ceremonial Frame & Top Arch */
+.event-section-card {
+  border-top: 2px solid rgba(229, 193, 88, 0.5);
+  background: linear-gradient(180deg, rgba(24, 20, 28, 0.82) 0%, rgba(14, 14, 20, 0.86) 100%);
 }
 
-.ornament-svg {
+.ceremonial-arch-crown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
   width: 100%;
-  max-width: 220px;
-  height: 20px;
-  filter: drop-shadow(0 2px 4px rgba(229, 193, 88, 0.3));
+  margin-bottom: 8px;
+}
+
+.crown-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(229, 193, 88, 0.6), transparent);
+}
+
+.crown-symbol {
+  font-size: 1.15rem;
+  filter: drop-shadow(0 0 6px rgba(229, 193, 88, 0.5));
 }
 
 .ceremony-badge {
   display: inline-block;
   font-family: var(--font-serif);
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   letter-spacing: 1.5px;
   border-radius: 12px;
   padding: 4px 12px;
@@ -1869,13 +1937,13 @@ html, body {
 .ceremony-badge.yellow { background: rgba(255, 179, 0, 0.18); border: 1px solid rgba(255, 179, 0, 0.45); color: #FFE082; }
 .ceremony-badge.rose { background: rgba(236, 64, 122, 0.18); border: 1px solid rgba(236, 64, 122, 0.45); color: #F48FB1; }
 .ceremony-badge.holy { background: rgba(239, 83, 80, 0.18); border: 1px solid rgba(239, 83, 80, 0.45); color: #EF9A9A; }
-.ceremony-badge.royal { background: rgba(171, 71, 188, 0.18); border: 1px solid rgba(171, 71, 188, 0.45); color: #CE93D8; }
 
 .ceremony-title {
   font-family: var(--font-heading);
-  font-size: 1.45rem;
-  margin-bottom: 6px;
+  font-size: clamp(1.35rem, 4.2vw, 1.6rem);
+  margin-bottom: 12px;
   line-height: 1.25;
+  font-weight: 700;
 }
 
 .gold-text { color: var(--color-gold-light); }
@@ -1884,31 +1952,147 @@ html, body {
 
 .ceremony-subtitle-text {
   font-family: var(--font-serif);
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   letter-spacing: 1px;
   color: var(--color-gold);
   margin-bottom: 12px;
   text-transform: uppercase;
 }
 
-.ceremony-time-pill {
-  display: inline-flex;
+/* ==========================================================================
+   FEATURED DATE & TIMINGS SHOWCASE (PRIMARY VISUAL EMPHASIS)
+   ========================================================================== */
+.ceremony-datetime-showcase {
+  width: 100%;
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.haldi-datetime {
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.12) 0%, rgba(26, 20, 10, 0.8) 100%);
+  border: 1.5px solid rgba(255, 213, 79, 0.5);
+  box-shadow: 0 0 16px rgba(255, 193, 7, 0.15) inset, 0 4px 16px rgba(0,0,0,0.4);
+}
+
+.sangeet-datetime {
+  background: linear-gradient(135deg, rgba(244, 143, 177, 0.12) 0%, rgba(26, 14, 22, 0.8) 100%);
+  border: 1.5px solid rgba(244, 143, 177, 0.5);
+  box-shadow: 0 0 16px rgba(244, 143, 177, 0.15) inset, 0 4px 16px rgba(0,0,0,0.4);
+}
+
+.wedding-datetime {
+  background: linear-gradient(135deg, rgba(239, 83, 80, 0.14) 0%, rgba(30, 12, 16, 0.8) 100%);
+  border: 1.5px solid rgba(255, 160, 0, 0.55);
+  box-shadow: 0 0 18px rgba(239, 83, 80, 0.18) inset, 0 4px 16px rgba(0,0,0,0.4);
+}
+
+.datetime-primary-row {
+  display: flex;
   align-items: center;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
-  padding: 4px 12px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.datetime-date-col, .datetime-time-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.datetime-divider-vert {
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(180deg, transparent, rgba(229, 193, 88, 0.45), transparent);
+  margin: 0 8px;
+}
+
+.dt-label {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  letter-spacing: 1.2px;
+  color: var(--color-gold);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.dt-value-date {
+  font-family: var(--font-serif);
+  font-size: clamp(0.98rem, 3.2vw, 1.15rem);
+  font-weight: 700;
+  color: var(--color-text-bright);
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+}
+
+.dt-value-day {
   font-family: var(--font-sans);
   font-size: 0.72rem;
-  color: var(--color-text-bright);
+  color: var(--color-gold-light);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.dt-value-time {
+  font-family: var(--font-heading);
+  font-size: clamp(1.15rem, 3.8vw, 1.35rem);
+  font-weight: 700;
+  color: #FFF6D5;
+  text-shadow: 0 0 10px rgba(229, 193, 88, 0.4);
+  white-space: nowrap;
+  line-height: 1.15;
+}
+
+.dt-value-sub {
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  letter-spacing: 1px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.wedding-timing-dual-row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 2px;
+}
+
+.timing-badge-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.timing-name {
+  color: var(--color-gold);
   font-weight: 600;
-  margin-bottom: 12px;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+}
+
+.timing-time {
+  color: #FFF9C4;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.95rem;
 }
 
 .ceremony-desc {
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: 0.96rem;
   line-height: 1.45;
   color: var(--color-text-muted);
   margin-bottom: 16px;
@@ -1918,9 +2102,9 @@ html, body {
 /* Feature Boxes */
 .ceremony-feature-box {
   width: 100%;
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 12px 14px;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -1937,7 +2121,7 @@ html, body {
 }
 
 .feature-icon {
-  font-size: 1rem;
+  font-size: 1.05rem;
   margin-top: 1px;
 }
 
@@ -1948,19 +2132,20 @@ html, body {
 
 .feature-text strong {
   font-family: var(--font-sans);
-  font-size: 0.68rem;
-  letter-spacing: 0.5px;
+  font-size: 0.7rem;
+  letter-spacing: 0.6px;
   color: var(--color-gold-light);
   text-transform: uppercase;
+  margin-bottom: 1px;
 }
 
 .feature-text span {
   font-family: var(--font-body);
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   color: var(--color-text-muted);
 }
 
-/* Wedding Dual Ceremonies Cards (Pheras & Reception on Same Page) */
+/* Wedding Dual Ceremonies Cards */
 .wedding-ceremonies-dual {
   display: flex;
   flex-direction: column;
@@ -2018,20 +2203,20 @@ html, body {
 
 .sub-card-heading {
   font-family: var(--font-heading);
-  font-size: 1.02rem;
+  font-size: 1.05rem;
   color: var(--color-text-bright);
 }
 
-.sub-time-pill {
+.prominent-time {
   font-family: var(--font-sans);
-  font-size: 0.66rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.5px;
-  color: var(--color-gold);
-  background: rgba(229, 193, 88, 0.12);
-  border: 1px solid rgba(229, 193, 88, 0.3);
+  color: var(--color-gold-light);
+  background: rgba(229, 193, 88, 0.16);
+  border: 1px solid rgba(229, 193, 88, 0.4);
   border-radius: 10px;
-  padding: 3px 8px;
+  padding: 3px 9px;
   white-space: nowrap;
 }
 
@@ -2052,7 +2237,7 @@ html, body {
   border-radius: 8px;
   padding: 2px 7px;
   font-family: var(--font-sans);
-  font-size: 0.64rem;
+  font-size: 0.65rem;
   color: var(--color-gold-light);
 }
 
@@ -2060,367 +2245,399 @@ html, body {
   font-size: 0.75rem;
 }
 
-.venue-inline-pill {
+/* ==========================================================================
+   REFINED, NON-DISTRACTING ADD TO CALENDAR BUTTON
+   ========================================================================== */
+.subtle-calendar-btn {
+  background: rgba(18, 18, 24, 0.7);
+  border: 1px solid rgba(229, 193, 88, 0.35);
+  color: var(--color-gold);
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 9px 18px;
+  border-radius: 20px;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: rgba(229, 193, 88, 0.1);
-  border: 1px solid rgba(229, 193, 88, 0.25);
-  border-radius: 20px;
-  padding: 5px 12px;
-  font-family: var(--font-serif);
-  font-size: 0.72rem;
-  color: var(--color-gold-light);
-  margin-bottom: 16px;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  text-decoration: none;
+  width: auto;
+  max-width: 220px;
+  margin: 0 auto;
 }
 
-/* Venue Page Styling */
-.venue-details-card {
+.subtle-calendar-btn:hover {
+  background: rgba(229, 193, 88, 0.15);
+  border-color: var(--color-gold);
+  color: var(--color-gold-light);
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   PAGE 4: DISTINCT DESTINATION VENUE CARD
+   ========================================================================== */
+.destination-page-card {
   width: 100%;
-  background: rgba(22, 22, 30, 0.7);
-  border: 1px solid rgba(229, 193, 88, 0.25);
+  max-width: 360px;
+  margin: 0 auto 10px auto;
+  background: linear-gradient(180deg, rgba(14, 20, 36, 0.85) 0%, rgba(8, 12, 22, 0.92) 100%);
+  border: 1.5px solid rgba(100, 160, 240, 0.3);
+  border-radius: 22px;
+  padding: 24px 18px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(70, 130, 220, 0.1) inset;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.palace-crest-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(100, 160, 240, 0.12);
+  border: 1px solid rgba(100, 160, 240, 0.35);
+  border-radius: 20px;
+  padding: 4px 14px;
+  margin-bottom: 12px;
+}
+
+.crest-icon {
+  font-size: 1.1rem;
+}
+
+.crest-label {
+  font-family: var(--font-serif);
+  font-size: 0.65rem;
+  letter-spacing: 1.8px;
+  color: #B3D4FF;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.destination-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.45rem, 4.4vw, 1.75rem);
+  color: #FFF6D5;
+  margin-bottom: 4px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.destination-subtitle {
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+  color: #90CAF9;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.destination-intro {
+  font-family: var(--font-body);
+  font-size: 0.94rem;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+  margin-bottom: 16px;
+  padding: 0 4px;
+}
+
+.destination-plaque {
+  width: 100%;
+  background: rgba(18, 26, 44, 0.8);
+  border: 1px solid rgba(100, 160, 240, 0.25);
   border-radius: 14px;
   padding: 14px;
   margin-bottom: 16px;
   text-align: left;
 }
 
-.venue-address-block {
+.plaque-header {
   display: flex;
   align-items: flex-start;
   gap: 10px;
   margin-bottom: 12px;
 }
 
-.address-icon {
-  font-size: 1.1rem;
+.plaque-pin-badge {
+  font-size: 1.2rem;
   margin-top: 1px;
 }
 
-.address-info strong {
+.plaque-address strong {
   font-family: var(--font-sans);
   font-size: 0.72rem;
   letter-spacing: 0.8px;
-  color: var(--color-gold);
+  color: #B3D4FF;
   text-transform: uppercase;
   display: block;
   margin-bottom: 2px;
 }
 
-.address-info p {
+.plaque-address p {
   font-family: var(--font-body);
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   line-height: 1.35;
   color: var(--color-text-bright);
 }
 
-.map-interactive-preview {
-  position: relative;
+.destination-transit-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.transit-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  color: var(--color-text-muted);
+}
+
+/* ==========================================================================
+   PAGE 5: DISTINCT ROYAL REGISTRY RSVP CARD
+   ========================================================================== */
+.registry-page-card {
   width: 100%;
-  height: 110px;
-  border-radius: 10px;
+  max-width: 360px;
+  margin: 0 auto 10px auto;
+  background: linear-gradient(180deg, rgba(32, 16, 26, 0.88) 0%, rgba(16, 10, 18, 0.94) 100%);
+  border: 1.5px solid rgba(229, 193, 88, 0.4);
+  border-radius: 22px;
+  padding: 24px 18px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(229, 193, 88, 0.12) inset;
+  position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #181924, #0d0e14);
-  border: 1px solid rgba(229, 193, 88, 0.3);
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.map-grid-layer {
-  position: absolute;
-  inset: 0;
-  background-image: 
-    linear-gradient(rgba(229, 193, 88, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(229, 193, 88, 0.08) 1px, transparent 1px);
-  background-size: 20px 20px;
-  opacity: 0.8;
-}
-
-.map-pulse-marker {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-}
-
-.marker-pulse {
-  position: absolute;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: rgba(229, 193, 88, 0.25);
-  animation: mapPulse 2s ease-out infinite;
-}
-
-@keyframes mapPulse {
-  0% { transform: scale(0.6); opacity: 0.9; }
-  100% { transform: scale(1.6); opacity: 0; }
-}
-
-.marker-center {
-  position: relative;
-  z-index: 3;
-  width: 32px;
-  height: 32px;
-  background: var(--color-gold-gradient);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-}
-
-.map-card-overlay-text {
-  position: absolute;
-  bottom: 8px;
-  left: 10px;
-  right: 10px;
-  z-index: 3;
+  text-align: center;
   display: flex;
   flex-direction: column;
-  background: rgba(10, 10, 14, 0.85);
-  backdrop-filter: blur(6px);
-  padding: 4px 8px;
-  border-radius: 6px;
-  border: 1px solid rgba(229, 193, 88, 0.2);
+  align-items: center;
 }
 
-.map-title-text {
-  font-family: var(--font-serif);
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--color-gold-light);
-}
-
-.map-sub-text {
-  font-family: var(--font-sans);
-  font-size: 0.62rem;
-  color: var(--color-text-muted);
-}
-
-.venue-perks-list {
+.wax-seal-badge {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 6px;
+  margin-bottom: 10px;
 }
 
-.perk-item {
+.wax-seal-ring {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #B88E28 0%, #E5C158 50%, #8C6414 100%);
   display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-body);
-  font-size: 0.84rem;
-  color: var(--color-text-muted);
-}
-
-.venue-primary-action {
-  width: 100%;
-  margin-bottom: 16px;
-}
-
-.get-directions-btn {
-  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  text-decoration: none;
-  font-size: 0.82rem;
-  padding: 12px 16px;
-  letter-spacing: 0.6px;
-  box-shadow: 0 6px 20px rgba(229, 193, 88, 0.35);
+  box-shadow: 0 4px 14px rgba(229, 193, 88, 0.35);
+  border: 2px solid #FFF4D0;
 }
 
-/* RSVP Page & Form Styling */
-.rsvp-subtitle {
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  line-height: 1.35;
-  color: var(--color-text-muted);
-  margin-bottom: 14px;
+.seal-icon {
+  font-size: 1.3rem;
+  line-height: 1;
 }
 
-.rsvp-form-container {
-  width: 100%;
-  margin-bottom: 16px;
-}
-
-.rsvp-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 100%;
-  text-align: left;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.form-label {
-  font-family: var(--font-sans);
+.seal-title {
+  font-family: var(--font-serif);
   font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.6px;
+  letter-spacing: 2.2px;
   color: var(--color-gold);
+  font-weight: 700;
   text-transform: uppercase;
 }
 
-.glass-input, .glass-select, .glass-textarea {
-  width: 100%;
-  background: rgba(22, 22, 30, 0.75);
-  border: 1px solid rgba(229, 193, 88, 0.3);
-  border-radius: 10px;
-  padding: 8px 12px;
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  color: var(--color-text-bright);
-  outline: none;
-  transition: all 0.2s ease;
-}
-
-.glass-input:focus, .glass-select:focus, .glass-textarea:focus {
-  border-color: var(--color-gold);
-  background: rgba(30, 30, 42, 0.9);
-  box-shadow: 0 0 10px rgba(229, 193, 88, 0.25);
-}
-
-.form-row-dual {
-  display: flex;
-  gap: 8px;
-  width: 100%;
-}
-
-.flex-1 { flex: 1; }
-.flex-2 { flex: 2; }
-
-.events-pill-selector {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-}
-
-.pill-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(229, 193, 88, 0.2);
-  border-radius: 8px;
-  padding: 6px 8px;
-  font-family: var(--font-sans);
-  font-size: 0.68rem;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.pill-checkbox input {
-  accent-color: #E5C158;
-}
-
-.pill-checkbox:has(input:checked) {
-  background: rgba(229, 193, 88, 0.15);
-  border-color: var(--color-gold);
+.registry-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.4rem, 4.4vw, 1.7rem);
   color: var(--color-gold-light);
-  font-weight: 600;
+  margin-bottom: 6px;
+  font-weight: 700;
 }
 
-.rsvp-action-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 6px;
+.registry-subtitle {
+  font-family: var(--font-body);
+  font-size: 0.94rem;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+  margin-bottom: 18px;
+  padding: 0 6px;
 }
 
-.rsvp-submit-btn {
-  padding: 11px;
-  font-size: 0.85rem;
-  letter-spacing: 0.5px;
-}
-
-.rsvp-whatsapp-btn {
+.rsvp-whatsapp-share-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px;
-  font-size: 0.8rem;
+  background: rgba(37, 211, 102, 0.15);
+  border: 1px solid #25D366;
+  border-radius: 20px;
   color: #25D366;
-  border-color: rgba(37, 211, 102, 0.35);
-  background: rgba(37, 211, 102, 0.08);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 8px 16px;
   cursor: pointer;
   transition: all 0.2s ease;
+  margin-top: 6px;
 }
 
-.rsvp-whatsapp-btn:hover {
-  background: rgba(37, 211, 102, 0.18);
-  border-color: #25D366;
-  color: #ffffff;
+.rsvp-whatsapp-share-btn:hover {
+  background: #25D366;
+  color: #0A0A0C;
 }
 
-/* RSVP Success State */
-.rsvp-success-card {
+.rsvp-success-actions {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  padding: 20px 14px;
-  background: rgba(26, 26, 36, 0.85);
-  border: 1px solid var(--color-gold);
-  border-radius: 14px;
-  animation: tabFadeIn 0.3s ease;
+  width: 100%;
 }
 
-.success-icon-wrap {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--color-gold-gradient);
+/* ==========================================================================
+   UNIVERSAL ADD TO CALENDAR MODAL
+   ========================================================================== */
+.calendar-modal-card {
+  width: 90%;
+  max-width: 380px;
+  background: rgba(20, 20, 28, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-gold);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(229, 193, 88, 0.2);
+}
+
+.calendar-modal-body {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.calendar-event-preview {
   display: flex;
   align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 16px rgba(229, 193, 88, 0.4);
-}
-
-.success-check {
-  font-size: 1.4rem;
-  color: #0A0A0C;
-  font-weight: 900;
-}
-
-.success-title {
-  font-family: var(--font-heading);
-  font-size: 1.25rem;
-  color: var(--color-gold-light);
-}
-
-.success-msg {
-  font-family: var(--font-body);
-  font-size: 0.92rem;
-  line-height: 1.38;
-  color: var(--color-text-bright);
-  text-align: center;
-}
-
-.confirmed-summary-box {
-  width: 100%;
+  gap: 12px;
   background: rgba(229, 193, 88, 0.1);
   border: 1px solid rgba(229, 193, 88, 0.25);
-  border-radius: 10px;
-  padding: 8px 12px;
-  font-family: var(--font-sans);
-  font-size: 0.72rem;
+  border-radius: 12px;
+  padding: 12px;
+  text-align: left;
+}
+
+.cal-preview-icon {
+  font-size: 1.8rem;
+}
+
+.cal-preview-info h3 {
+  font-family: var(--font-serif);
+  font-size: 1rem;
   color: var(--color-gold-light);
-  text-align: center;
-  margin: 4px 0;
+  margin-bottom: 2px;
+}
+
+.cal-preview-date {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-text-bright);
+}
+
+.cal-preview-venue {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.calendar-options-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.calendar-option-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  border: 1px solid transparent;
+  width: 100%;
+}
+
+.google-btn {
+  background: rgba(66, 133, 244, 0.12);
+  border-color: rgba(66, 133, 244, 0.35);
+  color: var(--color-text-bright);
+}
+
+.google-btn:hover {
+  background: rgba(66, 133, 244, 0.22);
+  border-color: #4285F4;
+  transform: translateY(-2px);
+}
+
+.apple-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--color-text-bright);
+}
+
+.apple-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: var(--color-gold);
+  transform: translateY(-2px);
+}
+
+.cal-option-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+}
+
+.option-icon {
+  font-size: 1.4rem;
+}
+
+.option-copy {
+  display: flex;
+  flex-direction: column;
+}
+
+.option-copy strong {
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  color: var(--color-text-bright);
+}
+
+.option-copy span {
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  color: var(--color-text-muted);
+}
+
+.option-arrow {
+  font-size: 1.1rem;
+  color: var(--color-gold);
+  font-weight: 700;
 }
 
 /* Ceremony Nav Actions & Footers */
