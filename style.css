@@ -2475,6 +2475,156 @@ html, body {
   padding: 0 6px;
 }
 
+/* Event Pill Selector */
+.events-pill-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.pill-checkbox {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+.pill-checkbox input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.pill-checkbox span {
+  display: inline-block;
+  padding: 7px 13px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(229, 193, 88, 0.3);
+  border-radius: 16px;
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  color: var(--color-text-bright);
+  transition: all 0.2s ease;
+}
+
+.pill-checkbox:hover span {
+  border-color: rgba(229, 193, 88, 0.6);
+  background: rgba(229, 193, 88, 0.12);
+}
+
+.pill-checkbox input:checked + span {
+  background: linear-gradient(135deg, rgba(229, 193, 88, 0.28) 0%, rgba(184, 142, 40, 0.42) 100%);
+  border-color: var(--color-gold);
+  color: var(--color-gold-light);
+  box-shadow: 0 0 12px rgba(229, 193, 88, 0.25);
+  font-weight: 600;
+}
+
+/* Dual Column Row */
+.form-row-dual {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.flex-1 { flex: 1; }
+.flex-2 { flex: 1.5; }
+
+/* Themed Glass Inputs */
+.glass-input, .glass-select, .glass-textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(229, 193, 88, 0.3);
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: var(--color-text-bright);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.glass-input:focus, .glass-select:focus, .glass-textarea:focus {
+  border-color: var(--color-gold);
+  background: rgba(255, 255, 255, 0.09);
+  box-shadow: 0 0 12px rgba(229, 193, 88, 0.2);
+}
+
+.glass-select {
+  cursor: pointer;
+}
+
+.glass-select option {
+  background: #18111B;
+  color: #F8F4EB;
+}
+
+/* Success Card */
+.rsvp-success-card {
+  padding: 16px 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.success-icon-wrap {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(229, 193, 88, 0.3) 0%, rgba(37, 211, 102, 0.25) 100%);
+  border: 2px solid var(--color-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 18px rgba(229, 193, 88, 0.45);
+}
+
+.success-check {
+  font-size: 1.5rem;
+  color: var(--color-gold-light);
+  font-weight: 700;
+}
+
+.success-title {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  color: var(--color-gold-light);
+  margin: 0;
+}
+
+.success-msg {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: var(--color-text-bright);
+  margin: 0;
+}
+
+.confirmed-summary-box {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px dashed rgba(229, 193, 88, 0.4);
+  border-radius: 12px;
+  padding: 12px 14px;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--color-text-bright);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .rsvp-whatsapp-share-btn {
   display: inline-flex;
   align-items: center;

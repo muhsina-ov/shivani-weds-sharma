@@ -844,17 +844,25 @@ document.addEventListener('DOMContentLoaded', () => {
   // NOTE FOR HOST: When you have your Google Form link, paste it below.
   // Responses will be submitted directly to your connected Google Sheet in real-time,
   // while guests stay on the themed invitation website without being redirected!
+  // ==========================================================================
+  // RSVP ENGINE: HEADLESS GOOGLE FORMS + LOCALSTORAGE + WHATSAPP NOTIFICATION
+  // ==========================================================================
+  // Google Form Destination:
+  // Form View URL: https://docs.google.com/forms/d/e/1FAIpQLSf2dd4tjXABXnm1-pcNyREX0ZH7mk7fY0k8zBhnnzOe4DE5uQ/viewform
+  // Responses get submitted silently in background to your Google Form / Google Sheet.
   const GOOGLE_FORM_CONFIG = {
-    // If you have a Google Form URL like: https://docs.google.com/forms/d/e/.../viewform
-    // replace /viewform with /formResponse:
-    formResponseUrl: '',
-    // Replace with entry IDs for each field (e.g. 'entry.12345678')
+    formResponseUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSf2dd4tjXABXnm1-pcNyREX0ZH7mk7fY0k8zBhnnzOe4DE5uQ/formResponse',
     entries: {
-      name: 'entry.1000001',
-      events: 'entry.1000002',
-      guests: 'entry.1000003',
-      contact: 'entry.1000004',
-      wishes: 'entry.1000005'
+      name: 'entry.75154926',
+      attending: 'entry.877086558',
+      phone: 'entry.843030410',
+      attendees: 'entry.1498135098',
+      wishes: 'entry.2606285'
+    },
+    hiddenTokens: {
+      fvv: '1',
+      pageHistory: '0',
+      fbzx: '5351127168266296729'
     }
   };
 
@@ -866,10 +874,36 @@ document.addEventListener('DOMContentLoaded', () => {
   const shareWhatsappBtn = document.getElementById('shareWhatsappBtn');
   let currentRsvpData = null;
 
+  // Smart Ceremony Pill Toggle Logic
+  const allCelebrationsCb = document.querySelector('input[name="rsvpCeremonies"][value="All Celebrations"]');
+  const individualCeremonyCbs = document.querySelectorAll('input[name="rsvpCeremonies"]:not([value="All Celebrations"])');
+
+  if (allCelebrationsCb && individualCeremonyCbs.length > 0) {
+    allCelebrationsCb.addEventListener('change', () => {
+      if (allCelebrationsCb.checked) {
+        individualCeremonyCbs.forEach(cb => cb.checked = false);
+      }
+    });
+
+    individualCeremonyCbs.forEach(cb => {
+      cb.addEventListener('change', () => {
+        if (cb.checked) {
+          allCelebrationsCb.checked = false;
+        } else {
+          const anyChecked = Array.from(individualCeremonyCbs).some(c => c.checked);
+          if (!anyChecked) {
+            allCelebrationsCb.checked = true;
+          }
+        }
+      });
+    });
+  }
+
   function getRsvpFormData() {
     const name = (document.getElementById('rsvpGuestName')?.value || '').trim();
     const guestCount = document.getElementById('rsvpGuestCount')?.value || '2 Guests';
     const contact = (document.getElementById('rsvpContact')?.value || '').trim();
+    const attendeeNames = (document.getElementById('rsvpAttendeeNames')?.value || '').trim();
     const note = (document.getElementById('rsvpNote')?.value || '').trim();
 
     const selectedEvents = [];
@@ -877,10 +911,20 @@ document.addEventListener('DOMContentLoaded', () => {
       selectedEvents.push(cb.value);
     });
 
+    const eventsStr = selectedEvents.length > 0 ? selectedEvents.join(', ') : 'All Celebrations';
+    
+    // Rich Attendee Description for Google Form / Sheet entry 1498135098
+    let attendeesFormatted = `${guestCount} (Attending: ${eventsStr})`;
+    if (attendeeNames) {
+      attendeesFormatted = `${attendeeNames} — ${guestCount} (Attending: ${eventsStr})`;
+    }
+
     return {
       name: name || 'Guest',
-      events: selectedEvents.length > 0 ? selectedEvents.join(', ') : 'All Celebrations',
+      events: eventsStr,
       guests: guestCount,
+      attendeeNames: attendeeNames,
+      attendeesFormatted: attendeesFormatted,
       contact: contact,
       note: note,
       timestamp: new Date().toISOString()
@@ -891,18 +935,28 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!GOOGLE_FORM_CONFIG.formResponseUrl) return;
 
     try {
-      const formData = new FormData();
-      formData.append(GOOGLE_FORM_CONFIG.entries.name, data.name);
-      formData.append(GOOGLE_FORM_CONFIG.entries.events, data.events);
-      formData.append(GOOGLE_FORM_CONFIG.entries.guests, data.guests);
-      formData.append(GOOGLE_FORM_CONFIG.entries.contact, data.contact);
-      formData.append(GOOGLE_FORM_CONFIG.entries.wishes, data.note);
+      const formData = new URLSearchParams();
+      formData.append('fvv', GOOGLE_FORM_CONFIG.hiddenTokens.fvv);
+      formData.append('pageHistory', GOOGLE_FORM_CONFIG.hiddenTokens.pageHistory);
+      formData.append('fbzx', GOOGLE_FORM_CONFIG.hiddenTokens.fbzx);
 
-      // Submit via fetch no-cors (silent background submission)
+      formData.append(GOOGLE_FORM_CONFIG.entries.name, data.name);
+      formData.append(GOOGLE_FORM_CONFIG.entries.attending, "Yes,  I'll be there");
+      formData.append(GOOGLE_FORM_CONFIG.entries.phone, data.contact || 'Not provided');
+      formData.append(GOOGLE_FORM_CONFIG.entries.attendees, data.attendeesFormatted);
+      formData.append(
+        GOOGLE_FORM_CONFIG.entries.wishes, 
+        data.note || "Warmest congratulations and heartfelt blessings to Shivani & Prajjual! 💖✨"
+      );
+
+      // Silent background submission via fetch no-cors
       fetch(GOOGLE_FORM_CONFIG.formResponseUrl, {
         method: 'POST',
         mode: 'no-cors',
-        body: formData
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData.toString()
       }).catch(err => {
         console.warn('Background Google Form fetch submit notice:', err);
       });
@@ -920,8 +974,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (confirmedGuestName) confirmedGuestName.textContent = data.name;
     if (confirmedSummaryBox) {
       confirmedSummaryBox.innerHTML = `
+        <div><strong>Guest:</strong> ${data.name}</div>
         <div><strong>Attending:</strong> ${data.events}</div>
-        <div><strong>Guests:</strong> ${data.guests}</div>
+        <div><strong>Total Guests:</strong> ${data.guests}</div>
+        ${data.attendeeNames ? `<div><strong>People Attending:</strong> ${data.attendeeNames}</div>` : ''}
         ${data.contact ? `<div><strong>Phone:</strong> ${data.contact}</div>` : ''}
         ${data.note ? `<div><strong>Blessing:</strong> "${data.note}"</div>` : ''}
       `;
@@ -933,6 +989,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedRsvp = localStorage.getItem('shivani_prajjual_rsvp');
     if (savedRsvp) {
       const data = JSON.parse(savedRsvp);
+      // Pre-fill inputs for seamless editing
+      if (document.getElementById('rsvpGuestName') && data.name) {
+        document.getElementById('rsvpGuestName').value = data.name;
+      }
+      if (document.getElementById('rsvpGuestCount') && data.guests) {
+        document.getElementById('rsvpGuestCount').value = data.guests;
+      }
+      if (document.getElementById('rsvpContact') && data.contact) {
+        document.getElementById('rsvpContact').value = data.contact;
+      }
+      if (document.getElementById('rsvpAttendeeNames') && data.attendeeNames) {
+        document.getElementById('rsvpAttendeeNames').value = data.attendeeNames;
+      }
+      if (document.getElementById('rsvpNote') && data.note) {
+        document.getElementById('rsvpNote').value = data.note;
+      }
+
       displayRsvpSuccess(data);
     }
   } catch (err) {
@@ -952,29 +1025,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (rsvpForm) {
     rsvpForm.addEventListener('submit', (e) => {
-      e.preventDefault();
       const data = getRsvpFormData();
 
-      // 1. Submit to Google Form in the background (no redirection!)
+      // 1. Populate hidden Google Form entry inputs for background iframe submission
+      const gfName = document.getElementById('gf_name');
+      const gfAttending = document.getElementById('gf_attending');
+      const gfPhone = document.getElementById('gf_phone');
+      const gfAttendees = document.getElementById('gf_attendees');
+      const gfWishes = document.getElementById('gf_wishes');
+
+      if (gfName) gfName.value = data.name;
+      if (gfAttending) gfAttending.value = "Yes,  I'll be there";
+      if (gfPhone) gfPhone.value = data.contact || 'Not provided';
+      if (gfAttendees) gfAttendees.value = data.attendeesFormatted;
+      if (gfWishes) gfWishes.value = data.note || "Warmest congratulations and heartfelt blessings to Shivani & Prajjual! 💖✨";
+
+      // 2. Also execute secondary silent fetch submission for redundancy across all browsers
       submitHeadlessGoogleForm(data);
 
-      // 2. Save locally
+      // 3. Save locally in localStorage
       try {
         localStorage.setItem('shivani_prajjual_rsvp', JSON.stringify(data));
       } catch (err) {
         console.warn('LocalStorage RSVP save error:', err);
       }
 
-      // 3. Display Royal Confirmation Card immediately on site
-      displayRsvpSuccess(data);
-      triggerConfetti();
+      // 4. Subtle button animation & show Royal Confirmation Card immediately on site
+      const submitBtn = document.getElementById('submitRsvpBtn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<span>Confirming Royal RSVP... ✨</span>`;
+      }
+
+      setTimeout(() => {
+        displayRsvpSuccess(data);
+        if (typeof triggerConfetti === 'function') {
+          triggerConfetti();
+        }
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<span>Confirm Royal RSVP 💌</span>`;
+        }
+      }, 500);
+
+      // Native form submit continues into hidden iframe: zero page navigation or flicker!
     });
   }
 
   if (shareWhatsappBtn) {
     shareWhatsappBtn.addEventListener('click', () => {
       const data = currentRsvpData || getRsvpFormData();
-      const message = `Namaste Shivani & Prajjual! ✨\n\nI have confirmed my RSVP for your royal wedding celebrations!\n\n• Guest: ${data.name}\n• Attending: ${data.events}\n• Total Guests: ${data.guests}${data.contact ? `\n• Phone: ${data.contact}` : ''}${data.note ? `\n• Blessings: "${data.note}"` : ''}\n\nLooking forward to celebrating with you at Devalaya Resort, Gwalior! 💖`;
+      const message = `Namaste Shivani & Prajjual! ✨\n\nI have confirmed my RSVP for your royal wedding celebrations!\n\n• Guest: ${data.name}\n• Attending: ${data.events}\n• Total Guests: ${data.guests}${data.attendeeNames ? `\n• People Attending: ${data.attendeeNames}` : ''}${data.contact ? `\n• Phone: ${data.contact}` : ''}${data.note ? `\n• Blessings: "${data.note}"` : ''}\n\nLooking forward to celebrating with you at Devalaya Resort, Gwalior! 💖`;
       const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
     });

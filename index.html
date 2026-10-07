@@ -545,11 +545,21 @@
 
               <!-- RSVP Form Card -->
               <div class="rsvp-form-container" id="rsvpFormContainer">
-                <form id="rsvpForm" class="rsvp-form" target="hiddenRsvpIframe" method="POST">
+                <form id="rsvpForm" class="rsvp-form" action="https://docs.google.com/forms/d/e/1FAIpQLSf2dd4tjXABXnm1-pcNyREX0ZH7mk7fY0k8zBhnnzOe4DE5uQ/formResponse" target="hiddenRsvpIframe" method="POST">
                   
+                  <!-- Google Form Hidden Entry Payload -->
+                  <input type="hidden" name="fvv" value="1">
+                  <input type="hidden" name="pageHistory" value="0">
+                  <input type="hidden" name="fbzx" value="5351127168266296729">
+                  <input type="hidden" id="gf_name" name="entry.75154926" value="">
+                  <input type="hidden" id="gf_attending" name="entry.877086558" value="Yes,  I'll be there">
+                  <input type="hidden" id="gf_phone" name="entry.843030410" value="">
+                  <input type="hidden" id="gf_attendees" name="entry.1498135098" value="">
+                  <input type="hidden" id="gf_wishes" name="entry.2606285" value="">
+
                   <div class="form-group">
                     <label for="rsvpGuestName" class="form-label">Full Name *</label>
-                    <input type="text" id="rsvpGuestName" name="guestName" class="glass-input" placeholder="e.g. Ramesh &amp; Family" required>
+                    <input type="text" id="rsvpGuestName" class="glass-input" placeholder="e.g. Ramesh &amp; Family" required autocomplete="name">
                   </div>
 
                   <div class="form-group">
@@ -577,7 +587,7 @@
                   <div class="form-row-dual">
                     <div class="form-group flex-1">
                       <label for="rsvpGuestCount" class="form-label">No. of Guests</label>
-                      <select id="rsvpGuestCount" name="guestCount" class="glass-select">
+                      <select id="rsvpGuestCount" class="glass-select">
                         <option value="1 Guest">1 Guest</option>
                         <option value="2 Guests" selected>2 Guests</option>
                         <option value="3 Guests">3 Guests</option>
@@ -587,13 +597,18 @@
 
                     <div class="form-group flex-2">
                       <label for="rsvpContact" class="form-label">Phone / WhatsApp</label>
-                      <input type="tel" id="rsvpContact" name="guestPhone" class="glass-input" placeholder="+91 98765 43210">
+                      <input type="tel" id="rsvpContact" class="glass-input" placeholder="+91 98765 43210" autocomplete="tel">
                     </div>
                   </div>
 
                   <div class="form-group">
-                    <label for="rsvpNote" class="form-label">Wishes / Blessings (Optional)</label>
-                    <textarea id="rsvpNote" name="guestWishes" class="glass-textarea" rows="2" placeholder="Send your loving wishes to Shivani &amp; Prajjual..."></textarea>
+                    <label for="rsvpAttendeeNames" class="form-label">Names of People Attending (Optional)</label>
+                    <input type="text" id="rsvpAttendeeNames" class="glass-input" placeholder="e.g. Ramesh, Sunita, Rohan">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="rsvpNote" class="form-label">Wishes / Blessings</label>
+                    <textarea id="rsvpNote" class="glass-textarea" rows="2" placeholder="Send your loving wishes to Shivani &amp; Prajjual..."></textarea>
                   </div>
 
                   <div class="rsvp-action-stack">
