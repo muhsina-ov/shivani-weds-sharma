@@ -696,7 +696,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Close modals when clicking backdrop
-  [doorModal, editorModal, mapModal, calendarModal].filter(Boolean).forEach(modal => {
+  [doorModal, editorModal, mapModal].filter(Boolean).forEach(modal => {
     modal.addEventListener('click', (e) => {
       if (e.target === modal) {
         modal.classList.add('hidden');
@@ -736,125 +736,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ==========================================================================
-  // UNIVERSAL CALENDAR INTEGRATION (GOOGLE CALENDAR + APPLE/OUTLOOK .ICS)
-  // ==========================================================================
-  const calendarModal = document.getElementById('calendarModal');
-  const closeCalendarModal = document.getElementById('closeCalendarModal');
-  const calModalEventTitle = document.getElementById('calModalEventTitle');
-  const calModalEventDate = document.getElementById('calModalEventDate');
-  const calOptionGoogle = document.getElementById('calOptionGoogle');
-  const calOptionApple = document.getElementById('calOptionApple');
-
-  function downloadIcsFile(title, description, location, startDateIso, endDateIso) {
-    const formatDateToIcs = (isoStr) => {
-      const d = new Date(isoStr);
-      return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-    };
-
-    const start = formatDateToIcs(startDateIso || '2026-11-19T10:00:00+05:30');
-    const end = formatDateToIcs(endDateIso || '2026-11-20T23:30:00+05:30');
-
-    const icsContent = [
-      'BEGIN:VCALENDAR',
-      'VERSION:2.0',
-      'PRODID:-//Shivani and Prajjual Royal Wedding//EN',
-      'CALSCALE:GREGORIAN',
-      'METHOD:PUBLISH',
-      'BEGIN:VEVENT',
-      `SUMMARY:${title}`,
-      `DESCRIPTION:${description}`,
-      `LOCATION:${location}`,
-      `DTSTART:${start}`,
-      `DTEND:${end}`,
-      'STATUS:CONFIRMED',
-      'END:VEVENT',
-      'END:VCALENDAR'
-    ].join('\r\n');
-
-    // For Apple iOS devices, opening data URI directly invokes native Add to Calendar
-    const isAppleDevice = /iPhone|iPad|iPod|Macintosh/i.test(navigator.userAgent) && !window.MSStream;
-    if (isAppleDevice && !window.chrome) {
-      const dataUri = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
-      window.open(dataUri, '_blank');
-      return;
-    }
-
-    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `${title.replace(/[^a-zA-Z0-9]/g, '_')}.ics`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    setTimeout(() => window.URL.revokeObjectURL(url), 1000);
-  }
-
-  function openUniversalCalendarModal(btn) {
-    if (!btn) return;
-    const eventName = btn.dataset.event || 'Royal Wedding Celebrations';
-    const eventDates = btn.dataset.date || '20261119T043000Z/20261120T183000Z';
-    const startIso = btn.dataset.start || '2026-11-19T10:00:00+05:30';
-    const endIso = btn.dataset.end || '2026-11-20T23:30:00+05:30';
-    const venue = 'Devalaya Resort';
-    const location = 'Jhansi Road, Sithouli, Gwalior, Madhya Pradesh';
-    const fullTitle = `${eventName} — Shivani & Prajjual Wedding`;
-    const desc = btn.dataset.desc || `We warmly welcome you to celebrate the ${eventName} of Shivani & Prajjual at ${venue}, Gwalior.`;
-
-    if (calModalEventTitle) calModalEventTitle.textContent = fullTitle;
-    if (calModalEventDate) {
-      if (eventName.includes('Haldi')) {
-        calModalEventDate.textContent = 'Wednesday, 19th Nov 2026 • 10:00 AM Onwards';
-      } else if (eventName.includes('Sangeet')) {
-        calModalEventDate.textContent = 'Wednesday, 19th Nov 2026 • 7:00 PM Onwards';
-      } else if (eventName.includes('Royal Wedding')) {
-        calModalEventDate.textContent = '19–20 November 2026 • Haldi, Sangeet, Wedding & Reception';
-      } else {
-        calModalEventDate.textContent = 'Thursday, 20th Nov 2026 • 4:00 PM (Pheras) & 7:00 PM (Reception)';
-      }
-    }
-
-    // Configure Google Calendar Link
-    const titleEnc = encodeURIComponent(fullTitle);
-    const detailsEnc = encodeURIComponent(desc);
-    const locEnc = encodeURIComponent(`${venue}, ${location}`);
-    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titleEnc}&details=${detailsEnc}&location=${locEnc}&dates=${eventDates}`;
-    
-    if (calOptionGoogle) {
-      calOptionGoogle.href = googleCalendarUrl;
-      calOptionGoogle.onclick = () => {
-        setTimeout(() => {
-          if (calendarModal) calendarModal.classList.add('hidden');
-        }, 300);
-      };
-    }
-
-    // Configure Apple / Outlook .ics download
-    if (calOptionApple) {
-      calOptionApple.onclick = (ev) => {
-        ev.preventDefault();
-        downloadIcsFile(fullTitle, desc, `${venue}, ${location}`, startIso, endIso);
-        if (calendarModal) calendarModal.classList.add('hidden');
-      };
-    }
-
-    if (calendarModal) calendarModal.classList.remove('hidden');
-  }
-
-  // Bind to all ceremony calendar buttons
-  document.querySelectorAll('.ceremony-calendar-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      openUniversalCalendarModal(btn);
-    });
-  });
-
-
-  if (closeCalendarModal && calendarModal) {
-    closeCalendarModal.addEventListener('click', () => calendarModal.classList.add('hidden'));
-  }
 
   // ==========================================================================
   // RSVP ENGINE: HEADLESS GOOGLE FORMS + LOCALSTORAGE + WHATSAPP NOTIFICATION
