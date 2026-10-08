@@ -42,6 +42,12 @@ document.addEventListener('DOMContentLoaded', () => {
   let audioCtx = null;
 
   // --- Audio Context Helper ---
+  // --- High-Fidelity Gapless Background Audio Engine ---
+  let audioBuffer = null;
+  let bgSourceNode = null;
+  let bgGainNode = null;
+  let isWebAudioPlaying = false;
+
   function initAudioContext() {
     if (!audioCtx) {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -51,6 +57,63 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (audioCtx && audioCtx.state === 'suspended') {
       audioCtx.resume();
+    }
+  }
+
+  // Preload and decode audio for 100% gapless delay-free hardware looping
+  async function preloadSeamlessAudio() {
+    try {
+      const response = await fetch('./assets/audio/bg-music.mp3');
+      if (!response.ok) return;
+      const arrayBuffer = await response.arrayBuffer();
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) audioCtx = new AudioContext();
+      }
+      if (audioCtx) {
+        audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+      }
+    } catch (e) {
+      console.warn('Web Audio seamless preload notice:', e);
+    }
+  }
+  preloadSeamlessAudio();
+
+  function playSeamlessBackgroundMusic() {
+    initAudioContext();
+    if (audioCtx && audioBuffer) {
+      try {
+        if (bgSourceNode) {
+          try { bgSourceNode.stop(); } catch(e){}
+        }
+        bgSourceNode = audioCtx.createBufferSource();
+        bgSourceNode.buffer = audioBuffer;
+        bgSourceNode.loop = true; // 100% gapless hardware-clock loop without delays
+
+        if (!bgGainNode) {
+          bgGainNode = audioCtx.createGain();
+          bgGainNode.connect(audioCtx.destination);
+        }
+        bgGainNode.gain.value = isAudioMuted ? 0 : 0.85;
+
+        bgSourceNode.connect(bgGainNode);
+        bgSourceNode.start(0);
+        isWebAudioPlaying = true;
+        return;
+      } catch (err) {
+        console.warn('Web Audio play fallback:', err);
+      }
+    }
+
+    // HTML5 Audio Fallback
+    if (weddingBgAudio) {
+      weddingBgAudio.currentTime = 0;
+      weddingBgAudio.volume = 0.85;
+      weddingBgAudio.muted = isAudioMuted;
+      const audioPromise = weddingBgAudio.play();
+      if (audioPromise !== undefined) {
+        audioPromise.catch(() => {});
+      }
     }
   }
 
@@ -444,29 +507,8 @@ document.addEventListener('DOMContentLoaded', () => {
     isPlaying = true;
     initAudioContext();
 
-    // 0. Play Royal Wedding Background Music
-    if (weddingBgAudio) {
-      weddingBgAudio.currentTime = 0;
-      weddingBgAudio.volume = 0.85;
-      weddingBgAudio.muted = isAudioMuted;
-      const audioPromise = weddingBgAudio.play();
-      if (audioPromise !== undefined) {
-        audioPromise.then(() => {
-          console.log('Wedding background music playing smoothly');
-        }).catch(err => {
-          console.warn('Audio auto-play prevented by browser policy, unlocking on next user tap:', err);
-          const unlockAudio = () => {
-            if (!isAudioMuted && weddingBgAudio.paused) {
-              weddingBgAudio.play().catch(() => {});
-            }
-            document.removeEventListener('click', unlockAudio);
-            document.removeEventListener('touchstart', unlockAudio);
-          };
-          document.addEventListener('click', unlockAudio, { once: true });
-          document.addEventListener('touchstart', unlockAudio, { once: true });
-        });
-      }
-    }
+    // 0. Play Royal Wedding Background Music (Delay-Free Gapless Loop)
+    playSeamlessBackgroundMusic();
 
     // Trigger YouTube background music if URL input is filled
     const ytUrlInput = document.getElementById('inputYoutubeUrl');
@@ -642,8 +684,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const mute = isAudioMuted ? 1 : 0;
     const playParam = autoPlay ? 1 : 0;
+    // Embed starts at 1:08 (68s) to 1:18 (78s) and loops continuously
     container.innerHTML = `<iframe id="ytIframe" width="200" height="200" 
-      src="https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=${playParam}&loop=1&playlist=${videoId}&controls=0&mute=${mute}" 
+      src="https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=${playParam}&loop=1&playlist=${videoId}&start=68&end=78&controls=0&mute=${mute}" 
       frameborder="0" allow="autoplay"></iframe>`;
 
     ytPlayerIframe = document.getElementById('ytIframe');
@@ -663,14 +706,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // --- Audio Mute Toggle ---
   audioToggleBtn.addEventListener('click', () => {
     isAudioMuted = !isAudioMuted;
     video.muted = isAudioMuted;
     
+    if (bgGainNode) {
+      bgGainNode.gain.value = isAudioMuted ? 0 : 0.85;
+    }
     if (weddingBgAudio) {
       weddingBgAudio.muted = isAudioMuted;
-      if (!isAudioMuted && weddingBgAudio.paused) {
+      if (!isAudioMuted && !isWebAudioPlaying && weddingBgAudio.paused) {
         weddingBgAudio.play().catch(() => {});
       }
     }
@@ -738,32 +783,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   // ==========================================================================
-  // RSVP ENGINE: HEADLESS GOOGLE FORMS + LOCALSTORAGE + WHATSAPP NOTIFICATION
+  // RSVP ENGINE: DEDICATED WHATSAPP RSVP (+91 9399061730)
   // ==========================================================================
-  // NOTE FOR HOST: When you have your Google Form link, paste it below.
-  // Responses will be submitted directly to your connected Google Sheet in real-time,
-  // while guests stay on the themed invitation website without being redirected!
-  // ==========================================================================
-  // RSVP ENGINE: HEADLESS GOOGLE FORMS + LOCALSTORAGE + WHATSAPP NOTIFICATION
-  // ==========================================================================
-  // Google Form Destination:
-  // Form View URL: https://docs.google.com/forms/d/e/1FAIpQLSf2dd4tjXABXnm1-pcNyREX0ZH7mk7fY0k8zBhnnzOe4DE5uQ/viewform
-  // Responses get submitted silently in background to your Google Form / Google Sheet.
-  const GOOGLE_FORM_CONFIG = {
-    formResponseUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSf2dd4tjXABXnm1-pcNyREX0ZH7mk7fY0k8zBhnnzOe4DE5uQ/formResponse',
-    entries: {
-      name: 'entry.75154926',
-      attending: 'entry.877086558',
-      phone: 'entry.843030410',
-      attendees: 'entry.1498135098',
-      wishes: 'entry.2606285'
-    },
-    hiddenTokens: {
-      fvv: '1',
-      pageHistory: '0',
-      fbzx: '5351127168266296729'
-    }
-  };
+  const WHATSAPP_RSVP_PHONE = '919399061730';
 
   const rsvpForm = document.getElementById('rsvpForm');
   const rsvpSuccessCard = document.getElementById('rsvpSuccessCard');
@@ -811,57 +833,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const eventsStr = selectedEvents.length > 0 ? selectedEvents.join(', ') : 'All Celebrations';
-    
-    // Rich Attendee Description for Google Form / Sheet entry 1498135098
-    let attendeesFormatted = `${guestCount} (Attending: ${eventsStr})`;
-    if (attendeeNames) {
-      attendeesFormatted = `${attendeeNames} — ${guestCount} (Attending: ${eventsStr})`;
-    }
 
     return {
       name: name || 'Guest',
       events: eventsStr,
       guests: guestCount,
       attendeeNames: attendeeNames,
-      attendeesFormatted: attendeesFormatted,
       contact: contact,
       note: note,
       timestamp: new Date().toISOString()
     };
   }
 
-  function submitHeadlessGoogleForm(data) {
-    if (!GOOGLE_FORM_CONFIG.formResponseUrl) return;
+  function buildWhatsAppMessage(data) {
+    let msg = `Namaste Shivani & Prajjual! ✨\n\nI am delighted to confirm my RSVP for your Royal Wedding Celebrations!\n\n• Guest: ${data.name}\n• Attending: ${data.events}\n• Total Guests: ${data.guests}`;
+    if (data.attendeeNames) msg += `\n• Names: ${data.attendeeNames}`;
+    if (data.contact) msg += `\n• Phone: ${data.contact}`;
+    if (data.note) msg += `\n• Wishes: "${data.note}"`;
+    msg += `\n\nLooking forward to celebrating with you at Devalaya Resort, Gwalior! 💖`;
+    return msg;
+  }
 
-    try {
-      const formData = new URLSearchParams();
-      formData.append('fvv', GOOGLE_FORM_CONFIG.hiddenTokens.fvv);
-      formData.append('pageHistory', GOOGLE_FORM_CONFIG.hiddenTokens.pageHistory);
-      formData.append('fbzx', GOOGLE_FORM_CONFIG.hiddenTokens.fbzx);
-
-      formData.append(GOOGLE_FORM_CONFIG.entries.name, data.name);
-      formData.append(GOOGLE_FORM_CONFIG.entries.attending, "Yes,  I'll be there");
-      formData.append(GOOGLE_FORM_CONFIG.entries.phone, data.contact || 'Not provided');
-      formData.append(GOOGLE_FORM_CONFIG.entries.attendees, data.attendeesFormatted);
-      formData.append(
-        GOOGLE_FORM_CONFIG.entries.wishes, 
-        data.note || "Warmest congratulations and heartfelt blessings to Shivani & Prajjual! 💖✨"
-      );
-
-      // Silent background submission via fetch no-cors
-      fetch(GOOGLE_FORM_CONFIG.formResponseUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: formData.toString()
-      }).catch(err => {
-        console.warn('Background Google Form fetch submit notice:', err);
-      });
-    } catch (e) {
-      console.warn('Google Form headless submit exception:', e);
-    }
+  function openWhatsAppRsvp(data) {
+    const msg = buildWhatsAppMessage(data);
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${WHATSAPP_RSVP_PHONE}&text=${encodeURIComponent(msg)}`;
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
   }
 
   function displayRsvpSuccess(data) {
@@ -888,7 +884,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedRsvp = localStorage.getItem('shivani_prajjual_rsvp');
     if (savedRsvp) {
       const data = JSON.parse(savedRsvp);
-      // Pre-fill inputs for seamless editing
       if (document.getElementById('rsvpGuestName') && data.name) {
         document.getElementById('rsvpGuestName').value = data.name;
       }
@@ -924,59 +919,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (rsvpForm) {
     rsvpForm.addEventListener('submit', (e) => {
+      e.preventDefault();
       const data = getRsvpFormData();
 
-      // 1. Populate hidden Google Form entry inputs for background iframe submission
-      const gfName = document.getElementById('gf_name');
-      const gfAttending = document.getElementById('gf_attending');
-      const gfPhone = document.getElementById('gf_phone');
-      const gfAttendees = document.getElementById('gf_attendees');
-      const gfWishes = document.getElementById('gf_wishes');
-
-      if (gfName) gfName.value = data.name;
-      if (gfAttending) gfAttending.value = "Yes,  I'll be there";
-      if (gfPhone) gfPhone.value = data.contact || 'Not provided';
-      if (gfAttendees) gfAttendees.value = data.attendeesFormatted;
-      if (gfWishes) gfWishes.value = data.note || "Warmest congratulations and heartfelt blessings to Shivani & Prajjual! 💖✨";
-
-      // 2. Also execute secondary silent fetch submission for redundancy across all browsers
-      submitHeadlessGoogleForm(data);
-
-      // 3. Save locally in localStorage
+      // Save locally in localStorage
       try {
         localStorage.setItem('shivani_prajjual_rsvp', JSON.stringify(data));
       } catch (err) {
         console.warn('LocalStorage RSVP save error:', err);
       }
 
-      // 4. Subtle button animation & show Royal Confirmation Card immediately on site
-      const submitBtn = document.getElementById('submitRsvpBtn');
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = `<span>Confirming Royal RSVP... ✨</span>`;
+      // Open WhatsApp chat directly with 9399061730
+      openWhatsAppRsvp(data);
+
+      displayRsvpSuccess(data);
+      if (typeof triggerConfetti === 'function') {
+        triggerConfetti();
       }
-
-      setTimeout(() => {
-        displayRsvpSuccess(data);
-        if (typeof triggerConfetti === 'function') {
-          triggerConfetti();
-        }
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = `<span>Confirm Royal RSVP 💌</span>`;
-        }
-      }, 500);
-
-      // Native form submit continues into hidden iframe: zero page navigation or flicker!
     });
   }
 
   if (shareWhatsappBtn) {
     shareWhatsappBtn.addEventListener('click', () => {
       const data = currentRsvpData || getRsvpFormData();
-      const message = `Namaste Shivani & Prajjual! ✨\n\nI have confirmed my RSVP for your royal wedding celebrations!\n\n• Guest: ${data.name}\n• Attending: ${data.events}\n• Total Guests: ${data.guests}${data.attendeeNames ? `\n• People Attending: ${data.attendeeNames}` : ''}${data.contact ? `\n• Phone: ${data.contact}` : ''}${data.note ? `\n• Blessings: "${data.note}"` : ''}\n\nLooking forward to celebrating with you at Devalaya Resort, Gwalior! 💖`;
-      const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
-      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+      openWhatsAppRsvp(data);
     });
   }
 

@@ -506,11 +506,8 @@
               <span class="scroll-divider-line"></span>
             </div>
 
-            <!-- PAGE 5: RSVP REGISTRY (DISTINCT ROYAL REGISTRY DESIGN) -->
+            <!-- PAGE 5: RSVP REGISTRY (DEDICATED WHATSAPP REGISTRY) -->
             <section class="registry-page-card rsvp-section-card" id="section-rsvp">
-              <!-- Hidden iframe to submit to Google Form in background without leaving or redirecting the page -->
-              <iframe name="hiddenRsvpIframe" id="hiddenRsvpIframe" style="display:none; width:0; height:0; border:0;" tabindex="-1"></iframe>
-
               <div class="wax-seal-badge">
                 <div class="wax-seal-ring">
                   <span class="seal-icon">⚜️</span>
@@ -520,23 +517,18 @@
               
               <h2 class="registry-title">Confirm Attendance</h2>
               <p class="registry-subtitle">
-                Kindly grace our celebration with your warm presence and blessings. Please confirm your attendance below.
+                Kindly grace our celebration with your warm presence and blessings. Please confirm your attendance via WhatsApp below.
               </p>
+
+              <!-- WhatsApp Host Number Badge -->
+              <div class="whatsapp-host-badge">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.97.529 1.766.797 2.809.797 3.182 0 5.768-2.587 5.769-5.766.001-3.181-2.585-5.767-5.783-5.784zm10.019 5.768c-.001 5.545-4.512 10.056-10.05 10.056-1.768 0-3.444-.46-4.919-1.265l-5.081 1.332 1.356-4.954c-.88-1.52-1.344-3.268-1.344-5.169.001-5.545 4.512-10.056 10.05-10.056 5.538 0 10.038 4.511 10.038 10.056z"/></svg>
+                <span>WhatsApp RSVP: <strong>+91 93990 61730</strong></span>
+              </div>
 
               <!-- RSVP Form Card -->
               <div class="rsvp-form-container" id="rsvpFormContainer">
-                <form id="rsvpForm" class="rsvp-form" action="https://docs.google.com/forms/d/e/1FAIpQLSf2dd4tjXABXnm1-pcNyREX0ZH7mk7fY0k8zBhnnzOe4DE5uQ/formResponse" target="hiddenRsvpIframe" method="POST">
-                  
-                  <!-- Google Form Hidden Entry Payload -->
-                  <input type="hidden" name="fvv" value="1">
-                  <input type="hidden" name="pageHistory" value="0">
-                  <input type="hidden" name="fbzx" value="5351127168266296729">
-                  <input type="hidden" id="gf_name" name="entry.75154926" value="">
-                  <input type="hidden" id="gf_attending" name="entry.877086558" value="Yes,  I'll be there">
-                  <input type="hidden" id="gf_phone" name="entry.843030410" value="">
-                  <input type="hidden" id="gf_attendees" name="entry.1498135098" value="">
-                  <input type="hidden" id="gf_wishes" name="entry.2606285" value="">
-
+                <form id="rsvpForm" class="rsvp-form">
                   <div class="form-group">
                     <label for="rsvpGuestName" class="form-label">Full Name *</label>
                     <input type="text" id="rsvpGuestName" class="glass-input" placeholder="e.g. Ramesh &amp; Family" required autocomplete="name">
@@ -576,7 +568,7 @@
                     </div>
 
                     <div class="form-group flex-2">
-                      <label for="rsvpContact" class="form-label">Phone / WhatsApp</label>
+                      <label for="rsvpContact" class="form-label">Your Phone Number</label>
                       <input type="tel" id="rsvpContact" class="glass-input" placeholder="+91 98765 43210" autocomplete="tel">
                     </div>
                   </div>
@@ -592,9 +584,14 @@
                   </div>
 
                   <div class="rsvp-action-stack">
-                    <button type="submit" class="primary-gold-btn full-width rsvp-submit-btn" id="submitRsvpBtn">
-                      <span>Confirm Royal RSVP 💌</span>
+                    <button type="submit" class="rsvp-whatsapp-primary-btn full-width" id="submitRsvpBtn">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.97.529 1.766.797 2.809.797 3.182 0 5.768-2.587 5.769-5.766.001-3.181-2.585-5.767-5.783-5.784zm10.019 5.768c-.001 5.545-4.512 10.056-10.05 10.056-1.768 0-3.444-.46-4.919-1.265l-5.081 1.332 1.356-4.954c-.88-1.52-1.344-3.268-1.344-5.169.001-5.545 4.512-10.056 10.05-10.056 5.538 0 10.038 4.511 10.038 10.056z"/></svg>
+                      <span>Send RSVP via WhatsApp 💬</span>
                     </button>
+                    
+                    <a href="https://api.whatsapp.com/send?phone=919399061730&text=Namaste%20Shivani%20%26%20Prajjual!%20%E2%9C%A8%20I%20would%20like%20to%20RSVP%20for%20your%20wedding%20celebrations." target="_blank" rel="noopener noreferrer" class="rsvp-direct-chat-link">
+                      Direct WhatsApp Chat (+91 93990 61730) ↗
+                    </a>
                   </div>
 
                 </form>
@@ -605,16 +602,16 @@
                     <div class="success-ring"></div>
                     <span class="success-check">✓</span>
                   </div>
-                  <h3 class="success-title">RSVP Confirmed!</h3>
+                  <h3 class="success-title">RSVP Sent to WhatsApp!</h3>
                   <p class="success-msg" id="rsvpSuccessMessage">
-                    Thank you, <strong id="confirmedGuestName">Guest</strong>! Your response has been warmly recorded. We are thrilled to celebrate our royal wedding with you!
+                    Thank you, <strong id="confirmedGuestName">Guest</strong>! Your RSVP has been formatted for WhatsApp (+91 93990 61730). If WhatsApp didn't open automatically, tap below:
                   </p>
                   <div class="confirmed-summary-box" id="confirmedSummaryBox"></div>
                   
                   <div class="rsvp-success-actions">
-                    <button type="button" class="rsvp-whatsapp-share-btn" id="shareWhatsappBtn">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.97.529 1.766.797 2.809.797 3.182 0 5.768-2.587 5.769-5.766.001-3.181-2.585-5.767-5.783-5.784zm10.019 5.768c-.001 5.545-4.512 10.056-10.05 10.056-1.768 0-3.444-.46-4.919-1.265l-5.081 1.332 1.356-4.954c-.88-1.52-1.344-3.268-1.344-5.169.001-5.545 4.512-10.056 10.05-10.056 5.538 0 10.038 4.511 10.038 10.056z"/></svg>
-                      <span>Share on WhatsApp 💬</span>
+                    <button type="button" class="rsvp-whatsapp-primary-btn" id="shareWhatsappBtn">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.97.529 1.766.797 2.809.797 3.182 0 5.768-2.587 5.769-5.766.001-3.181-2.585-5.767-5.783-5.784zm10.019 5.768c-.001 5.545-4.512 10.056-10.05 10.056-1.768 0-3.444-.46-4.919-1.265l-5.081 1.332 1.356-4.954c-.88-1.52-1.344-3.268-1.344-5.169.001-5.545 4.512-10.056 10.05-10.056 5.538 0 10.038 4.511 10.038 10.056z"/></svg>
+                      <span>Open WhatsApp Chat 💬</span>
                     </button>
                     <button type="button" class="text-link-btn" id="editRsvpBtn">Edit Response ✎</button>
                   </div>

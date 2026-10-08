@@ -2595,35 +2595,79 @@ html, body {
   gap: 4px;
 }
 
-.rsvp-whatsapp-share-btn {
+.whatsapp-host-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: rgba(37, 211, 102, 0.15);
-  border: 1px solid #25D366;
-  border-radius: 20px;
+  background: rgba(37, 211, 102, 0.12);
+  border: 1px solid rgba(37, 211, 102, 0.4);
   color: #25D366;
   font-family: var(--font-sans);
-  font-size: 0.78rem;
-  font-weight: 700;
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  margin-top: 6px;
+  font-size: 0.82rem;
+  letter-spacing: 0.4px;
+  padding: 8px 18px;
+  border-radius: 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
 }
 
-.rsvp-whatsapp-share-btn:hover {
-  background: #25D366;
-  color: #0A0A0C;
+.whatsapp-host-badge strong {
+  color: #FFFFFF;
+  letter-spacing: 0.6px;
+}
+
+.rsvp-whatsapp-primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: #FFFFFF;
+  border: 1px solid #25D366;
+  border-radius: 30px;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 13px 22px;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35);
+  transition: all 0.25s ease;
+}
+
+.rsvp-whatsapp-primary-btn:hover {
+  background: linear-gradient(135deg, #2ae871 0%, #075E54 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.5);
+  color: #FFFFFF;
+}
+
+.rsvp-direct-chat-link {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--color-gold);
+  text-decoration: none;
+  text-align: center;
+  margin-top: 4px;
+  transition: color 0.2s ease;
+}
+
+.rsvp-direct-chat-link:hover {
+  color: var(--color-gold-light);
+  text-decoration: underline;
 }
 
 .rsvp-success-actions {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   width: 100%;
+  margin-top: 6px;
 }
 
 
