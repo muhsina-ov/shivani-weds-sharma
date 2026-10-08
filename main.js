@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const mapModal = document.getElementById('mapModal');
   const openMapBtn = document.getElementById('openMapBtn');
   const closeMapModal = document.getElementById('closeMapModal');
-  const addToCalendarBtn = document.getElementById('addToCalendarBtn');
   
   // Forms & Inputs
   const editorForm = document.getElementById('editorForm');
@@ -852,15 +851,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Explicit bind for main front-page add to calendar button
-  const mainCalBtn = document.getElementById('addToCalendarBtn');
-  if (mainCalBtn) {
-    mainCalBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      openUniversalCalendarModal(mainCalBtn);
-    });
-  }
 
   if (closeCalendarModal && calendarModal) {
     closeCalendarModal.addEventListener('click', () => calendarModal.classList.add('hidden'));
